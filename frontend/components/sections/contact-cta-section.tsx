@@ -1,0 +1,5 @@
+﻿import { company } from "@/data/company";
+import { ButtonLink } from "@/components/ui/button-link";
+import { Container } from "@/components/ui/container";
+import { Reveal } from "@/components/ui/reveal";
+export function ContactCtaSection() { const { contact } = company; return <section className="bg-[#a85c36] py-20 text-white sm:py-24"><Container><Reveal className="grid gap-10 lg:grid-cols-[1.3fr_.7fr] lg:items-end"><div><p className="text-sm font-bold uppercase tracking-[.18em] text-[#e8d9cc]">Parlons de votre besoin</p><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">Un environnement propre, sain et maîtrisé commence par une expertise professionnelle.</h2><ButtonLink href="#contact" className="mt-8 bg-white text-[#a85c36] hover:bg-[#eaf2f2]">Demander un devis</ButtonLink></div><div className="border-l border-white/25 pl-6 text-white/80"><p><a href="tel:+22645331867" className="font-semibold text-white">{contact.phone}</a></p><p className="mt-2"><a href={`mailto:${contact.email}`}>{contact.email}</a></p><p className="mt-5 text-sm">{contact.locations}</p></div></Reveal></Container></section>; }
