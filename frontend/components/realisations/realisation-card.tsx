@@ -1,4 +1,25 @@
 ﻿import Link from "next/link";
 import type { Realisation } from "@/types/realisation";
+
 type Props = { realisation: Realisation; isMock?: boolean };
-export function RealisationCard({ realisation, isMock = false }: Props) { const cover = [...realisation.images].sort((a, b) => a.order - b.order)[0]; return <article className="group overflow-hidden rounded-2xl border border-[#dce5df] bg-white transition hover:-translate-y-1 hover:shadow-xl hover:shadow-[#a85c36]/8"><Link href={`/realisations/${realisation.slug}`} className="block"><div className="relative aspect-[4/3] bg-[#16232a]">{cover && <div className="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-105" style={{ backgroundImage: `url(${cover.image})` }} />}<div className="absolute inset-0 bg-gradient-to-t from-[#0f2e36]/70 to-transparent" />{isMock && <span className="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-xs font-bold text-[#a85c36]">Données de test</span>}</div><div className="p-6"><p className="text-xs font-bold uppercase tracking-[.14em] text-[#a85c36]">{realisation.sector}</p><h3 className="mt-3 text-xl font-semibold tracking-tight text-[#16232a]">{realisation.title}</h3><p className="mt-3 line-clamp-2 leading-7 text-[#526259]">{realisation.description}</p><span className="mt-5 inline-block text-sm font-semibold text-[#a85c36]">Voir la fiche →</span></div></Link></article>; }
+
+export function RealisationCard({ realisation, isMock = false }: Props) {
+  const cover = [...realisation.images].sort((a, b) => a.order - b.order)[0];
+  return (
+    <article className="group overflow-hidden rounded-2xl border border-[#dce5df] bg-white transition hover:-translate-y-1 hover:shadow-xl hover:shadow-[#a85c36]/8">
+      <Link href={`/realisations/${realisation.slug}`} className="block">
+        <div className="relative aspect-[4/3] bg-[#16232a]">
+          {cover && <div className="absolute inset-0 bg-cover bg-center transition duration-500 group-hover:scale-105" style={{ backgroundImage: `url(${cover.image})` }} />}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0f2e36]/70 to-transparent" />
+          {isMock && <span className="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-xs font-bold text-[#a85c36]">Données de test</span>}
+        </div>
+        <div className="p-6">
+          <p className="text-xs font-bold uppercase tracking-[.14em] text-[#a85c36]">{realisation.sector}</p>
+          <h3 className="mt-3 text-xl font-semibold tracking-tight text-[#16232a]">{realisation.title}</h3>
+          {realisation.location && <p className="mt-2 text-sm text-[#526259]">{realisation.location}</p>}
+          <span className="mt-5 inline-block text-sm font-semibold text-[#a85c36]">Voir la fiche →</span>
+        </div>
+      </Link>
+    </article>
+  );
+}

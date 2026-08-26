@@ -5,7 +5,7 @@ import { DeleteButton } from "@/components/admin/delete-button";
 import { FilterSelect } from "@/components/admin/filter-select";
 import { PublishedBadge } from "@/components/admin/status-badge";
 import { SearchInput } from "@/components/admin/search-input";
-import { ServiceIcon } from "@/components/admin/service-icon";
+import { ServiceIcon } from "@/components/ui/service-icon";
 import { adminFetch } from "@/lib/admin/api";
 import type { PaginatedResponse } from "@/types/realisation";
 import type { AdminService } from "@/types/admin";

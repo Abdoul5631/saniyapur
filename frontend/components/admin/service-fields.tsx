@@ -2,7 +2,7 @@ import { FormField, inputClassName } from "@/components/admin/form-field";
 import { ImageUploader } from "@/components/admin/image-uploader";
 import { NameSlugFields } from "@/components/admin/name-slug-fields";
 import { PublishedToggle } from "@/components/admin/published-toggle";
-import { ServiceIconPicker } from "@/components/admin/service-icon";
+import { ServiceIconPicker } from "@/components/ui/service-icon";
 import type { AdminService } from "@/types/admin";
 
 export function ServiceFields({ service }: { service?: AdminService }) {
