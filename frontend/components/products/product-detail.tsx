@@ -8,10 +8,8 @@ export function ProductDetail({ product }: { product: Product }) {
     <div className="grid gap-12 lg:grid-cols-[1.1fr_.9fr]">
       <ProductGallery product={product} />
       <div>
-        <p className="text-sm font-bold uppercase tracking-[.16em] text-[#a85c36]">{product.category}</p>
-        <h1 className="mt-4 text-4xl font-semibold tracking-tight text-[#16232a] sm:text-5xl">{product.name}</h1>
-        {product.reference && <p className="mt-3 text-sm text-[#526259]">Référence : {product.reference}</p>}
-        <p className="mt-6 text-lg leading-8 text-[#526259]">{product.description}</p>
+        {product.reference && <p className="text-sm text-[#526259]">Référence : {product.reference}</p>}
+        <p className={`${product.reference ? "mt-6" : ""} text-lg leading-8 text-[#526259]`}>{product.description}</p>
         {product.usage && (
           <section className="mt-10 border-t border-[#dce5df] pt-8">
             <h2 className="text-xl font-semibold text-[#16232a]">Utilisation</h2>

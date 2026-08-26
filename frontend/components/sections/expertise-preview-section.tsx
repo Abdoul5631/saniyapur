@@ -5,7 +5,7 @@ import { Reveal } from "@/components/ui/reveal";
 
 export function ExpertisePreviewSection() {
   return (
-    <section className="bg-[#f1f6f6] py-16 sm:py-20">
+    <section className="py-16 sm:py-20">
       <Container>
         <Reveal className="max-w-2xl">
           <p className="text-sm font-bold uppercase tracking-[.18em] text-[#a85c36]">Notre expertise</p>

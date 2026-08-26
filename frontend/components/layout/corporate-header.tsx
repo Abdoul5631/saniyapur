@@ -24,7 +24,13 @@ function NavLink({ href, onClick, children, active }: { href: string; onClick: (
 export function CorporateHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [menuPath, setMenuPath] = useState(pathname);
   const [scrolled, setScrolled] = useState(false);
+
+  if (menuPath !== pathname) {
+    setMenuPath(pathname);
+    setOpen(false);
+  }
 
   useEffect(() => {
     function handleScroll() { setScrolled(window.scrollY > 12); }
@@ -32,8 +38,6 @@ export function CorporateHeader() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  useEffect(() => { setOpen(false); }, [pathname]);
 
   return (
     <header className={`sticky top-0 z-50 border-b bg-[#f7f8f6]/95 backdrop-blur transition-shadow duration-300 ${scrolled ? "border-slate-900/10 shadow-sm" : "border-slate-900/0"}`}>

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { AboutSection } from "@/components/sections/about-section";
 import { CompetenciesSection } from "@/components/sections/competencies-section";
 import { ContactCtaSection } from "@/components/sections/contact-cta-section";
@@ -6,6 +7,10 @@ import { ExpertisePreviewSection } from "@/components/sections/expertise-preview
 import { ProductsPreviewSection } from "@/components/sections/products-preview-section";
 import { RealisationsPreviewSection } from "@/components/sections/realisations-preview-section";
 import { SectorsSection } from "@/components/sections/sectors-section";
+
+export const metadata: Metadata = {
+  title: { absolute: "J&B SANIYAPUR SARL | Hygiène, nettoyage et maintenance professionnels" },
+};
 
 export default function Home() {
   return (
