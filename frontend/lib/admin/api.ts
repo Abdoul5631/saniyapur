@@ -3,8 +3,10 @@ import { getAdminToken } from "@/lib/admin/session";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 function baseUrl(): string {
-  if (!apiUrl) throw new Error("NEXT_PUBLIC_API_URL n’est pas configurée.");
-  return apiUrl.replace(/\/$/, "");
+  if (typeof window === "undefined") {
+    return (process.env.INTERNAL_API_URL || "http://backend:8000/api").replace(/\/$/, "");
+  }
+  return (apiUrl || "/api").replace(/\/$/, "");
 }
 
 async function authHeaders(): Promise<HeadersInit> {
@@ -20,9 +22,19 @@ async function assertOk(response: Response): Promise<void> {
 
 /** Lecture authentifiée (GET) — utilisée par les pages serveur de l’admin. */
 export async function adminFetch<T>(path: string): Promise<T> {
-  const response = await fetch(`${baseUrl()}${path}`, { headers: { Accept: "application/json", ...(await authHeaders()) }, cache: "no-store" });
-  await assertOk(response);
-  return response.json() as Promise<T>;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 4000);
+  try {
+    const response = await fetch(`${baseUrl()}${path}`, {
+      signal: controller.signal,
+      headers: { Accept: "application/json", ...(await authHeaders()) },
+      cache: "no-store",
+    });
+    await assertOk(response);
+    return response.json() as Promise<T>;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }
 
 /** Création/mise à jour avec fichiers (multipart) — utilisée par les Server Actions des formulaires. */

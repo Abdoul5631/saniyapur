@@ -4,6 +4,9 @@ import { AdminSidebar } from "@/components/admin/admin-sidebar";
 import { adminFetch } from "@/lib/admin/api";
 import { getAdminToken } from "@/lib/admin/session";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const token = await getAdminToken();
   if (!token) redirect("/admin/login");
