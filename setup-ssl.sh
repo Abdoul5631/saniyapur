@@ -17,7 +17,6 @@ docker run --rm --name certbot \
 
 echo "==> 4. Activation de la configuration Nginx HTTPS..."
 cp nginx/nginx.ssl.conf nginx/nginx.conf
-sed -i 's/DJANGO_SECURE_SSL_REDIRECT=False/DJANGO_SECURE_SSL_REDIRECT=True/g' .env
 
 echo "==> 5. Redémarrage des services avec HTTPS..."
 docker compose restart backend
