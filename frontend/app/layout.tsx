@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
@@ -44,13 +44,19 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="fr"
       className={`${plusJakartaSans.variable} ${inter.variable} ${playfair.variable} h-full antialiased selection:bg-[#a85c36] selection:text-white`}
     >
-      <body className="min-h-full flex flex-col font-sans bg-[#f7f8f6] text-[#16232a]">{children}</body>
+      <body className="min-h-full flex flex-col font-sans bg-[#f7f8f6] text-[#16232a] overflow-x-hidden">{children}</body>
     </html>
   );
 }
