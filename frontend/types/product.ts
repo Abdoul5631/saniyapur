@@ -14,6 +14,7 @@ export type Product = {
   image: string | null;
   technical_sheet: string | null;
   safety_sheet: string | null;
+  featured: boolean;
   published: boolean;
   created_at: string;
   updated_at: string;

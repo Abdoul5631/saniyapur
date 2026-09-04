@@ -14,7 +14,7 @@ export default async function QuotePage() {
       <PageHero
         eyebrow="Devis"
         title="Demander un devis"
-        description="Décrivez votre besoin. La demande est transmise à l’équipe et apparaît dans l’administration."
+        description="Décrivez votre besoin. Notre équipe étudiera votre demande avec soin pour vous apporter une proposition sur mesure."
         crumbs={[{ label: "Accueil", href: "/" }, { label: "Demander un devis" }]}
       />
       <section className="py-16 sm:py-20">

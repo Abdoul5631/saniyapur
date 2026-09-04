@@ -26,6 +26,17 @@ export async function createRealisation(_prevState: FormState, formData: FormDat
   try {
     const created = await adminMutateJson<Realisation>("/realisations/", buildPayload(formData), "POST");
     slug = created.slug;
+
+    const image = formData.get("image");
+    if (image instanceof File && image.size > 0) {
+      const imgPayload = new FormData();
+      imgPayload.set("realisation", String(created.id));
+      imgPayload.set("image", image);
+      imgPayload.set("caption", String(formData.get("title") ?? ""));
+      imgPayload.set("type", "main");
+      imgPayload.set("order", "0");
+      await adminMutateForm<RealisationImage>("/realisation-images/", imgPayload, "POST");
+    }
   } catch (error) {
     return { error: error instanceof Error ? error.message : "Erreur inconnue." };
   }
@@ -35,7 +46,18 @@ export async function createRealisation(_prevState: FormState, formData: FormDat
 
 export async function updateRealisation(slug: string, _prevState: FormState, formData: FormData): Promise<FormState> {
   try {
-    await adminMutateJson<Realisation>(`/realisations/${slug}/`, buildPayload(formData), "PATCH");
+    const updated = await adminMutateJson<Realisation>(`/realisations/${slug}/`, buildPayload(formData), "PATCH");
+
+    const image = formData.get("image");
+    if (image instanceof File && image.size > 0) {
+      const imgPayload = new FormData();
+      imgPayload.set("realisation", String(updated.id));
+      imgPayload.set("image", image);
+      imgPayload.set("caption", String(formData.get("title") ?? ""));
+      imgPayload.set("type", "main");
+      imgPayload.set("order", "0");
+      await adminMutateForm<RealisationImage>("/realisation-images/", imgPayload, "POST");
+    }
   } catch (error) {
     return { error: error instanceof Error ? error.message : "Erreur inconnue." };
   }

@@ -14,7 +14,7 @@ export default async function NewsPage() {
       <PageHero
         eyebrow="Actualités"
         title="Informations et publications"
-        description="Les articles publiés depuis l’interface d’administration."
+        description="Retrouvez toutes les actualités, conseils et événements de J&B SANIYAPUR SARL."
         crumbs={[{ label: "Accueil", href: "/" }, { label: "Actualités" }]}
       />
       <section className="py-16 sm:py-20">

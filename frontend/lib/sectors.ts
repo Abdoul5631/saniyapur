@@ -7,11 +7,12 @@ const normaliseList = (data: AdminSector[] | PaginatedResponse<AdminSector>) => 
 
 /** Repli local si l'API n'est pas configurée. */
 const mockSectors: AdminSector[] = [
-  { id: 1, name: "Santé", slug: "sante", description: "Des exigences d’hygiène renforcées.", image: null, published: true, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" },
-  { id: 2, name: "Industrie", slug: "industrie", description: "Des espaces et équipements à préserver.", image: null, published: true, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" },
-  { id: 3, name: "Hôtellerie", slug: "hotellerie", description: "Des environnements accueillants et maîtrisés.", image: null, published: true, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" },
-  { id: 4, name: "Commerce", slug: "commerce", description: "Des espaces fréquentés où l’image et l’hygiène comptent.", image: null, published: true, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" },
+  { id: 1, name: "Santé", slug: "sante", description: "Des exigences d’hygiène renforcées.", image: "/images/services/bionettoyage.jpg", order: 1, featured: true, published: true, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" },
+  { id: 2, name: "Industrie", slug: "industrie", description: "Des espaces et équipements à préserver.", image: "/images/services/decapage.jpg", order: 2, featured: true, published: true, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" },
+  { id: 3, name: "Hôtellerie", slug: "hotellerie", description: "Des environnements accueillants et maîtrisés.", image: "/images/services/sanitaires.jpg", order: 3, featured: true, published: true, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" },
+  { id: 4, name: "Commerce", slug: "commerce", description: "Des espaces fréquentés où l’image et l’hygiène comptent.", image: "/images/services/personnel.jpg", order: 4, featured: false, published: true, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" },
 ];
+
 
 export const officialSectorNames = ["Santé", "Industrie", "Hôtellerie", "Commerce"] as const;
 

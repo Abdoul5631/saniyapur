@@ -24,5 +24,6 @@ export async function updateSiteSettings(_prevState: FormState, formData: FormDa
     return { error: error instanceof Error ? error.message : "Erreur inconnue." };
   }
   revalidatePath("/admin/parametres");
+  revalidatePath("/");
   return { success: true };
 }

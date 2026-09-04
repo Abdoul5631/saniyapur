@@ -1,26 +1,55 @@
-﻿"use client";
+"use client";
 import { useState } from "react";
+import { FormField, inputClassName } from "@/components/admin/form-field";
 
-const DIACRITICS = /[̀-ͯ]/g;
+const DIACRITICS = /[\u0300-\u036f]/g;
 function slugify(value: string): string {
-  return value.toLowerCase().normalize("NFD").replace(DIACRITICS, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(DIACRITICS, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
-type Props = { nameField?: string; nameLabel?: string; nameDefault?: string; slugDefault?: string };
+type Props = {
+  nameField?: string;
+  nameLabel?: string;
+  nameDefault?: string;
+  slugDefault?: string;
+  required?: boolean;
+};
 
-export function NameSlugFields({ nameField = "name", nameLabel = "Nom", nameDefault = "", slugDefault = "" }: Props) {
+/**
+ * Champ Nom + champ slug caché auto-généré.
+ * L'admin ne voit que le nom ; le slug est calculé automatiquement
+ * (et peut être remplacé côté backend via save() si vide).
+ */
+export function NameSlugFields({
+  nameField = "name",
+  nameLabel = "Nom",
+  nameDefault = "",
+  slugDefault = "",
+  required = true,
+}: Props) {
   const [slug, setSlug] = useState(slugDefault);
-  const [slugTouched, setSlugTouched] = useState(Boolean(slugDefault));
+
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
-      <div>
-        <label htmlFor={nameField} className="text-sm font-medium text-[#16232a]">{nameLabel}</label>
-        <input id={nameField} name={nameField} required defaultValue={nameDefault} onChange={(event) => { if (!slugTouched) setSlug(slugify(event.target.value)); }} className="mt-1.5 w-full rounded-lg border border-[#dce5df] px-3 py-2.5 text-sm text-[#16232a] outline-none focus:border-[#a85c36]" />
-      </div>
-      <div>
-        <label htmlFor="slug" className="text-sm font-medium text-[#16232a]">Slug (URL)</label>
-        <input id="slug" name="slug" required value={slug} onChange={(event) => { setSlug(event.target.value); setSlugTouched(true); }} className="mt-1.5 w-full rounded-lg border border-[#dce5df] px-3 py-2.5 text-sm text-[#16232a] outline-none focus:border-[#a85c36]" />
-      </div>
-    </div>
+    <>
+      <FormField label={nameLabel} htmlFor={nameField} required={required}>
+        <input
+          id={nameField}
+          name={nameField}
+          required={required}
+          defaultValue={nameDefault}
+          onChange={(e) => {
+            if (!slugDefault) setSlug(slugify(e.target.value));
+          }}
+          className={inputClassName}
+        />
+      </FormField>
+      {/* Champ slug caché — généré depuis le nom ou conservé si déjà défini */}
+      <input type="hidden" name="slug" value={slug} />
+    </>
   );
 }

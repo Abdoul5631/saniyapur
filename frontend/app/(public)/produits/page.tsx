@@ -14,7 +14,7 @@ export default async function ProductsPage() {
       <PageHero
         eyebrow="Produits & équipements"
         title="Catalogue professionnel"
-        description="Produits et équipements d’hygiène gérés depuis l’administration."
+        description="Produits et équipements professionnels certifiés pour l’hygiène et l’entretien."
         crumbs={[{ label: "Accueil", href: "/" }, { label: "Produits" }]}
       />
       <section className="py-16 sm:py-20">

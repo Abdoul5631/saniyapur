@@ -7,7 +7,11 @@ const normaliseList = (data: Realisation[] | PaginatedResponse<Realisation>) => 
 
 export async function getRealisations(): Promise<Realisation[]> {
   if (!useApi) return mockRealisations;
-  return normaliseList(await apiFetch<Realisation[] | PaginatedResponse<Realisation>>("/realisations/", { next: { revalidate: 60 } }));
+  try {
+    return normaliseList(await apiFetch<Realisation[] | PaginatedResponse<Realisation>>("/realisations/", { next: { revalidate: 60 } }));
+  } catch {
+    return [];
+  }
 }
 
 export async function getRealisation(slug: string): Promise<Realisation | undefined> {

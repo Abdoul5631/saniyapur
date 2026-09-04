@@ -39,7 +39,7 @@ export default async function ServicesPage() {
               ))}
             </div>
           ) : (
-            <p className="text-[#526259]">Les services seront publiés depuis l’administration.</p>
+            <p className="text-[#526259]">Nos services et domaines d’intervention seront bientôt disponibles.</p>
           )}
         </Container>
       </section>

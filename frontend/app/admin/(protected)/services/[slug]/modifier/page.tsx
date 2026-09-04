@@ -4,14 +4,19 @@ import { AdminHeader } from "@/components/admin/admin-header";
 import { DeleteButton } from "@/components/admin/delete-button";
 import { ServiceFields } from "@/components/admin/service-fields";
 import { adminFetch } from "@/lib/admin/api";
-import type { AdminService } from "@/types/admin";
+import type { PaginatedResponse } from "@/types/realisation";
+import type { AdminSector, AdminService } from "@/types/admin";
 import { deleteService, updateService } from "../../actions";
 
 export default async function EditServicePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   let service: AdminService;
+  let sectors: PaginatedResponse<AdminSector>;
   try {
-    service = await adminFetch<AdminService>(`/services/${slug}/`);
+    [service, sectors] = await Promise.all([
+      adminFetch<AdminService>(`/services/${slug}/`),
+      adminFetch<PaginatedResponse<AdminSector>>("/sectors/"),
+    ]);
   } catch {
     notFound();
   }
@@ -24,7 +29,7 @@ export default async function EditServicePage({ params }: { params: Promise<{ sl
       />
       <div className="rounded-2xl border border-[#dce5df] bg-white p-6">
         <AdminForm action={boundUpdate} submitLabel="Enregistrer les modifications">
-          <ServiceFields service={service} />
+          <ServiceFields service={service} sectors={sectors.results} />
         </AdminForm>
       </div>
     </div>

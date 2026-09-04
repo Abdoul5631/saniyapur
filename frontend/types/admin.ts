@@ -1,5 +1,7 @@
+import type { RealisationImage } from "./realisation";
+
 /**
- * Types correspondant aux modèles Django exposés par l’API pour le panneau d’administration.
+ * Types correspondant aux modèles Django exposés par l'API pour le panneau d'administration.
  * Nommés avec le préfixe "Admin" quand le nom nu (ex. "Service") est déjà pris par un type
  * du site public (voir types/company.ts) — évite toute confusion entre les deux couches.
  */
@@ -10,10 +12,15 @@ export type AdminService = {
   slug: string;
   short_description: string;
   description: string;
+  prestations?: string;
+  avantages?: string;
+  sectors?: number[];
+  sector_details?: AdminSector[];
   image: string | null;
-  /** Clé d’icône parmi un jeu prédéfini (voir components/admin/service-icon.tsx). */
+  /** Clé d'icône parmi un jeu prédéfini (voir components/admin/service-icon.tsx). */
   icon: string;
   order: number;
+  featured: boolean;
   published: boolean;
   created_at: string;
   updated_at: string;
@@ -24,10 +31,49 @@ export type AdminSector = {
   name: string;
   slug: string;
   description: string;
+  besoins_specifiques?: string;
   image: string | null;
+  order: number;
+  featured: boolean;
   published: boolean;
   created_at: string;
   updated_at: string;
+};
+
+export type AdminProduct = {
+  id: number;
+  name: string;
+  slug: string;
+  reference: string;
+  category: string;
+  short_description: string;
+  description: string;
+  usage: string;
+  characteristics: string;
+  image: string | null;
+  technical_sheet: string | null;
+  safety_sheet: string | null;
+  featured: boolean;
+  published: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type AdminRealisation = {
+  id: number;
+  title: string;
+  slug: string;
+  description: string;
+  client: string;
+  location: string;
+  sector: string;
+  service: string | null;
+  date: string;
+  featured: boolean;
+  published: boolean;
+  created_at: string;
+  updated_at: string;
+  images?: RealisationImage[];
 };
 
 export type AdminNews = {
@@ -36,8 +82,10 @@ export type AdminNews = {
   slug: string;
   excerpt: string;
   content: string;
+  category: string;
   author: string;
   image: string | null;
+  featured: boolean;
   published: boolean;
   published_at: string | null;
   created_at: string;
@@ -45,15 +93,20 @@ export type AdminNews = {
 };
 
 /** Message reçu via le formulaire de contact public (modèle Django ContactRequest). */
+export const CONTACT_STATUSES = ["unread", "read", "done"] as const;
+export type ContactStatus = (typeof CONTACT_STATUSES)[number];
+
 export type ContactMessage = {
   id: number;
   name: string;
   company: string;
   email: string;
   phone: string;
+  whatsapp: string;
   subject: string;
   message: string;
-  /** true = déjà traité/lu. */
+  status: ContactStatus;
+  /** Rétrocompatibilité avec l'ancien champ processed. */
   processed: boolean;
   created_at: string;
 };
@@ -67,6 +120,7 @@ export type QuoteRequest = {
   organisation: string;
   email: string;
   phone: string;
+  whatsapp: string;
   service: string;
   sector: string;
   location: string;
@@ -76,6 +130,19 @@ export type QuoteRequest = {
   /** Notes internes — jamais exposées côté public. */
   notes: string;
   created_at: string;
+};
+
+export type TeamMember = {
+  id: number;
+  name: string;
+  role: string;
+  phone?: string;
+  photo: string | null;
+  bio: string;
+  order: number;
+  published: boolean;
+  created_at: string;
+  updated_at: string;
 };
 
 export type SiteSettings = {
@@ -104,8 +171,71 @@ export type SiteSettings = {
   updated_at: string;
 };
 
+export type AboutSettings = {
+  id: number;
+  presentation_title: string;
+  presentation_devise?: string;
+  presentation_content: string;
+  presentation_legal_info?: string;
+  presentation_image: string | null;
+  team_presentation_title?: string;
+  team_presentation_content?: string;
+  operational_team_title?: string;
+  operational_team_content?: string;
+  social_commitment_title?: string;
+  social_commitment_content?: string;
+  bionettoyage_title?: string;
+  bionettoyage_content?: string;
+  competencies_title?: string;
+  competencies_content?: string;
+  mission_title: string;
+  mission_content: string;
+  objectives_title?: string;
+  objectives_content?: string;
+  specific_objectives_content?: string;
+  bionettoyage_advantages_content?: string;
+  vision_title: string;
+  vision_content: string;
+  vision_paradox_content?: string;
+  vision_execution_content?: string;
+  vision_impact_content?: string;
+  international_expertise_title?: string;
+  international_expertise_content?: string;
+  international_expertise_image?: string | null;
+  references_title?: string;
+  references_content?: string;
+  engagements_title: string;
+  engagements_content: string;
+  dg_name: string;
+  dg_role: string;
+  dg_photo: string | null;
+  dg_message: string;
+  updated_at: string;
+};
+
 export const ADMIN_ROLES = ["admin", "editor", "commercial"] as const;
 export type AdminRole = (typeof ADMIN_ROLES)[number];
+
+export const ATTESTATION_TYPES = ["attestation", "certificate", "reference", "other"] as const;
+export type AttestationType = (typeof ATTESTATION_TYPES)[number];
+
+export type Attestation = {
+  id: number;
+  title: string;
+  slug: string;
+  client_organisation: string;
+  type: AttestationType;
+  type_display?: string;
+  date: string;
+  description: string;
+  image: string | null;
+  pdf_file: string | null;
+  order: number;
+  featured: boolean;
+  published: boolean;
+  created_at: string;
+  updated_at: string;
+};
 
 export type AdminUser = {
   id: number;

@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { AdminHeader } from "@/components/admin/admin-header";
 import { DataTable } from "@/components/admin/data-table";
 import { DeleteButton } from "@/components/admin/delete-button";
@@ -49,7 +49,25 @@ export default async function AdminRealisationsPage({ searchParams }: { searchPa
           emptyTitle="Aucune réalisation ne correspond"
           emptyDescription="Ajustez votre recherche ou vos filtres, ou ajoutez une réalisation."
           columns={[
-            { header: "Titre", render: (realisation) => <span className="font-medium text-[#16232a]">{realisation.title}</span> },
+            {
+              header: "Titre",
+              render: (realisation) => {
+                const cover = realisation.images?.find((img) => img.type === "main") ?? realisation.images?.[0];
+                return (
+                  <div className="flex items-center gap-3">
+                    {cover ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={cover.image} alt="" className="size-10 shrink-0 rounded-lg object-cover border border-[#dce5df]" />
+                    ) : (
+                      <div className="size-10 shrink-0 rounded-lg bg-[#f0f4f1] border border-[#dce5df] flex items-center justify-center text-xs text-[#8a9a92]">
+                        —
+                      </div>
+                    )}
+                    <span className="font-medium text-[#16232a]">{realisation.title}</span>
+                  </div>
+                );
+              },
+            },
             { header: "Secteur", render: (realisation) => realisation.sector },
             { header: "Localisation", render: (realisation) => realisation.location || "—" },
             { header: "Mis en avant", render: (realisation) => realisation.featured ? <StatusBadge label="Oui" tone="blue" /> : "—" },

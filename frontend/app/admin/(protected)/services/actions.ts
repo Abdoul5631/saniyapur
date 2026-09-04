@@ -8,11 +8,15 @@ import type { AdminService } from "@/types/admin";
 
 function buildFormData(formData: FormData): FormData {
   const payload = new FormData();
-  for (const field of ["name", "slug", "short_description", "description", "icon"]) {
+  for (const field of ["name", "slug", "short_description", "description", "prestations", "avantages", "icon"]) {
     payload.set(field, String(formData.get(field) ?? ""));
   }
   payload.set("order", String(formData.get("order") ?? "0"));
   payload.set("published", formData.get("published") ? "true" : "false");
+  const selectedSectors = formData.getAll("sectors");
+  for (const sectorId of selectedSectors) {
+    if (sectorId) payload.append("sectors", String(sectorId));
+  }
   const image = formData.get("image");
   if (image instanceof File && image.size > 0) payload.set("image", image);
   return payload;

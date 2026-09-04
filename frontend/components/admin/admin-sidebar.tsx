@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,7 +9,7 @@ const roleLabels: Record<string, string> = { admin: "Administrateur", editor: "�
 
 const navGroups = [
   { label: null, items: [["Tableau de bord", "/admin"]] },
-  { label: "Contenu", items: [["Produits", "/admin/produits"], ["Services", "/admin/services"], ["Secteurs", "/admin/secteurs"], ["Réalisations", "/admin/realisations"], ["Actualités", "/admin/actualites"]] },
+  { label: "Contenu", items: [["À propos", "/admin/a-propos"], ["Produits", "/admin/produits"], ["Services", "/admin/services"], ["Secteurs", "/admin/secteurs"], ["Réalisations", "/admin/realisations"], ["Actualités", "/admin/actualites"], ["Équipe", "/admin/equipe"], ["Références & Attestations", "/admin/attestations"]] },
   { label: "Commercial", items: [["Messages", "/admin/messages"], ["Demandes de devis", "/admin/devis"]] },
   { label: "Configuration", items: [["Paramètres du site", "/admin/parametres"], ["Utilisateurs", "/admin/utilisateurs"]] },
 ] as const;

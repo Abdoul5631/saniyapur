@@ -25,6 +25,8 @@ export async function createProduct(_prevState: FormState, formData: FormData): 
     return { error: error instanceof Error ? error.message : "Erreur inconnue." };
   }
   revalidatePath("/admin/produits");
+  revalidatePath("/produits");
+  revalidatePath("/");
   redirect("/admin/produits");
 }
 
@@ -35,12 +37,16 @@ export async function updateProduct(slug: string, _prevState: FormState, formDat
     return { error: error instanceof Error ? error.message : "Erreur inconnue." };
   }
   revalidatePath("/admin/produits");
+  revalidatePath("/produits");
+  revalidatePath("/");
   redirect("/admin/produits");
 }
 
 export async function deleteProduct(slug: string): Promise<void> {
   await adminDelete(`/products/${slug}/`);
   revalidatePath("/admin/produits");
+  revalidatePath("/produits");
+  revalidatePath("/");
 }
 
 export async function addProductImage(productId: number, _prevState: FormState, formData: FormData): Promise<FormState> {

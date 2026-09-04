@@ -1,5 +1,7 @@
-﻿"use client";
+"use client";
 import { useState, type ChangeEvent } from "react";
+import { resolveMediaUrl } from "@/lib/media";
+
 
 export function ImageUploader({ id, name, currentUrl, label = "Image" }: { id: string; name: string; currentUrl?: string | null; label?: string }) {
   const [preview, setPreview] = useState<string | null>(null);
@@ -9,7 +11,8 @@ export function ImageUploader({ id, name, currentUrl, label = "Image" }: { id: s
     setPreview(file ? URL.createObjectURL(file) : null);
   }
 
-  const displayUrl = preview ?? currentUrl ?? null;
+  const displayUrl = preview ?? (currentUrl ? resolveMediaUrl(currentUrl) : null);
+
 
   return (
     <div>

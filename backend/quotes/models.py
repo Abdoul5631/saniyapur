@@ -1,4 +1,6 @@
 from django.db import models
+
+
 class QuoteRequest(models.Model):
     class Status(models.TextChoices):
         NEW = "new", "Nouveau"
@@ -10,6 +12,7 @@ class QuoteRequest(models.Model):
     organisation = models.CharField(max_length=200, blank=True)
     email = models.EmailField()
     phone = models.CharField(max_length=40)
+    whatsapp = models.CharField(max_length=40, blank=True)
     service = models.CharField(max_length=180, blank=True)
     sector = models.CharField(max_length=180, blank=True)
     location = models.CharField(max_length=200, blank=True)
@@ -18,5 +21,9 @@ class QuoteRequest(models.Model):
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.NEW)
     notes = models.TextField(blank=True, help_text="Notes internes, non visibles publiquement.")
     created_at = models.DateTimeField(auto_now_add=True)
-    class Meta: ordering = ["-created_at"]
-    def __str__(self): return f"{self.name} — demande de devis"
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.name} — demande de devis"

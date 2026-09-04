@@ -12,7 +12,9 @@ from news.views import NewsViewSet
 from contacts.views import ContactRequestViewSet
 from quotes.views import QuoteRequestViewSet
 from users.views import MeView, UserViewSet
-from site_settings.views import SiteSettingsView
+from site_settings.views import SiteSettingsView, AboutSettingsView
+from team.views import TeamMemberViewSet
+from attestations.views import AttestationViewSet
 
 router = DefaultRouter()
 router.register("services", ServiceViewSet, basename="service")
@@ -25,12 +27,15 @@ router.register("product-images", ProductImageViewSet, basename="product-image")
 router.register("news", NewsViewSet, basename="news")
 router.register("contacts", ContactRequestViewSet, basename="contact")
 router.register("quotes", QuoteRequestViewSet, basename="quote")
+router.register("team", TeamMemberViewSet, basename="team")
+router.register("attestations", AttestationViewSet, basename="attestation")
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("django-admin/", admin.site.urls),
     path("api/auth/login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/auth/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/auth/me/", MeView.as_view(), name="token_me"),
     path("api/settings/", SiteSettingsView.as_view(), name="site_settings"),
+    path("api/about/", AboutSettingsView.as_view(), name="about_settings"),
     path("api/", include(router.urls)),
 ]
 if settings.DEBUG: urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

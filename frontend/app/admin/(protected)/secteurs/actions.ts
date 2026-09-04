@@ -10,6 +10,9 @@ function buildFormData(formData: FormData): FormData {
   payload.set("name", String(formData.get("name") ?? ""));
   payload.set("slug", String(formData.get("slug") ?? ""));
   payload.set("description", String(formData.get("description") ?? ""));
+  payload.set("besoins_specifiques", String(formData.get("besoins_specifiques") ?? ""));
+  payload.set("order", String(formData.get("order") ?? "0"));
+  payload.set("featured", formData.get("featured") ? "true" : "false");
   payload.set("published", formData.get("published") ? "true" : "false");
   const image = formData.get("image");
   if (image instanceof File && image.size > 0) payload.set("image", image);

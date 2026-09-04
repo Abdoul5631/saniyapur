@@ -36,7 +36,7 @@ export default async function SectorsPage() {
               ))}
             </div>
           ) : (
-            <p className="text-[#526259]">Les secteurs seront publiés depuis l’administration.</p>
+            <p className="text-[#526259]">Les secteurs d’intervention seront bientôt présentés ici.</p>
           )}
         </Container>
       </section>

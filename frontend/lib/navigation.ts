@@ -5,6 +5,7 @@ export const mainNav = [
   ["Secteurs", "/secteurs"],
   ["Réalisations", "/realisations"],
   ["Produits", "/produits"],
+  ["Engagement social", "/engagement-social"],
   ["Actualités", "/actualites"],
   ["Contact", "/contact"],
 ] as const;

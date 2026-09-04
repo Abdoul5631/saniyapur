@@ -13,7 +13,7 @@ export default async function NewRealisationPage() {
   ]);
   return (
     <div className="max-w-2xl">
-      <AdminHeader title="Nouvelle réalisation" description="La galerie de photos et le comparatif avant/après pourront être ajoutés une fois la fiche créée." />
+      <AdminHeader title="Nouvelle réalisation" description="Renseignez les informations et l'image principale. La galerie complète et le comparatif avant/après pourront être gérés par la suite." />
       <div className="rounded-2xl border border-[#dce5df] bg-white p-6">
         <AdminForm action={createRealisation} submitLabel="Créer la réalisation">
           <RealisationFields sectors={sectors.results} services={services.results} />
