@@ -17,12 +17,13 @@ const mockSectors: AdminSector[] = [
 export const officialSectorNames = ["Santé", "Industrie", "Hôtellerie", "Commerce"] as const;
 
 export async function getSectors(): Promise<AdminSector[]> {
-  if (!useApi) return mockSectors.filter((sector) => sector.published);
   try {
-    return normaliseList(await apiFetch<AdminSector[] | PaginatedResponse<AdminSector>>("/sectors/", { next: { revalidate: 60 } })).filter((sector) => sector.published);
-  } catch {
-    return [];
+    const list = normaliseList(await apiFetch<AdminSector[] | PaginatedResponse<AdminSector>>("/sectors/", { cache: "no-store" })).filter((sector) => sector.published);
+    if (list.length > 0) return list;
+  } catch (err) {
+    console.error("getSectors error:", err);
   }
+  return mockSectors.filter((sector) => sector.published);
 }
 
 export async function getSector(slug: string): Promise<AdminSector | undefined> {

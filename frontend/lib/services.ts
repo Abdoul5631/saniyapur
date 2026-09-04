@@ -17,13 +17,14 @@ const mockServices: AdminService[] = [
 ];
 
 export async function getServices(): Promise<AdminService[]> {
-  if (!useApi) return mockServices.filter((service) => service.published);
   try {
-    const data = normaliseList(await apiFetch<AdminService[] | PaginatedResponse<AdminService>>("/services/", { next: { revalidate: 60 } }));
-    return [...data].filter((service) => service.published).sort((a, b) => a.order - b.order);
-  } catch {
-    return [];
+    const data = normaliseList(await apiFetch<AdminService[] | PaginatedResponse<AdminService>>("/services/", { cache: "no-store" }));
+    const filtered = [...data].filter((service) => service.published).sort((a, b) => a.order - b.order);
+    if (filtered.length > 0) return filtered;
+  } catch (err) {
+    console.error("getServices error:", err);
   }
+  return mockServices.filter((service) => service.published);
 }
 
 export async function getService(slug: string): Promise<AdminService | undefined> {
