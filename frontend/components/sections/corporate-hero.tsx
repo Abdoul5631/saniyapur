@@ -48,7 +48,7 @@ export async function CorporateHero() {
           unoptimized
           quality={100}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1920px"
-          className="object-cover object-center"
+          className="object-cover object-top sm:object-center"
         />
       </div>
 

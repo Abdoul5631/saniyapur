@@ -26,9 +26,10 @@ const mockNews: AdminNews[] = [
 export async function getNews(): Promise<AdminNews[]> {
   if (!useApi) return mockNews;
   try {
-    return normaliseList(await apiFetch<AdminNews[] | PaginatedResponse<AdminNews>>("/news/", { next: { revalidate: 60 } }));
+    const list = normaliseList(await apiFetch<AdminNews[] | PaginatedResponse<AdminNews>>("/news/", { next: { revalidate: 60 } }));
+    return list.length > 0 ? list : mockNews;
   } catch {
-    return [];
+    return mockNews;
   }
 }
 
