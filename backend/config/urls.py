@@ -38,4 +38,4 @@ urlpatterns = [
     path("api/about/", AboutSettingsView.as_view(), name="about_settings"),
     path("api/", include(router.urls)),
 ]
-if settings.DEBUG: urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
