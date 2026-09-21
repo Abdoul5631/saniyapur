@@ -6,7 +6,7 @@ import { FilterSelect } from "@/components/admin/filter-select";
 import { PublishedBadge } from "@/components/admin/status-badge";
 import { SearchInput } from "@/components/admin/search-input";
 import { ServiceIcon } from "@/components/ui/service-icon";
-import { adminFetch } from "@/lib/admin/api";
+import { adminFetch, normaliseAdminList } from "@/lib/admin/api";
 import type { PaginatedResponse } from "@/types/realisation";
 import type { AdminService } from "@/types/admin";
 import { deleteService, moveServiceOrder } from "./actions";
@@ -26,8 +26,8 @@ export default async function AdminServicesPage({ searchParams }: { searchParams
   if (q) params.set("q", q);
   if (published) params.set("published", published);
 
-  const data = await adminFetch<PaginatedResponse<AdminService>>(`/services/?${params.toString()}`);
-  const services = [...data.results].sort((a, b) => a.order - b.order);
+  const data = await adminFetch<PaginatedResponse<AdminService> | AdminService[]>(`/services/?${params.toString()}`);
+  const services = [...normaliseAdminList(data)].sort((a, b) => a.order - b.order);
 
   return (
     <div>

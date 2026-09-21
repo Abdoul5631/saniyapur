@@ -23,4 +23,5 @@ class UserViewSet(ModelViewSet):
     """Réservé aux administrateurs : gestion des comptes du panneau d’administration."""
     serializer_class = UserSerializer
     permission_classes = [IsAdminUser]
+    pagination_class = None
     queryset = User.objects.select_related("profile").order_by("username")

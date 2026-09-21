@@ -12,8 +12,8 @@ from news.views import NewsViewSet
 from contacts.views import ContactRequestViewSet
 from quotes.views import QuoteRequestViewSet
 from users.views import MeView, UserViewSet
-from site_settings.views import SiteSettingsView, AboutSettingsView
-from team.views import TeamMemberViewSet
+from site_settings.views import SiteSettingsView, AboutSettingsView, ClientLogoViewSet
+from team.views import TeamGalleryPhotoViewSet, TeamGallerySettingsView, TeamMemberViewSet
 from attestations.views import AttestationViewSet
 
 router = DefaultRouter()
@@ -28,7 +28,9 @@ router.register("news", NewsViewSet, basename="news")
 router.register("contacts", ContactRequestViewSet, basename="contact")
 router.register("quotes", QuoteRequestViewSet, basename="quote")
 router.register("team", TeamMemberViewSet, basename="team")
+router.register("team-gallery-photos", TeamGalleryPhotoViewSet, basename="team-gallery-photo")
 router.register("attestations", AttestationViewSet, basename="attestation")
+router.register("client-logos", ClientLogoViewSet, basename="client-logo")
 urlpatterns = [
     path("django-admin/", admin.site.urls),
     path("api/auth/login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
@@ -36,6 +38,7 @@ urlpatterns = [
     path("api/auth/me/", MeView.as_view(), name="token_me"),
     path("api/settings/", SiteSettingsView.as_view(), name="site_settings"),
     path("api/about/", AboutSettingsView.as_view(), name="about_settings"),
+    path("api/team-gallery/", TeamGallerySettingsView.as_view(), name="team_gallery_settings"),
     path("api/", include(router.urls)),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,9 +1,8 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { adminDelete, adminFetch, adminMutateForm, adminPatchJson } from "@/lib/admin/api";
+import { adminDelete, adminFetchAll, adminMutateForm, adminPatchJson } from "@/lib/admin/api";
 import type { FormState } from "@/components/admin/admin-form";
-import type { PaginatedResponse } from "@/types/realisation";
 import type { AdminService } from "@/types/admin";
 
 function buildFormData(formData: FormData): FormData {
@@ -53,8 +52,7 @@ export async function toggleServicePublished(slug: string, published: boolean): 
 }
 
 export async function moveServiceOrder(slug: string, direction: "up" | "down"): Promise<void> {
-  const data = await adminFetch<PaginatedResponse<AdminService>>("/services/");
-  const sorted = [...data.results].sort((a, b) => a.order - b.order);
+  const sorted = (await adminFetchAll<AdminService>("/services/")).sort((a, b) => a.order - b.order);
   const index = sorted.findIndex((service) => service.slug === slug);
   if (index === -1) return;
   const targetIndex = direction === "up" ? index - 1 : index + 1;

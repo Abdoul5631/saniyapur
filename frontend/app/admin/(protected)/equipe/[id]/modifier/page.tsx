@@ -5,7 +5,7 @@ import { DeleteButton } from "@/components/admin/delete-button";
 import { TeamMemberFields } from "@/components/admin/team-member-fields";
 import { adminFetch } from "@/lib/admin/api";
 import type { TeamMember } from "@/types/admin";
-import { deleteTeamMember, updateTeamMember } from "../../actions";
+import { deleteTeamMember } from "../../actions";
 
 export default async function EditTeamMemberPage({
   params,
@@ -19,7 +19,6 @@ export default async function EditTeamMemberPage({
   } catch {
     notFound();
   }
-  const boundUpdate = updateTeamMember.bind(null, member.id);
   return (
     <div className="max-w-2xl">
       <AdminHeader
@@ -33,7 +32,7 @@ export default async function EditTeamMemberPage({
         }
       />
       <div className="rounded-2xl border border-[#dce5df] bg-white p-6">
-        <AdminForm action={boundUpdate} submitLabel="Enregistrer les modifications">
+        <AdminForm djangoPath={`/team/${member.id}/`} method="PATCH" redirectTo="/admin/equipe" submitLabel="Enregistrer les modifications">
           <TeamMemberFields member={member} />
         </AdminForm>
       </div>

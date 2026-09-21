@@ -1,16 +1,14 @@
-import { apiFetch } from "@/lib/api";
-import type { PaginatedResponse } from "@/types/realisation";
+import { apiFetch, apiFetchAll } from "@/lib/api";
 import type { AdminSector } from "@/types/admin";
 
 const useApi = Boolean(process.env.NEXT_PUBLIC_API_URL);
-const normaliseList = (data: AdminSector[] | PaginatedResponse<AdminSector>) => Array.isArray(data) ? data : data.results;
 
 /** Repli local si l'API n'est pas configurée. */
 const mockSectors: AdminSector[] = [
-  { id: 1, name: "Santé", slug: "sante", description: "Des exigences d’hygiène renforcées.", image: "/images/services/bionettoyage.jpg", order: 1, featured: true, published: true, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" },
-  { id: 2, name: "Industrie", slug: "industrie", description: "Des espaces et équipements à préserver.", image: "/images/services/decapage.jpg", order: 2, featured: true, published: true, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" },
-  { id: 3, name: "Hôtellerie", slug: "hotellerie", description: "Des environnements accueillants et maîtrisés.", image: "/images/services/sanitaires.jpg", order: 3, featured: true, published: true, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" },
-  { id: 4, name: "Commerce", slug: "commerce", description: "Des espaces fréquentés où l’image et l’hygiène comptent.", image: "/images/services/personnel.jpg", order: 4, featured: false, published: true, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" },
+  { id: 1, name: "Santé", slug: "sante", description: "Des exigences d’hygiène renforcées.", image: "/images/services/bionettoyage.png", order: 1, featured: true, published: true, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" },
+  { id: 2, name: "Industrie", slug: "industrie", description: "Des espaces et équipements à préserver.", image: "/images/services/decapage.png", order: 2, featured: true, published: true, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" },
+  { id: 3, name: "Hôtellerie", slug: "hotellerie", description: "Des environnements accueillants et maîtrisés.", image: "/images/services/hygiene-publique.png", order: 3, featured: true, published: true, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" },
+  { id: 4, name: "Commerce", slug: "commerce", description: "Des espaces fréquentés où l’image et l’hygiène comptent.", image: "/images/services/personnel.png", order: 4, featured: false, published: true, created_at: "2026-01-01T00:00:00Z", updated_at: "2026-01-01T00:00:00Z" },
 ];
 
 
@@ -18,7 +16,7 @@ export const officialSectorNames = ["Santé", "Industrie", "Hôtellerie", "Comme
 
 export async function getSectors(): Promise<AdminSector[]> {
   try {
-    const list = normaliseList(await apiFetch<AdminSector[] | PaginatedResponse<AdminSector>>("/sectors/", { cache: "no-store" })).filter((sector) => sector.published);
+    const list = (await apiFetchAll<AdminSector>("/sectors/", { next: { revalidate: 60 } })).filter((sector) => sector.published);
     if (list.length > 0) return list;
   } catch (err) {
     console.error("getSectors error:", err);

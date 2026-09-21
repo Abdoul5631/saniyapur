@@ -31,14 +31,54 @@ class SiteSettings(models.Model):
     instagram_url = models.URLField(blank=True)
     whatsapp_url = models.URLField(blank=True)
 
-    # Accueil — section Hero
-    hero_image = models.ImageField(upload_to="settings/", blank=True, null=True)
+    # Accueil — section Hero (3 visuels, carrousel 5 s)
+    hero_image = models.ImageField(
+        upload_to="settings/",
+        blank=True,
+        null=True,
+        verbose_name="Image hero 1",
+    )
+    hero_image_2 = models.ImageField(
+        upload_to="settings/",
+        blank=True,
+        null=True,
+        verbose_name="Image hero 2",
+    )
+    hero_image_3 = models.ImageField(
+        upload_to="settings/",
+        blank=True,
+        null=True,
+        verbose_name="Image hero 3",
+    )
     hero_title = models.CharField(max_length=300, blank=True)
     hero_text = models.TextField(blank=True)
     hero_primary_button_label = models.CharField(max_length=80, blank=True)
     hero_primary_button_url = models.CharField(max_length=200, blank=True)
     hero_secondary_button_label = models.CharField(max_length=80, blank=True)
     hero_secondary_button_url = models.CharField(max_length=200, blank=True)
+
+    # Accueil — SANIYAPUR en chiffres
+    stats_since_year = models.PositiveIntegerField(default=2009)
+    stat_1_value = models.PositiveIntegerField(default=15)
+    stat_1_suffix = models.CharField(max_length=8, default="+")
+    stat_1_label = models.CharField(max_length=80, default="Années d'expérience")
+    stat_1_description = models.CharField(max_length=120, default="Expertise terrain éprouvée")
+    stat_2_value = models.PositiveIntegerField(default=500)
+    stat_2_suffix = models.CharField(max_length=8, default="+")
+    stat_2_label = models.CharField(max_length=80, default="Clients servis")
+    stat_2_description = models.CharField(max_length=120, default="Santé, industrie, hôtellerie")
+    stat_3_value = models.PositiveIntegerField(default=7)
+    stat_3_suffix = models.CharField(max_length=8, blank=True, default="")
+    stat_3_label = models.CharField(max_length=80, default="Domaines d'intervention")
+    stat_3_description = models.CharField(max_length=120, default="Bionettoyage, décapage & plus")
+    stat_4_value = models.PositiveIntegerField(default=100)
+    stat_4_suffix = models.CharField(max_length=8, default="%")
+    stat_4_label = models.CharField(max_length=80, default="Produits biodégradables")
+    stat_4_description = models.CharField(max_length=120, default="FDS certifiées, conformité totale")
+    stat_5_value = models.PositiveIntegerField(default=24)
+    stat_5_suffix = models.CharField(max_length=8, default="/7")
+    stat_5_label = models.CharField(max_length=80, default="Disponibilité opérationnelle")
+    stat_5_description = models.CharField(max_length=120, default="Interventions d'urgence possibles")
 
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -53,6 +93,27 @@ class SiteSettings(models.Model):
     def load(cls):
         instance, _ = cls.objects.get_or_create(pk=1)
         return instance
+
+
+class ClientLogo(models.Model):
+    """Logo client optionnel pour la bande « Ils nous font confiance »."""
+
+    image = models.ImageField(upload_to="settings/client-logos/")
+    name = models.CharField(
+        max_length=160,
+        blank=True,
+        help_text="Nom du client (accessibilité). Laisser vide si vous préférez.",
+    )
+    order = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["order", "id"]
+        verbose_name = "Logo client"
+        verbose_name_plural = "Logos clients"
+
+    def __str__(self):
+        return self.name or f"Logo {self.pk}"
 
 
 class AboutSettings(models.Model):

@@ -4,7 +4,8 @@ import { DataTable } from "@/components/admin/data-table";
 import { FilterSelect } from "@/components/admin/filter-select";
 import { QuoteStatusBadge } from "@/components/admin/status-badge";
 import { SearchInput } from "@/components/admin/search-input";
-import { adminFetch } from "@/lib/admin/api";
+import { adminFetch, normaliseAdminList } from "@/lib/admin/api";
+import type { PaginatedResponse } from "@/types/realisation";
 import { QUOTE_STATUSES, type QuoteRequest } from "@/types/admin";
 
 const statusLabels: Record<string, string> = { new: "Nouveau", in_progress: "En cours", done: "Traité", archived: "Archivé" };
@@ -16,7 +17,8 @@ export default async function AdminQuotesPage({ searchParams }: { searchParams: 
   if (status) params.set("status", status);
   if (service) params.set("service", service);
 
-  const quotes = await adminFetch<QuoteRequest[]>(`/quotes/?${params.toString()}`);
+  const data = await adminFetch<QuoteRequest[] | PaginatedResponse<QuoteRequest>>(`/quotes/?${params.toString()}`);
+  const quotes = normaliseAdminList(data);
   const services = Array.from(new Set(quotes.map((quote) => quote.service).filter(Boolean))).sort();
 
   return (

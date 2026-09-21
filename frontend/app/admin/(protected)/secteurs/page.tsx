@@ -5,7 +5,7 @@ import { DeleteButton } from "@/components/admin/delete-button";
 import { FilterSelect } from "@/components/admin/filter-select";
 import { PublishedBadge } from "@/components/admin/status-badge";
 import { SearchInput } from "@/components/admin/search-input";
-import { adminFetch } from "@/lib/admin/api";
+import { adminFetch, normaliseAdminList } from "@/lib/admin/api";
 import type { PaginatedResponse } from "@/types/realisation";
 import type { AdminSector } from "@/types/admin";
 import { deleteSector } from "./actions";
@@ -16,7 +16,8 @@ export default async function AdminSectorsPage({ searchParams }: { searchParams:
   if (q) params.set("q", q);
   if (published) params.set("published", published);
 
-  const data = await adminFetch<PaginatedResponse<AdminSector>>(`/sectors/?${params.toString()}`);
+  const data = await adminFetch<PaginatedResponse<AdminSector> | AdminSector[]>(`/sectors/?${params.toString()}`);
+  const sectors = normaliseAdminList(data);
 
   return (
     <div>
@@ -33,7 +34,7 @@ export default async function AdminSectorsPage({ searchParams }: { searchParams:
 
       <div className="mt-6">
         <DataTable
-          rows={data.results}
+          rows={sectors}
           emptyTitle="Aucun secteur ne correspond"
           emptyDescription="Ajoutez un secteur pour pouvoir l’associer à des réalisations."
           columns={[

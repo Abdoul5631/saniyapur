@@ -1,23 +1,39 @@
 import Link from "next/link";
 import Image from "next/image";
+import { AdminForm } from "@/components/admin/admin-form";
 import { AdminHeader } from "@/components/admin/admin-header";
 import { DataTable } from "@/components/admin/data-table";
 import { DeleteButton } from "@/components/admin/delete-button";
+import { FormField, inputClassName } from "@/components/admin/form-field";
 import { PublishedBadge } from "@/components/admin/status-badge";
-import { adminFetch } from "@/lib/admin/api";
-import type { TeamMember } from "@/types/admin";
-import { deleteTeamMember } from "./actions";
+import { TeamGalleryManager } from "@/components/admin/team-gallery-manager";
+import { adminFetch, adminFetchAll, normaliseAdminList } from "@/lib/admin/api";
+import type { TeamGalleryPhoto, TeamGallerySettings, TeamMember } from "@/types/admin";
+import {
+  deleteTeamGalleryPhoto,
+  deleteTeamMember,
+} from "./actions";
 
 export const metadata = { title: "Équipe — Administration" };
 
 export default async function AdminEquipePage() {
-  const data = await adminFetch<{ results: TeamMember[]; count: number }>("/team/");
-  const members: TeamMember[] = Array.isArray(data) ? data : (data.results ?? []);
+  const [members, gallerySettings, galleryPhotos] = await Promise.all([
+    adminFetchAll<TeamMember>("/team/").catch(() => [] as TeamMember[]),
+    adminFetch<TeamGallerySettings>("/team-gallery/").catch(() => ({
+      id: 1,
+      title: "Galerie de l’équipe",
+      description: "",
+      updated_at: "",
+    })),
+    adminFetch<TeamGalleryPhoto[] | { results: TeamGalleryPhoto[] }>("/team-gallery-photos/").catch(() => []),
+  ]);
+  const photos = normaliseAdminList(galleryPhotos);
 
   return (
     <div>
       <AdminHeader
         title="Équipe"
+        description={`${members.length} membre${members.length > 1 ? "s" : ""} enregistré${members.length > 1 ? "s" : ""}. Tous s’affichent ici ; seuls les profils publiés apparaissent sur le site.`}
         action={
           <Link
             href="/admin/equipe/nouveau"
@@ -47,7 +63,7 @@ export default async function AdminEquipePage() {
                     className="h-10 w-10 rounded-full object-cover"
                   />
                 ) : (
-                  <div className="h-10 w-10 rounded-full bg-[#dce5df] flex items-center justify-center text-[#526259] text-xs font-bold">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#dce5df] text-xs font-bold text-[#526259]">
                     {m.name.charAt(0).toUpperCase()}
                   </div>
                 ),
@@ -80,6 +96,41 @@ export default async function AdminEquipePage() {
           ]}
         />
       </div>
+
+      <section id="galerie" className="mt-12 max-w-4xl rounded-2xl border border-[#dce5df] bg-white p-6">
+        <h2 className="text-sm font-bold tracking-[.12em] text-[#a85c36] uppercase">Galerie photo de l’équipe</h2>
+        <p className="mt-1 text-sm text-[#526259]">
+          Texte descriptif et photos visibles sur l’accueil et la page À propos.
+        </p>
+        <div className="mt-6">
+          <AdminForm djangoPath="/team-gallery/" method="PATCH" submitLabel="Enregistrer le texte">
+            <FormField label="Titre de la galerie" htmlFor="gallery_title">
+              <input
+                id="gallery_title"
+                name="title"
+                defaultValue={gallerySettings.title}
+                className={inputClassName}
+              />
+            </FormField>
+            <FormField
+              label="Message descriptif"
+              htmlFor="gallery_description"
+              hint="Présentez l’équipe, le métier, le contexte de la photo de groupe, etc."
+            >
+              <textarea
+                id="gallery_description"
+                name="description"
+                rows={5}
+                defaultValue={gallerySettings.description}
+                className={inputClassName}
+              />
+            </FormField>
+          </AdminForm>
+        </div>
+        <div className="mt-8 border-t border-[#eef2ef] pt-6">
+          <TeamGalleryManager photos={photos} deleteAction={deleteTeamGalleryPhoto} />
+        </div>
+      </section>
     </div>
   );
 }

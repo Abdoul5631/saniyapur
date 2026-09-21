@@ -3,7 +3,7 @@ import { AdminHeader } from "@/components/admin/admin-header";
 import { DataTable } from "@/components/admin/data-table";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { ProcessedToggleButton } from "@/components/admin/processed-toggle-button";
-import { adminFetch } from "@/lib/admin/api";
+import { adminFetch, normaliseAdminList } from "@/lib/admin/api";
 import type { PaginatedResponse } from "@/types/realisation";
 import type { AdminUser } from "@/types/admin";
 import { toggleUserActive } from "./actions";
@@ -11,7 +11,8 @@ import { toggleUserActive } from "./actions";
 const roleLabels: Record<string, string> = { admin: "Administrateur", editor: "Éditeur", commercial: "Commercial" };
 
 export default async function AdminUsersPage() {
-  const data = await adminFetch<PaginatedResponse<AdminUser>>("/users/");
+  const data = await adminFetch<PaginatedResponse<AdminUser> | AdminUser[]>("/users/");
+  const users = normaliseAdminList(data);
 
   return (
     <div>
@@ -22,7 +23,7 @@ export default async function AdminUsersPage() {
       />
 
       <DataTable
-        rows={data.results}
+        rows={users}
         emptyTitle="Aucun utilisateur"
         columns={[
           { header: "Identifiant", render: (user) => <span className="font-medium text-[#16232a]">{user.username}</span> },

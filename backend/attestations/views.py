@@ -3,23 +3,15 @@ from .models import Attestation
 from .serializers import AttestationSerializer
 
 
-class IsAdminOrReadOnly(permissions.BasePermission):
-    def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return request.user and request.user.is_staff
-
-
 class AttestationViewSet(viewsets.ModelViewSet):
-    queryset = Attestation.objects.all()
     serializer_class = AttestationSerializer
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     lookup_field = "pk"
+    pagination_class = None
 
     def get_queryset(self):
         qs = Attestation.objects.all()
-        # Seuls les administrateurs voient les brouillons
-        if not (self.request.user and self.request.user.is_staff):
+        if not self.request.user.is_authenticated:
             qs = qs.filter(published=True)
 
         type_filter = self.request.query_params.get("type")

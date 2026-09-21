@@ -19,6 +19,7 @@ export type Realisation = {
   sector: string;
   /** Nom du service réalisé (référence Service.name côté back-end) — optionnel. */
   service: string | null;
+  services?: string[];
   date: string;
   featured: boolean;
   published: boolean;

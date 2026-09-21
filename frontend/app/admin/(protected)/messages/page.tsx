@@ -5,7 +5,8 @@ import { DeleteButton } from "@/components/admin/delete-button";
 import { FilterSelect } from "@/components/admin/filter-select";
 import { ReadBadge } from "@/components/admin/status-badge";
 import { SearchInput } from "@/components/admin/search-input";
-import { adminFetch } from "@/lib/admin/api";
+import { adminFetch, normaliseAdminList } from "@/lib/admin/api";
+import type { PaginatedResponse } from "@/types/realisation";
 import type { ContactMessage } from "@/types/admin";
 import { deleteContactMessage } from "./actions";
 
@@ -15,7 +16,8 @@ export default async function AdminMessagesPage({ searchParams }: { searchParams
   if (q) params.set("q", q);
   if (processed) params.set("processed", processed);
 
-  const messages = await adminFetch<ContactMessage[]>(`/contacts/?${params.toString()}`);
+  const data = await adminFetch<ContactMessage[] | PaginatedResponse<ContactMessage>>(`/contacts/?${params.toString()}`);
+  const messages = normaliseAdminList(data);
 
   return (
     <div>

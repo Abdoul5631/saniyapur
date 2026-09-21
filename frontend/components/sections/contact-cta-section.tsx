@@ -19,75 +19,78 @@ export function ContactCtaSection({
   const { contact } = company;
 
   return (
-    <section className="py-20 sm:py-28 bg-[#f8faf9] relative overflow-hidden">
+    <section className="py-12 sm:py-16 bg-[#f8faf9] relative overflow-hidden">
       <Container>
         <Reveal>
-          <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#071d22] via-[#0d2a30] to-[#16383e] p-8 sm:p-12 lg:p-16 text-white shadow-2xl border border-[#a85c36]/30">
-            {/* ── Orbes lumineux d'ambiance animés ── */}
-            <div className="pointer-events-none absolute -top-12 -right-12 size-96 rounded-full bg-[#a85c36]/25 blur-3xl animate-blob" />
-            <div className="pointer-events-none absolute -bottom-12 -left-12 size-96 rounded-full bg-[#00897b]/20 blur-3xl animate-blob-alt" />
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#071d22] via-[#0d2a30] to-[#16383e] px-6 py-8 sm:px-10 sm:py-9 text-white shadow-xl border border-[#a85c36]/25">
+            {/* ── Orbes d'ambiance (réduits) ── */}
+            <div className="pointer-events-none absolute -top-8 -right-8 size-52 rounded-full bg-[#a85c36]/20 blur-3xl animate-blob" />
+            <div className="pointer-events-none absolute -bottom-8 -left-8 size-52 rounded-full bg-[#00897b]/15 blur-3xl animate-blob-alt" />
 
-            <div className="relative z-10">
-              {/* En-tête du bandeau */}
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#e8d9cc] backdrop-blur-md border border-white/15">
-                  <span className="size-2 rounded-full bg-[#a85c36] animate-ping" />
-                  {eyebrow}
-                </span>
-                <span className="text-xs font-medium text-white/70">
-                  Interventions rapides à {contact.locations}
-                </span>
-              </div>
+            <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+              {/* ── Texte (gauche) ── */}
+              <div className="max-w-2xl">
+                {/* Eyebrow */}
+                <div className="flex flex-wrap items-center gap-2.5 mb-3">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-[#e8d9cc] border border-white/12">
+                    <span className="size-1.5 rounded-full bg-[#a85c36] animate-ping" />
+                    {eyebrow}
+                  </span>
+                  <span className="text-[11px] text-white/55 font-medium">
+                    Ouagadougou & Bobo-Dioulasso
+                  </span>
+                </div>
 
-              {/* Titre & Description */}
-              <div className="mt-6 max-w-3xl">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-[1.12]">
+                {/* Titre */}
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-white leading-[1.2]">
                   {title}
                 </h2>
-                <p className="mt-4 text-base sm:text-lg text-[#c6d7d0] font-light leading-relaxed">
-                  Nos spécialistes analysent vos contraintes sur site et vous soumettent une proposition technique et financière sur-mesure sous 24h, sans engagement.
+
+                {/* Description courte */}
+                <p className="mt-2.5 text-sm text-[#c6d7d0] leading-relaxed max-w-xl">
+                  Proposition technique et financière sur-mesure sous 24h, sans engagement.
                 </p>
               </div>
 
-              {/* Boutons d'action principaux */}
-              <div className="mt-8 flex flex-wrap items-center gap-4">
+              {/* ── Actions (droite) ── */}
+              <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-center gap-3 shrink-0">
                 <ButtonLink
                   href={href}
-                  className="px-8 py-4 text-base font-bold shadow-xl shadow-[#a85c36]/30 animate-shimmer transition-transform hover:scale-[1.03] active:scale-95"
+                  className="px-6 py-3 text-sm font-bold shadow-lg shadow-[#a85c36]/25 hover:scale-[1.03] transition-transform active:scale-95 whitespace-nowrap"
                 >
                   {buttonLabel} →
                 </ButtonLink>
                 <ButtonLink
                   href="/contact"
                   variant="onDark"
-                  className="px-7 py-4 text-base font-semibold backdrop-blur-md transition-all hover:bg-white/20 hover:scale-[1.02] active:scale-95"
+                  className="px-5 py-3 text-sm font-semibold backdrop-blur-md hover:bg-white/20 transition-all whitespace-nowrap"
                 >
                   Prendre contact
                 </ButtonLink>
               </div>
+            </div>
 
-              {/* Puces de contact rapide interactives */}
-              <div className="mt-10 pt-8 border-t border-white/15 flex flex-wrap items-center gap-4 text-xs font-semibold">
-                <a
-                  href={`https://wa.me/${contact.whatsapp.replace(/\D/g, "")}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-[#54e38e] hover:bg-[#25D366] hover:text-white transition-all duration-300 backdrop-blur-md border border-white/10 hover:scale-105"
-                >
-                  <span>💬</span>
-                  <span>WhatsApp direct : {contact.whatsapp}</span>
-                </a>
-                <a
-                  href={`tel:${contact.phone.replace(/\s/g, "")}`}
-                  className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-white hover:bg-white/20 transition-all duration-300 backdrop-blur-md border border-white/10 hover:scale-105"
-                >
-                  <span>📞</span>
-                  <span>Tél : {contact.phone}</span>
-                </a>
-                <span className="text-white/60">
-                  ⚡ Réponse sous 24 heures
-                </span>
-              </div>
+            {/* ── Bande contacts rapides (bas) ── */}
+            <div className="relative z-10 mt-6 pt-5 border-t border-white/10 flex flex-wrap items-center gap-3 text-xs font-semibold">
+              <a
+                href={`https://wa.me/${contact.whatsapp.replace(/\D/g, "")}`}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-full bg-white/8 px-3.5 py-1.5 text-[#54e38e] hover:bg-[#25D366] hover:text-white transition-all duration-300 border border-white/10 hover:scale-105"
+              >
+                <span>💬</span>
+                <span>WhatsApp : {contact.whatsapp}</span>
+              </a>
+              <a
+                href={`tel:${contact.phone.replace(/\s/g, "")}`}
+                className="inline-flex items-center gap-1.5 rounded-full bg-white/8 px-3.5 py-1.5 text-white hover:bg-white/18 transition-all duration-300 border border-white/10 hover:scale-105"
+              >
+                <span>📞</span>
+                <span>{contact.phone}</span>
+              </a>
+              <span className="text-white/50 text-[11px]">
+                ⚡ Réponse sous 24 heures
+              </span>
             </div>
           </div>
         </Reveal>

@@ -6,7 +6,7 @@ import { FilterSelect } from "@/components/admin/filter-select";
 import { Pagination } from "@/components/admin/pagination";
 import { PublishedBadge } from "@/components/admin/status-badge";
 import { SearchInput } from "@/components/admin/search-input";
-import { adminFetch } from "@/lib/admin/api";
+import { adminFetch, normaliseAdminList } from "@/lib/admin/api";
 import type { PaginatedResponse } from "@/types/realisation";
 import type { AdminNews } from "@/types/admin";
 import { deleteNews } from "./actions";
@@ -18,7 +18,8 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Pr
   if (q) params.set("q", q);
   if (published) params.set("published", published);
 
-  const data = await adminFetch<PaginatedResponse<AdminNews>>(`/news/?${params.toString()}`);
+  const data = await adminFetch<PaginatedResponse<AdminNews> | AdminNews[]>(`/news/?${params.toString()}`);
+  const articles = normaliseAdminList(data);
 
   return (
     <div>
@@ -34,7 +35,7 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Pr
 
       <div className="mt-6">
         <DataTable
-          rows={data.results}
+          rows={articles}
           emptyTitle="Aucun article ne correspond"
           emptyDescription="Ajustez votre recherche ou ajoutez un article."
           columns={[
@@ -53,7 +54,7 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Pr
         />
       </div>
 
-      <Pagination page={Number(page ?? 1)} hasNext={Boolean(data.next)} hasPrevious={Boolean(data.previous)} basePath="/admin/actualites" searchParams={{ q, published }} />
+      <Pagination page={Number(page ?? 1)} hasNext={Boolean(!Array.isArray(data) && data.next)} hasPrevious={Boolean(!Array.isArray(data) && data.previous)} basePath="/admin/actualites" searchParams={{ q, published }} />
     </div>
   );
 }

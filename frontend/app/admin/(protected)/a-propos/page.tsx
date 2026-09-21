@@ -3,21 +3,20 @@ import { AdminForm } from "@/components/admin/admin-form";
 import { AdminHeader } from "@/components/admin/admin-header";
 import { FormField, inputClassName } from "@/components/admin/form-field";
 import { ImageUploader } from "@/components/admin/image-uploader";
-import { adminFetch } from "@/lib/admin/api";
+import { adminFetch, adminFetchAll } from "@/lib/admin/api";
 import type { AboutSettings, TeamMember } from "@/types/admin";
-import { updateAboutSettings } from "./actions";
 
 export const metadata = { title: "À propos — Administration" };
 
 export default async function AdminAboutPage() {
   const [about, teamData] = await Promise.all([
     adminFetch<AboutSettings>("/about/"),
-    adminFetch<{ results: TeamMember[]; count: number } | TeamMember[]>("/team/").catch(() => []),
+    adminFetchAll<TeamMember>("/team/").catch(() => [] as TeamMember[]),
   ]);
 
   const teamMembers: TeamMember[] = Array.isArray(teamData)
     ? teamData
-    : (teamData as { results: TeamMember[] })?.results ?? [];
+    : [];
 
   return (
     <div className="max-w-4xl">
@@ -36,7 +35,7 @@ export default async function AdminAboutPage() {
       />
 
       <div className="mt-6 rounded-2xl border border-[#dce5df] bg-white p-6 sm:p-8 shadow-xs">
-        <AdminForm action={updateAboutSettings} submitLabel="Enregistrer toutes les modifications">
+        <AdminForm djangoPath="/about/" method="PATCH" submitLabel="Enregistrer toutes les modifications">
           {/* 1. Présentation de la société */}
           <section className="space-y-4">
             <div className="flex items-center gap-2">
@@ -107,7 +106,7 @@ export default async function AdminAboutPage() {
                 href="/admin/equipe"
                 className="inline-flex items-center gap-1.5 rounded-full bg-[#a85c36] px-4 py-1.5 text-xs font-semibold text-white hover:bg-[#8b4a2b]"
               >
-                Gérer les membres ({teamMembers.length}) →
+                Gérer l’équipe & la galerie ({teamMembers.length}) →
               </Link>
             </div>
             <div className="grid gap-4">

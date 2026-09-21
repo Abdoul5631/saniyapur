@@ -8,16 +8,16 @@ import { getSectors } from "@/lib/sectors";
 
 // Visuels dédiés et badges par secteur d'intervention
 const sectorMeta: Record<string, { image: string; tag: string }> = {
-  sante: { image: "/images/services/bionettoyage.jpg", tag: "Cliniques & Hôpitaux" },
-  industrie: { image: "/images/services/decapage.jpg", tag: "Usines & Plateaux" },
-  hotellerie: { image: "/images/services/sanitaires.jpg", tag: "Hôtels & Complexes" },
-  commerce: { image: "/images/services/personnel.jpg", tag: "Bureaux & Commerces" },
+  sante: { image: "/images/services/bionettoyage.png", tag: "Cliniques & Hôpitaux" },
+  industrie: { image: "/images/services/decapage.png", tag: "Usines & Plateaux" },
+  hotellerie: { image: "/images/services/hygiene-publique.png", tag: "Hôtels & Complexes" },
+  commerce: { image: "/images/services/personnel.png", tag: "Bureaux & Commerces" },
 };
 
 export async function SectorsSection() {
   const sectors = await getSectors();
   return (
-    <section className="py-20 sm:py-28 bg-white border-b border-[#e2eae4]/60">
+    <section id="secteurs" className="py-20 sm:py-28 bg-white border-b border-[#e2eae4]/60">
       <Container>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 pb-6 border-b border-[#dce5df]/60">
           <Reveal className="max-w-2xl">
@@ -43,34 +43,32 @@ export async function SectorsSection() {
           <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {sectors.map((sector, index) => {
               const meta = sectorMeta[sector.slug] || {
-                image: "/images/services/bionettoyage.jpg",
+                image: "/images/services/bionettoyage.png",
                 tag: "Secteur Pro",
               };
-              const imageSrc = sector.image ? resolveMediaUrl(sector.image) : meta.image;
+              const imageSrc = sector.image ? resolveMediaUrl(sector.image, meta.image) : meta.image;
 
               return (
                 <Reveal key={sector.id} delayMs={index * 80}>
                   <Link
                     href={`/secteurs/${sector.slug}`}
-                    className="card-luxury group relative flex min-h-[420px] flex-col justify-between overflow-hidden rounded-3xl bg-[#091f24] p-8 text-white shadow-xl transition-all duration-500 hover:shadow-2xl border border-[#dce5df] hover:border-[#a85c36]"
+                    className="card-luxury group relative isolate flex min-h-[420px] flex-col justify-between overflow-hidden rounded-3xl bg-[#091f24] p-8 text-white shadow-xl transition-all duration-500 hover:shadow-2xl border border-[#dce5df] hover:border-[#a85c36]"
                   >
-                    {/* Photo réelle avec haute visibilité & zoom fluide */}
-                    <div className="absolute inset-0 -z-20 overflow-hidden bg-[#07181c]">
+                    <div className="absolute inset-0 z-0 overflow-hidden">
                       <Image
                         src={imageSrc}
                         alt={sector.name}
                         fill
                         unoptimized
                         sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                        className="object-cover object-center opacity-85 transition-transform duration-700 ease-out group-hover:scale-110 group-hover:opacity-95"
+                        className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-110"
                       />
                     </div>
 
-                    {/* Gradient léger pour garder la photo bien claire et le texte lisible */}
-                    <div className="absolute inset-0 -z-10 bg-linear-to-t from-[#041215]/95 via-[#041215]/40 to-black/25" />
+                    <div className="absolute inset-0 z-[1] bg-linear-to-t from-[#041215]/80 via-[#041215]/25 to-black/10" />
 
                     {/* Haut : Badge sectoriel */}
-                    <div>
+                    <div className="relative z-10">
                       <span className="inline-block rounded-full bg-white/95 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#a85c36] shadow-md backdrop-blur-md transition-transform duration-300 group-hover:scale-105">
                         {meta.tag}
                       </span>

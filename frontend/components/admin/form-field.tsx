@@ -1,6 +1,6 @@
 ﻿import type { ReactNode } from "react";
 
-export function FormField({ label, htmlFor, hint, error, required, children }: { label: string; htmlFor: string; hint?: string; error?: string; required?: boolean; children: ReactNode }) {
+export function FormField({ label, htmlFor, hint, error, required, children }: { label: string; htmlFor: string; hint?: ReactNode; error?: string; required?: boolean; children: ReactNode }) {
   return (
     <div>
       <label htmlFor={htmlFor} className="text-sm font-medium text-[#16232a]">

@@ -1,9 +1,10 @@
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 
-from .models import SiteSettings, AboutSettings
-from .serializers import SiteSettingsSerializer, AboutSettingsSerializer
+from .models import SiteSettings, AboutSettings, ClientLogo
+from .serializers import SiteSettingsSerializer, AboutSettingsSerializer, ClientLogoSerializer
 
 
 class SiteSettingsView(APIView):
@@ -34,3 +35,10 @@ class AboutSettingsView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+
+
+class ClientLogoViewSet(ModelViewSet):
+    serializer_class = ClientLogoSerializer
+    queryset = ClientLogo.objects.all()
+    pagination_class = None
+    permission_classes = [IsAuthenticatedOrReadOnly]

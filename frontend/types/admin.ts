@@ -68,6 +68,7 @@ export type AdminRealisation = {
   location: string;
   sector: string;
   service: string | null;
+  services?: string[];
   date: string;
   featured: boolean;
   published: boolean;
@@ -145,6 +146,21 @@ export type TeamMember = {
   updated_at: string;
 };
 
+export type TeamGallerySettings = {
+  id: number;
+  title: string;
+  description: string;
+  updated_at: string;
+};
+
+export type TeamGalleryPhoto = {
+  id: number;
+  image: string;
+  caption: string;
+  order: number;
+  created_at: string;
+};
+
 export type SiteSettings = {
   id: number;
   company_name: string;
@@ -162,13 +178,44 @@ export type SiteSettings = {
   instagram_url: string;
   whatsapp_url: string;
   hero_image: string | null;
+  hero_image_2: string | null;
+  hero_image_3: string | null;
   hero_title: string;
   hero_text: string;
   hero_primary_button_label: string;
   hero_primary_button_url: string;
   hero_secondary_button_label: string;
   hero_secondary_button_url: string;
+  stats_since_year: number;
+  stat_1_value: number;
+  stat_1_suffix: string;
+  stat_1_label: string;
+  stat_1_description: string;
+  stat_2_value: number;
+  stat_2_suffix: string;
+  stat_2_label: string;
+  stat_2_description: string;
+  stat_3_value: number;
+  stat_3_suffix: string;
+  stat_3_label: string;
+  stat_3_description: string;
+  stat_4_value: number;
+  stat_4_suffix: string;
+  stat_4_label: string;
+  stat_4_description: string;
+  stat_5_value: number;
+  stat_5_suffix: string;
+  stat_5_label: string;
+  stat_5_description: string;
   updated_at: string;
+};
+
+export type ClientLogo = {
+  id: number;
+  image: string;
+  name: string;
+  order: number;
+  created_at: string;
 };
 
 export type AboutSettings = {

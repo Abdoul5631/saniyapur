@@ -5,6 +5,7 @@ from .serializers import ServiceSerializer
 class ServiceViewSet(ModelViewSet):
     serializer_class = ServiceSerializer
     lookup_field = "slug"
+    pagination_class = None
     def get_queryset(self):
         queryset = Service.objects.all() if self.request.user.is_authenticated else Service.objects.filter(published=True)
         q = self.request.query_params.get("q")

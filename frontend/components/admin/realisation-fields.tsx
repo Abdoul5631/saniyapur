@@ -9,14 +9,21 @@ export function RealisationFields({
   realisation,
   sectors,
   services,
+  knownClients = [],
 }: {
   realisation?: AdminRealisation;
   sectors: AdminSector[];
   services: AdminService[];
+  knownClients?: string[];
 }) {
   const mainImage =
     realisation?.images?.find((img) => img.type === "main") ??
     realisation?.images?.[0];
+  const selectedServices = realisation?.services?.length
+    ? realisation.services
+    : realisation?.service
+      ? [realisation.service]
+      : [];
 
   return (
     <>
@@ -24,8 +31,26 @@ export function RealisationFields({
       <NameSlugFields nameField="title" nameLabel="Titre" nameDefault={realisation?.title} slugDefault={realisation?.slug} />
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <FormField label="Nom du client" htmlFor="client" hint="Facultatif — uniquement si le client l'autorise.">
-          <input id="client" name="client" defaultValue={realisation?.client} className={inputClassName} />
+        <FormField
+          label="Nom du client / entreprise"
+          htmlFor="client"
+          hint="Utilisez exactement le même nom pour chaque chantier de cette entreprise. Facultatif si le client ne souhaite pas être cité."
+        >
+          <input
+            id="client"
+            name="client"
+            list="known-clients"
+            defaultValue={realisation?.client}
+            className={inputClassName}
+            autoComplete="organization"
+          />
+          {knownClients.length > 0 ? (
+            <datalist id="known-clients">
+              {knownClients.map((name) => (
+                <option key={name} value={name} />
+              ))}
+            </datalist>
+          ) : null}
         </FormField>
         <FormField label="Localisation" htmlFor="location" hint="Ville ou région de l'intervention.">
           <input id="location" name="location" defaultValue={realisation?.location} className={inputClassName} />
@@ -47,13 +72,47 @@ export function RealisationFields({
             </p>
           )}
         </FormField>
-        <FormField label="Service réalisé" htmlFor="service" hint="Service J&B SANIYAPUR effectué lors de cette réalisation.">
-          <select id="service" name="service" defaultValue={realisation?.service ?? ""} className={inputClassName}>
-            <option value="">Non précisé</option>
-            {services.map((service) => (
-              <option key={service.id} value={service.name}>{service.name}</option>
-            ))}
-          </select>
+        <FormField
+          label="Services réalisés"
+          htmlFor="services"
+          hint={
+            services.length ? (
+              <>
+                Cochez tous les services effectués sur ce chantier.{" "}
+                <Link href="/admin/services/nouveau" className="underline">
+                  Créer un nouveau service
+                </Link>
+              </>
+            ) : undefined
+          }
+        >
+          {services.length ? (
+            <div id="services" className="grid gap-2 rounded-xl border border-[#dce5df] bg-white p-3 sm:grid-cols-2">
+              {services.map((service) => {
+                const selected = selectedServices.includes(service.name);
+                return (
+                  <label key={service.id} className="flex cursor-pointer items-start gap-2 text-sm text-[#16232a]">
+                    <input
+                      type="checkbox"
+                      name="services"
+                      value={service.name}
+                      defaultChecked={selected}
+                      className="mt-0.5 h-4 w-4 rounded border-[#dce5df] accent-[#a85c36]"
+                    />
+                    <span>{service.name}</span>
+                  </label>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="text-xs text-red-600">
+              Aucun service disponible —{" "}
+              <Link href="/admin/services/nouveau" className="underline">
+                créez-en un
+              </Link>
+              .
+            </p>
+          )}
         </FormField>
       </div>
 

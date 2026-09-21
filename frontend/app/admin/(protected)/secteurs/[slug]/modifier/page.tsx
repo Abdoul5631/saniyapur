@@ -5,7 +5,7 @@ import { DeleteButton } from "@/components/admin/delete-button";
 import { SectorFields } from "@/components/admin/sector-fields";
 import { adminFetch } from "@/lib/admin/api";
 import type { AdminSector } from "@/types/admin";
-import { deleteSector, updateSector } from "../../actions";
+import { deleteSector } from "../../actions";
 
 export default async function EditSectorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -15,7 +15,6 @@ export default async function EditSectorPage({ params }: { params: Promise<{ slu
   } catch {
     notFound();
   }
-  const boundUpdate = updateSector.bind(null, slug);
   return (
     <div className="max-w-2xl">
       <AdminHeader
@@ -23,7 +22,7 @@ export default async function EditSectorPage({ params }: { params: Promise<{ slu
         action={<DeleteButton action={deleteSector.bind(null, slug)} label="Supprimer le secteur" confirmTitle={`Supprimer « ${sector.name} » ?`} confirmDescription="Impossible si des réalisations sont encore rattachées à ce secteur." />}
       />
       <div className="rounded-2xl border border-[#dce5df] bg-white p-6">
-        <AdminForm action={boundUpdate} submitLabel="Enregistrer les modifications">
+        <AdminForm djangoPath={`/sectors/${encodeURIComponent(slug)}/`} method="PATCH" redirectTo="/admin/secteurs" submitLabel="Enregistrer les modifications">
           <SectorFields sector={sector} />
         </AdminForm>
       </div>

@@ -32,6 +32,7 @@ export async function createAttestation(
     return { error: error instanceof Error ? error.message : "Erreur inconnue." };
   }
   revalidatePath("/admin/attestations");
+  revalidatePath("/attestations");
   revalidatePath("/realisations");
   revalidatePath("/a-propos");
   redirect("/admin/attestations");
@@ -48,6 +49,7 @@ export async function updateAttestation(
     return { error: error instanceof Error ? error.message : "Erreur inconnue." };
   }
   revalidatePath("/admin/attestations");
+  revalidatePath("/attestations");
   revalidatePath("/realisations");
   revalidatePath("/a-propos");
   redirect("/admin/attestations");
@@ -56,6 +58,7 @@ export async function updateAttestation(
 export async function deleteAttestation(id: number): Promise<void> {
   await adminDelete(`/attestations/${id}/`);
   revalidatePath("/admin/attestations");
+  revalidatePath("/attestations");
   revalidatePath("/realisations");
   revalidatePath("/a-propos");
 }

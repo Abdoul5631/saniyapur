@@ -1,17 +1,17 @@
-import { apiFetch } from "@/lib/api";
+import { apiFetch, apiFetchAll } from "@/lib/api";
 import type { AdminNews } from "@/types/admin";
-import type { PaginatedResponse } from "@/types/realisation";
 
 const useApi = Boolean(process.env.NEXT_PUBLIC_API_URL);
-const normaliseList = (data: AdminNews[] | PaginatedResponse<AdminNews>) => (Array.isArray(data) ? data : data.results);
 
 const mockNews: AdminNews[] = [
   {
     id: 1,
     title: "Exemple d’actualité",
     slug: "exemple-actualite",
-    excerpt: "Fiche de démonstration destinée à valider l’affichage des actualités. Elle sera remplacée par les publications validées depuis l’administration.",
-    content: "Cette actualité de démonstration ne constitue pas une publication officielle de J&B SANIYAPUR SARL.\n\nLe contenu complet des articles sera géré depuis l’interface d’administration.",
+    excerpt:
+      "Fiche de démonstration destinée à valider l’affichage des actualités. Elle sera remplacée par les publications validées depuis l’administration.",
+    content:
+      "Cette actualité de démonstration ne constitue pas une publication officielle de J&B SANIYAPUR SARL.\n\nLe contenu complet des articles sera géré depuis l’interface d’administration.",
     category: "Actualités",
     author: "Direction J&B SANIYAPUR",
     image: "/images/realisation-hygiene.jpg",
@@ -26,19 +26,19 @@ const mockNews: AdminNews[] = [
 export async function getNews(): Promise<AdminNews[]> {
   if (!useApi) return mockNews;
   try {
-    const list = normaliseList(await apiFetch<AdminNews[] | PaginatedResponse<AdminNews>>("/news/", { next: { revalidate: 60 } }));
-    return list.length > 0 ? list : mockNews;
-  } catch {
-    return mockNews;
+    return await apiFetchAll<AdminNews>("/news/", { next: { revalidate: 60 } });
+  } catch (err) {
+    console.error("getNews error:", err);
+    return [];
   }
 }
 
 export async function getNewsArticle(slug: string): Promise<AdminNews | undefined> {
   if (!useApi) return mockNews.find((article) => article.slug === slug);
   try {
-    return await apiFetch<AdminNews>(`/news/${slug}/`, { next: { revalidate: 60 } });
+    return await apiFetch<AdminNews>(`/news/${encodeURIComponent(slug)}/`, { next: { revalidate: 60 } });
   } catch {
-    return undefined;
+    return (await getNews()).find((article) => article.slug === slug && article.published);
   }
 }
 

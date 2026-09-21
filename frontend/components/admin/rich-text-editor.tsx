@@ -57,7 +57,10 @@ export function RichTextEditor({ id, name, defaultValue = "" }: { id: string; na
         <button type="button" onClick={() => setShowPreview((current) => !current)} className="ml-auto rounded-md border border-[#dce5df] bg-white px-2.5 py-1.5 text-xs font-semibold text-[#a85c36]">{showPreview ? "Éditer" : "Aperçu"}</button>
       </div>
       {showPreview ? (
-        <div className="min-h-48 rounded-b-lg border border-[#dce5df] px-3 py-2.5 text-sm leading-6 text-[#16232a]" dangerouslySetInnerHTML={{ __html: renderPreview(value) || "<p class=\"text-[#8a9a92]\">Rien à prévisualiser.</p>" }} />
+        <>
+          <input type="hidden" name={name} value={value} />
+          <div className="min-h-48 rounded-b-lg border border-[#dce5df] px-3 py-2.5 text-sm leading-6 text-[#16232a]" dangerouslySetInnerHTML={{ __html: renderPreview(value) || "<p class=\"text-[#8a9a92]\">Rien à prévisualiser.</p>" }} />
+        </>
       ) : (
         <textarea ref={textareaRef} id={id} name={name} value={value} onChange={handleChange} rows={10} className="w-full rounded-b-lg border border-[#dce5df] px-3 py-2.5 text-sm text-[#16232a] outline-none focus:border-[#a85c36]" />
       )}

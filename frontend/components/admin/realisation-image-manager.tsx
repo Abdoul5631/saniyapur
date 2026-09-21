@@ -1,8 +1,10 @@
 ﻿"use client";
-import { useActionState, useTransition } from "react";
-import { addRealisationImage, deleteRealisationImage, setRealisationImageAsMain } from "@/app/admin/(protected)/realisations/actions";
+import { useRouter } from "next/navigation";
+import { useState, useTransition, type FormEvent } from "react";
+import { deleteRealisationImage, setRealisationImageAsMain } from "@/app/admin/(protected)/realisations/actions";
 import { DeleteButton } from "@/components/admin/delete-button";
-import type { FormState } from "@/components/admin/admin-form";
+import { compressImage } from "@/lib/admin/compress-image";
+import { formatAdminApiError } from "@/lib/admin/prepare-form-data";
 import type { RealisationImage } from "@/types/realisation";
 
 const typeLabels: Record<string, string> = { main: "Principale", before: "Avant", after: "Après", gallery: "Galerie" };
@@ -17,9 +19,43 @@ function SetMainButton({ imageId }: { imageId: number }) {
 }
 
 export function RealisationImageManager({ realisationId, images }: { realisationId: number; images: RealisationImage[] }) {
-  const boundAdd = addRealisationImage.bind(null, realisationId);
-  const [state, formAction, pending] = useActionState<FormState, FormData>(boundAdd, null);
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
   const sorted = [...images].sort((a, b) => a.order - b.order);
+
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError(null);
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const image = data.get("image");
+    if (!(image instanceof File) || image.size === 0) {
+      setError("Choisissez une image à ajouter.");
+      return;
+    }
+    setPending(true);
+    try {
+      const payload = new FormData();
+      payload.set("realisation", String(realisationId));
+      payload.set("image", await compressImage(image));
+      payload.set("caption", String(data.get("caption") ?? ""));
+      payload.set("type", String(data.get("type") ?? "gallery"));
+      payload.set("order", String(data.get("order") ?? "0"));
+      const response = await fetch("/api/admin/django?path=%2Frealisation-images%2F&method=POST", {
+        method: "POST",
+        body: payload,
+      });
+      const body = await response.json().catch(() => null);
+      if (!response.ok) throw new Error(formatAdminApiError(body, "L’ajout de l’image a échoué."));
+      form.reset();
+      router.refresh();
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "L’ajout de l’image a échoué.");
+    } finally {
+      setPending(false);
+    }
+  }
 
   return (
     <div>
@@ -46,7 +82,7 @@ export function RealisationImageManager({ realisationId, images }: { realisation
         <p className="mt-3 text-sm text-[#526259]">Aucune image pour le moment.</p>
       )}
 
-      <form action={formAction} className="mt-6 grid gap-3 rounded-xl border border-dashed border-[#dce5df] p-4 sm:grid-cols-2">
+      <form onSubmit={onSubmit} className="mt-6 grid gap-3 rounded-xl border border-dashed border-[#dce5df] p-4 sm:grid-cols-2">
         <div className="sm:col-span-2">
           <label htmlFor="image" className="text-sm font-medium text-[#16232a]">Ajouter une image</label>
           <input id="image" name="image" type="file" accept="image/*" required className="mt-1.5 w-full text-sm text-[#526259]" />
@@ -68,7 +104,7 @@ export function RealisationImageManager({ realisationId, images }: { realisation
           <label htmlFor="order" className="text-sm font-medium text-[#16232a]">Ordre d’affichage</label>
           <input id="order" name="order" type="number" defaultValue={0} className="mt-1.5 w-32 rounded-lg border border-[#dce5df] px-3 py-2.5 text-sm text-[#16232a] outline-none focus:border-[#a85c36]" />
         </div>
-        {state?.error && <p role="alert" className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 sm:col-span-2">{state.error}</p>}
+        {error && <p role="alert" className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 sm:col-span-2">{error}</p>}
         <button type="submit" disabled={pending} className="justify-self-start rounded-full bg-[#a85c36] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#8b4a2b] disabled:opacity-60 sm:col-span-2">{pending ? "Ajout…" : "Ajouter l’image"}</button>
       </form>
     </div>

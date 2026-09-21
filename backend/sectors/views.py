@@ -3,7 +3,9 @@ from rest_framework.viewsets import ModelViewSet
 from .models import Sector
 from .serializers import SectorSerializer
 class SectorViewSet(ModelViewSet):
-    serializer_class = SectorSerializer; lookup_field = "slug"
+    serializer_class = SectorSerializer
+    lookup_field = "slug"
+    pagination_class = None
     def get_queryset(self):
         queryset = Sector.objects.all() if self.request.user.is_authenticated else Sector.objects.filter(published=True)
         q = self.request.query_params.get("q")

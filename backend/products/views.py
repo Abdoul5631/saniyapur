@@ -8,7 +8,7 @@ from .serializers import ProductImageSerializer, ProductSerializer
 class ProductPagination(PageNumberPagination):
     page_size = 30
     page_size_query_param = "page_size"
-    max_page_size = 100
+    max_page_size = 200
 
 
 class ProductViewSet(ModelViewSet):
@@ -34,4 +34,5 @@ class ProductViewSet(ModelViewSet):
 class ProductImageViewSet(ModelViewSet):
     serializer_class = ProductImageSerializer
     queryset = ProductImage.objects.select_related("product")
+    pagination_class = None
 

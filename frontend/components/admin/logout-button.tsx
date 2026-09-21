@@ -8,5 +8,13 @@ export function AdminLogoutButton() {
     router.push("/admin/login");
     router.refresh();
   }
-  return <button type="button" onClick={handleLogout} className="text-left text-sm font-medium text-[#3f5149] transition hover:text-[#a85c36]">Se déconnecter</button>;
+  return (
+    <button
+      type="button"
+      onClick={handleLogout}
+      className="px-1 text-left text-sm font-medium text-white/70 transition hover:text-white"
+    >
+      Se déconnecter
+    </button>
+  );
 }

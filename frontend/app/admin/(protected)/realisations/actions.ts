@@ -6,7 +6,10 @@ import type { FormState } from "@/components/admin/admin-form";
 import type { Realisation, RealisationImage } from "@/types/realisation";
 
 function buildPayload(formData: FormData): Record<string, unknown> {
-  const service = String(formData.get("service") ?? "");
+  const services = formData
+    .getAll("services")
+    .map((value) => String(value).trim())
+    .filter(Boolean);
   return {
     title: String(formData.get("title") ?? ""),
     slug: String(formData.get("slug") ?? ""),
@@ -14,7 +17,8 @@ function buildPayload(formData: FormData): Record<string, unknown> {
     client: String(formData.get("client") ?? ""),
     location: String(formData.get("location") ?? ""),
     sector: String(formData.get("sector") ?? ""),
-    service: service || null,
+    services,
+    service: services[0] ?? null,
     date: String(formData.get("date") ?? ""),
     featured: Boolean(formData.get("featured")),
     published: Boolean(formData.get("published")),

@@ -6,13 +6,13 @@ import { FilterSelect } from "@/components/admin/filter-select";
 import { Pagination } from "@/components/admin/pagination";
 import { PublishedBadge, StatusBadge } from "@/components/admin/status-badge";
 import { SearchInput } from "@/components/admin/search-input";
-import { adminFetch } from "@/lib/admin/api";
+import { adminFetch, adminFetchAll, normaliseAdminList } from "@/lib/admin/api";
 import type { PaginatedResponse, Realisation } from "@/types/realisation";
 import type { AdminSector } from "@/types/admin";
 import { deleteRealisation } from "./actions";
 
-export default async function AdminRealisationsPage({ searchParams }: { searchParams: Promise<{ page?: string; q?: string; sector?: string; location?: string; published?: string; featured?: string }> }) {
-  const { page, q, sector, location, published, featured } = await searchParams;
+export default async function AdminRealisationsPage({ searchParams }: { searchParams: Promise<{ page?: string; q?: string; sector?: string; location?: string; published?: string; featured?: string; client?: string }> }) {
+  const { page, q, sector, location, published, featured, client } = await searchParams;
 
   const params = new URLSearchParams();
   if (page) params.set("page", page);
@@ -21,31 +21,40 @@ export default async function AdminRealisationsPage({ searchParams }: { searchPa
   if (location) params.set("location", location);
   if (published) params.set("published", published);
   if (featured) params.set("featured", featured);
+  if (client) params.set("client", client);
 
-  const [data, sectorsData] = await Promise.all([
-    adminFetch<PaginatedResponse<Realisation>>(`/realisations/?${params.toString()}`),
-    adminFetch<PaginatedResponse<AdminSector>>("/sectors/"),
+  const [data, sectors, knownClients] = await Promise.all([
+    adminFetch<PaginatedResponse<Realisation> | Realisation[]>(`/realisations/?${params.toString()}`),
+    adminFetchAll<AdminSector>("/sectors/"),
+    adminFetch<string[]>("/realisations/clients/").catch(() => [] as string[]),
   ]);
+  const realisations = normaliseAdminList(data);
 
   return (
     <div>
       <AdminHeader
         title="Réalisations"
-        description="Chantiers et interventions réellement effectués. Aucune réalisation ou aucun client ne doit être inventé."
+        description="Chaque chantier a sa propre fiche. Pour plusieurs interventions chez la même entreprise, réutilisez le même nom de client."
         action={<Link href="/admin/realisations/nouveau" className="rounded-full bg-[#a85c36] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#8b4a2b]">Ajouter une réalisation</Link>}
       />
 
       <div className="flex flex-wrap items-center gap-3">
         <SearchInput placeholder="Rechercher un titre, un client…" />
         <SearchInput paramName="location" placeholder="Localisation…" />
-        <FilterSelect paramName="sector" label="Secteur" allLabel="Tous les secteurs" options={sectorsData.results.map((s) => ({ value: s.name, label: s.name }))} />
+        <FilterSelect paramName="sector" label="Secteur" allLabel="Tous les secteurs" options={sectors.map((s) => ({ value: s.name, label: s.name }))} />
+        <FilterSelect
+          paramName="client"
+          label="Client"
+          allLabel="Tous les clients"
+          options={knownClients.map((name) => ({ value: name, label: name }))}
+        />
         <FilterSelect paramName="published" label="Statut" allLabel="Tous les statuts" options={[{ value: "true", label: "Publié" }, { value: "false", label: "Brouillon" }]} />
         <FilterSelect paramName="featured" label="Mis en avant" allLabel="Toutes" options={[{ value: "true", label: "Mis en avant uniquement" }]} />
       </div>
 
       <div className="mt-6">
         <DataTable
-          rows={data.results}
+          rows={realisations}
           emptyTitle="Aucune réalisation ne correspond"
           emptyDescription="Ajustez votre recherche ou vos filtres, ou ajoutez une réalisation."
           columns={[
@@ -68,6 +77,7 @@ export default async function AdminRealisationsPage({ searchParams }: { searchPa
                 );
               },
             },
+            { header: "Client", render: (realisation) => realisation.client || "—" },
             { header: "Secteur", render: (realisation) => realisation.sector },
             { header: "Localisation", render: (realisation) => realisation.location || "—" },
             { header: "Mis en avant", render: (realisation) => realisation.featured ? <StatusBadge label="Oui" tone="blue" /> : "—" },
@@ -76,6 +86,14 @@ export default async function AdminRealisationsPage({ searchParams }: { searchPa
               header: "Actions", className: "text-right", render: (realisation) => (
                 <div className="flex justify-end gap-4">
                   <Link href={`/admin/realisations/${realisation.slug}/modifier`} className="text-sm font-semibold text-[#a85c36] hover:underline">Modifier</Link>
+                  {realisation.client ? (
+                    <Link
+                      href={`/admin/realisations/nouveau?client=${encodeURIComponent(realisation.client)}&sector=${encodeURIComponent(realisation.sector)}&location=${encodeURIComponent(realisation.location ?? "")}`}
+                      className="text-sm font-semibold text-[#0f2e36] hover:underline"
+                    >
+                      + Chantier
+                    </Link>
+                  ) : null}
                   <DeleteButton action={deleteRealisation.bind(null, realisation.slug)} confirmTitle={`Supprimer « ${realisation.title} » ?`} />
                 </div>
               ),
@@ -84,7 +102,7 @@ export default async function AdminRealisationsPage({ searchParams }: { searchPa
         />
       </div>
 
-      <Pagination page={Number(page ?? 1)} hasNext={Boolean(data.next)} hasPrevious={Boolean(data.previous)} basePath="/admin/realisations" searchParams={{ q, sector, location, published, featured }} />
+      <Pagination page={Number(page ?? 1)} hasNext={Boolean(!Array.isArray(data) && data.next)} hasPrevious={Boolean(!Array.isArray(data) && data.previous)} basePath="/admin/realisations" searchParams={{ q, sector, location, published, featured, client }} />
     </div>
   );
 }

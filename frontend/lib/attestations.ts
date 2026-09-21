@@ -1,4 +1,4 @@
-import { apiFetch } from "@/lib/api";
+import { apiFetch, apiFetchAll } from "@/lib/api";
 import type { Attestation } from "@/types/admin";
 
 export const defaultAttestations: Attestation[] = [
@@ -196,10 +196,9 @@ const useApi = Boolean(process.env.NEXT_PUBLIC_API_URL);
 export async function getAttestations(): Promise<Attestation[]> {
   if (!useApi) return defaultAttestations;
   try {
-    const data = await apiFetch<{ results: Attestation[]; count: number } | Attestation[]>("/attestations/", {
-      cache: "no-store",
+    const list = await apiFetchAll<Attestation>("/attestations/", {
+      next: { revalidate: 60 },
     });
-    const list = Array.isArray(data) ? data : data.results ?? [];
     return list.filter((item) => item.published);
   } catch {
     return defaultAttestations;

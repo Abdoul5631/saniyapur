@@ -1,13 +1,25 @@
 import type { NextConfig } from "next";
 
+const backendUrl = process.env.INTERNAL_API_URL
+  ? process.env.INTERNAL_API_URL.replace(/\/api\/?$/, "")
+  : "http://127.0.0.1:8000";
+
 const nextConfig: NextConfig = {
   output: "standalone",
   devIndicators: false,
   experimental: {
     serverActions: {
-      bodySizeLimit: "20mb",
+      bodySizeLimit: "50mb",
     },
     cpus: 2,
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/media/:path*",
+        destination: `${backendUrl}/media/:path*`,
+      },
+    ];
   },
   images: {
     remotePatterns: [

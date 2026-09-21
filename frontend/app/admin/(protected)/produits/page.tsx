@@ -6,7 +6,7 @@ import { FilterSelect } from "@/components/admin/filter-select";
 import { Pagination } from "@/components/admin/pagination";
 import { PublishedBadge } from "@/components/admin/status-badge";
 import { SearchInput } from "@/components/admin/search-input";
-import { adminFetch } from "@/lib/admin/api";
+import { adminFetch, adminFetchAll, normaliseAdminList } from "@/lib/admin/api";
 import type { PaginatedResponse } from "@/types/realisation";
 import type { Product } from "@/types/product";
 import { deleteProduct } from "./actions";
@@ -21,10 +21,11 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
   if (published) params.set("published", published);
 
   const [data, allForCategories] = await Promise.all([
-    adminFetch<PaginatedResponse<Product>>(`/products/?${params.toString()}`),
-    adminFetch<PaginatedResponse<Product>>("/products/"),
+    adminFetch<PaginatedResponse<Product> | Product[]>(`/products/?${params.toString()}`),
+    adminFetchAll<Product>("/products/?page_size=200"),
   ]);
-  const categories = Array.from(new Set(allForCategories.results.map((product) => product.category).filter(Boolean))).sort();
+  const products = normaliseAdminList(data);
+  const categories = Array.from(new Set(allForCategories.map((product) => product.category).filter(Boolean))).sort();
 
   return (
     <div>
@@ -42,7 +43,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
 
       <div className="mt-6">
         <DataTable
-          rows={data.results}
+          rows={products}
           emptyTitle="Aucun produit ne correspond"
           emptyDescription="Ajustez votre recherche ou vos filtres, ou ajoutez un nouveau produit."
           columns={[
@@ -62,7 +63,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
         />
       </div>
 
-      <Pagination page={Number(page ?? 1)} hasNext={Boolean(data.next)} hasPrevious={Boolean(data.previous)} basePath="/admin/produits" searchParams={{ q, category, published }} />
+      <Pagination page={Number(page ?? 1)} hasNext={Boolean(!Array.isArray(data) && data.next)} hasPrevious={Boolean(!Array.isArray(data) && data.previous)} basePath="/admin/produits" searchParams={{ q, category, published }} />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ProductCatalog } from "@/components/products/product-catalog";
+import { ContactCtaSection } from "@/components/sections/contact-cta-section";
 import { Container } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { getProducts, productsAreMocked } from "@/lib/products";
@@ -23,10 +24,13 @@ export default async function ProductsPage() {
           {published.length ? (
             <ProductCatalog products={published} isMock={productsAreMocked} />
           ) : (
-            <p className="text-[#526259]">Aucun produit publié pour le moment.</p>
+            <p className="rounded-2xl border border-[#dce5df] bg-[#f8faf9] p-8 text-center text-[#526259]">
+              Aucun produit publié pour le moment. Contactez-nous pour le catalogue professionnel.
+            </p>
           )}
         </Container>
       </section>
+      <ContactCtaSection title="Besoin d’un produit ou d’un équipement précis ?" buttonLabel="Demander un devis produits" />
     </>
   );
 }

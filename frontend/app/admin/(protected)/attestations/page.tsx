@@ -2,7 +2,7 @@ import Link from "next/link";
 import { AdminHeader } from "@/components/admin/admin-header";
 import { DeleteButton } from "@/components/admin/delete-button";
 
-import { adminFetch } from "@/lib/admin/api";
+import { adminFetch, normaliseAdminList } from "@/lib/admin/api";
 import { resolveMediaUrl } from "@/lib/media";
 import type { Attestation } from "@/types/admin";
 import { deleteAttestation } from "./actions";
@@ -17,13 +17,8 @@ const typeBadgeLabels: Record<string, { label: string; color: string }> = {
 };
 
 export default async function AdminAttestationsPage() {
-  const data = await adminFetch<{ results: Attestation[]; count: number } | Attestation[]>(
-    "/attestations/"
-  ).catch(() => []);
-
-  const attestations: Attestation[] = Array.isArray(data)
-    ? data
-    : (data as { results: Attestation[] })?.results ?? [];
+  const data = await adminFetch<Attestation[] | { results: Attestation[] }>("/attestations/").catch(() => []);
+  const attestations = normaliseAdminList(data);
 
   return (
     <div>

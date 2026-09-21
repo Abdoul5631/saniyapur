@@ -1,14 +1,12 @@
 import { mockProducts } from "@/data/mock-products";
-import { apiFetch } from "@/lib/api";
-import type { PaginatedResponse } from "@/types/realisation";
+import { apiFetch, apiFetchAll } from "@/lib/api";
 import type { Product } from "@/types/product";
 
 const useApi = Boolean(process.env.NEXT_PUBLIC_API_URL);
-const normaliseList = (data: Product[] | PaginatedResponse<Product>) => Array.isArray(data) ? data : data.results;
 export async function getProducts(): Promise<Product[]> {
   try {
-    const list = normaliseList(await apiFetch<Product[] | PaginatedResponse<Product>>("/products/?page_size=100", { cache: "no-store" }));
-    if (list.length > 0) return list;
+    const list = await apiFetchAll<Product>("/products/?page_size=200", { next: { revalidate: 60 } });
+    if (list.length > 0) return list.filter((product) => product.published);
   } catch (err) {
     console.error("getProducts error:", err);
   }

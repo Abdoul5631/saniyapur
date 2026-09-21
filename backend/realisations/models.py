@@ -12,6 +12,7 @@ class Realisation(models.Model):
     location = models.CharField(max_length=200, blank=True)
     sector = models.ForeignKey(Sector, related_name="realisations", on_delete=models.PROTECT)
     service = models.ForeignKey(Service, related_name="realisations", on_delete=models.SET_NULL, null=True, blank=True)
+    services = models.ManyToManyField(Service, related_name="linked_realisations", blank=True)
     date = models.DateField()
     featured = models.BooleanField(default=False)
     published = models.BooleanField(default=False)

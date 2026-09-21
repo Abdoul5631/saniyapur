@@ -1,9 +1,7 @@
-import { apiFetch } from "@/lib/api";
-import type { PaginatedResponse } from "@/types/realisation";
+import { apiFetch, apiFetchAll } from "@/lib/api";
 import type { AdminService } from "@/types/admin";
 
 const useApi = Boolean(process.env.NEXT_PUBLIC_API_URL);
-const normaliseList = (data: AdminService[] | PaginatedResponse<AdminService>) => Array.isArray(data) ? data : data.results;
 
 /** Repli local si l'API n'est pas configurée — mêmes libellés que les 7 domaines officiels. */
 const mockServices: AdminService[] = [
@@ -18,7 +16,7 @@ const mockServices: AdminService[] = [
 
 export async function getServices(): Promise<AdminService[]> {
   try {
-    const data = normaliseList(await apiFetch<AdminService[] | PaginatedResponse<AdminService>>("/services/", { cache: "no-store" }));
+    const data = await apiFetchAll<AdminService>("/services/", { next: { revalidate: 60 } });
     const filtered = [...data].filter((service) => service.published).sort((a, b) => a.order - b.order);
     if (filtered.length > 0) return filtered;
   } catch (err) {
@@ -33,6 +31,7 @@ export async function getService(slug: string): Promise<AdminService | undefined
     const service = await apiFetch<AdminService>(`/services/${slug}/`, { next: { revalidate: 60 } });
     return service.published ? service : undefined;
   } catch {
-    return undefined;
+    const fromList = (await getServices()).find((service) => service.slug === slug);
+    return fromList;
   }
 }

@@ -68,7 +68,7 @@ const useApi = Boolean(process.env.NEXT_PUBLIC_API_URL);
 export async function getAboutSettings(): Promise<AboutSettings> {
   if (!useApi) return defaultAboutSettings;
   try {
-    return await apiFetch<AboutSettings>("/about/", { cache: "no-store" });
+    return await apiFetch<AboutSettings>("/about/", { next: { revalidate: 60 } });
   } catch {
     return defaultAboutSettings;
   }

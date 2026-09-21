@@ -5,7 +5,7 @@ import { PageHero } from "@/components/ui/page-hero";
 import { getAttestations } from "@/lib/attestations";
 
 export const metadata: Metadata = {
-  title: "Références & Attestations | J&B SANIYAPUR SARL",
+  title: "Références & Attestations",
   description:
     "Consultez les attestations de bonne exécution, certificats de conformité et références clients officiels de J&B SANIYAPUR SARL.",
 };
