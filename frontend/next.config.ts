@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "50mb",
     },
-    cpus: 2,
+    cpus: 1,
   },
   async rewrites() {
     return [
