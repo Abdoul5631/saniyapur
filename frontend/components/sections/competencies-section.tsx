@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
+import { TiltCard } from "@/components/ui/tilt-card";
 import { getServiceImage, getServiceVisual } from "@/lib/service-visuals";
 import { getServices } from "@/lib/services";
 
@@ -40,6 +41,7 @@ export async function CompetenciesSection() {
 
               return (
                 <Reveal key={service.id} delayMs={index * 60}>
+                  <TiltCard className="h-full">
                   <Link
                     href={`/services/${service.slug}`}
                     className="card-luxury group flex h-full flex-col overflow-hidden rounded-3xl border border-[#dce5df] bg-white shadow-xs transition-all duration-300 hover:border-[#a85c36] hover:shadow-xl hover:shadow-[#a85c36]/10"
@@ -80,6 +82,7 @@ export async function CompetenciesSection() {
                       </div>
                     </div>
                   </Link>
+                  </TiltCard>
                 </Reveal>
               );
             })}

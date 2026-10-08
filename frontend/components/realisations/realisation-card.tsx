@@ -34,8 +34,13 @@ export function RealisationCard({ realisation, isMock = false }: Props) {
             <div className="absolute inset-0 bg-[#e8eeec]" />
           )}
           <div className="absolute inset-0 bg-linear-to-t from-[#041215]/85 via-[#041215]/20 to-transparent" />
+          <div className="absolute inset-0 z-[1] flex items-center justify-center bg-[#041215]/0 opacity-0 transition-all duration-300 group-hover:bg-[#041215]/25 group-hover:opacity-100">
+            <span className="translate-y-2 rounded-full bg-white px-4 py-2 text-xs font-bold tracking-wide text-[#a85c36] uppercase shadow-lg transition duration-300 group-hover:translate-y-0">
+              Voir le chantier
+            </span>
+          </div>
 
-          <div className="absolute inset-x-0 bottom-0 z-[1] p-4 sm:p-5">
+          <div className="absolute inset-x-0 bottom-0 z-[2] p-4 sm:p-5">
             <div className="flex flex-wrap items-center gap-2">
               <span className="rounded-full bg-white/95 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#a85c36]">
                 {realisation.sector}

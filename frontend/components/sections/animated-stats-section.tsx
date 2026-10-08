@@ -145,11 +145,25 @@ export function AnimatedStatsSection({
         </div>
 
         {/* ── Grille de stats ── */}
-        <div className="mx-auto flex max-w-[48rem] flex-wrap justify-center gap-3">
+        <div
+          className={
+            stats.length === 5
+              ? "grid grid-cols-1 gap-3 sm:grid-cols-6 lg:grid-cols-5 lg:gap-4"
+              : stats.length === 4
+                ? "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4"
+                : stats.length === 3
+                  ? "grid grid-cols-1 gap-3 sm:grid-cols-3 lg:gap-4"
+                  : "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:gap-4"
+          }
+        >
           {stats.map((stat, index) => (
             <div
-              key={stat.label}
-              className={`group relative w-full overflow-hidden rounded-2xl border bg-white/5 px-4 py-3.5 backdrop-blur-sm transition-all duration-500 hover:-translate-y-0.5 hover:bg-white/8 sm:max-w-[14.25rem] ${stat.bgColor}`}
+              key={`${stat.label}-${index}`}
+              className={`group relative flex min-h-[11.5rem] flex-col overflow-hidden rounded-2xl border bg-white/5 px-4 py-4 backdrop-blur-sm transition-all duration-500 hover:-translate-y-0.5 hover:bg-white/8 ${stat.bgColor} ${
+                stats.length === 5
+                  ? `sm:col-span-2 lg:col-span-1 ${index === 3 ? "sm:col-start-2 lg:col-start-auto" : ""}`
+                  : ""
+              }`}
               style={{
                 opacity: started ? 1 : 0,
                 transform: started ? "translateY(0) scale(1)" : "translateY(24px) scale(0.96)",
@@ -176,13 +190,14 @@ export function AnimatedStatsSection({
                 />
               </div>
 
-              {/* Labels */}
-              <p className="mt-2 text-[13px] font-bold text-white leading-snug">
+              <div className="mt-auto pt-3">
+              <p className="text-[13px] font-bold text-white leading-snug">
                 {stat.label}
               </p>
               <p className="mt-0.5 text-[11px] text-white/50 leading-relaxed">
                 {stat.description}
               </p>
+              </div>
 
               {/* Barre de progression animée en bas */}
               <div className="absolute bottom-0 left-0 right-0 h-[2px] overflow-hidden">

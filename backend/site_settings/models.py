@@ -147,6 +147,12 @@ class AboutSettings(models.Model):
     social_commitment_content = models.TextField(
         default="Nous nous engageons à offrir les meilleures conditions de travail à nos employés, qui sont avant tout nos concitoyens. À ce titre, nous prévoyons :\n- La mise en place d'une garderie pour les enfants de nos employés.\n- Un environnement de travail sain, sûr et respectueux.\n- Des opportunités de formation et d'évolution professionnelle.\n- Une rémunération équitable et des avantages sociaux.\n- Un soutien psychologique si nécessaire (travail en milieu hospitalier)."
     )
+    social_commitment_image = models.ImageField(
+        upload_to="about/",
+        blank=True,
+        null=True,
+        verbose_name="Photo page Engagement social",
+    )
 
     # 4. Importance et enjeux du bionettoyage
     bionettoyage_title = models.CharField(max_length=200, default="L'IMPORTANCE ET LES ENJEUX DU BIONETTOYAGE")

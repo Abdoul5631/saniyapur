@@ -231,6 +231,7 @@ export type AboutSettings = {
   operational_team_content?: string;
   social_commitment_title?: string;
   social_commitment_content?: string;
+  social_commitment_image?: string | null;
   bionettoyage_title?: string;
   bionettoyage_content?: string;
   competencies_title?: string;

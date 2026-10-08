@@ -49,10 +49,33 @@ html {
 
 @keyframes hero-kenburns {
   0% { transform: scale(1); }
-  100% { transform: scale(1.04); }
+  100% { transform: scale(1.1); }
 }
 .hero-kenburns {
-  animation: hero-kenburns 5.2s ease-out forwards;
+  animation: hero-kenburns 5s linear forwards;
+}
+
+@keyframes hero-slide-enter {
+  from {
+    opacity: 0;
+    transform: scale(1.08) translateX(2.5%);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
+}
+.hero-slide-enter {
+  animation: hero-slide-enter 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes hero-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.hero-progress {
+  transform-origin: left center;
+  animation: hero-progress 5s linear forwards;
 }
 
 @keyframes fade-in-up {
@@ -81,6 +104,13 @@ html {
 }
 .animate-fade-in-down {
   animation: fade-in-down 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes hero-tagline-glow {
+  0%, 100% { opacity: 0.78; letter-spacing: 0.28em; }
+  50% { opacity: 1; letter-spacing: 0.34em; }
+}
+.hero-tagline-live {
+  animation: fade-in-down 0.7s cubic-bezier(0.16, 1, 0.3, 1) both, hero-tagline-glow 4.5s ease-in-out 0.8s infinite;
 }
 
 @keyframes fade-in-left {
@@ -382,6 +412,9 @@ html {
   width: max-content;
   animation: marquee-slow 55s linear infinite;
 }
+.animate-marquee-slow:hover {
+  animation-play-state: paused;
+}
 
 /* ── Gradient border effect ── */
 .gradient-border {
@@ -419,8 +452,11 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .hero-zoom,
   .hero-kenburns,
+  .hero-slide-enter,
+  .hero-progress,
   .animate-fade-in-up,
   .animate-fade-in-down,
+  .hero-tagline-live,
   .animate-fade-in-left,
   .animate-fade-in-right,
   .animate-fade-in,

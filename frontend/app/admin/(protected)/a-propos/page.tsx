@@ -22,7 +22,7 @@ export default async function AdminAboutPage() {
     <div className="max-w-4xl">
       <AdminHeader
         title="Page À propos — Contenu Officiel"
-        description="Gérez et modifiez l'ensemble des 12 sections de la présentation officielle de J&B SANIYAPUR SARL."
+        description="Gérez et modifiez l'ensemble des sections de la présentation officielle. La photo de la page Engagement social se règle dans la section 4."
         action={
           <Link
             href="/a-propos"
@@ -166,6 +166,13 @@ export default async function AdminAboutPage() {
                 4
               </span>
               <h2 className="text-base font-bold text-[#16232a]">NOTRE ENGAGEMENT SOCIAL</h2>
+              <Link
+                href="/engagement-social"
+                target="_blank"
+                className="ml-auto text-xs font-semibold text-[#a85c36] hover:underline"
+              >
+                Voir la page publique ↗
+              </Link>
             </div>
             <div className="grid gap-4">
               <FormField label="Titre engagement social" htmlFor="social_commitment_title">
@@ -174,6 +181,18 @@ export default async function AdminAboutPage() {
                   name="social_commitment_title"
                   defaultValue={about.social_commitment_title ?? "NOTRE ENGAGEMENT SOCIAL"}
                   className={inputClassName}
+                />
+              </FormField>
+              <FormField
+                label="Photo de la page Engagement social"
+                htmlFor="social_commitment_image"
+                hint="Image affichée en haut de /engagement-social. Si vide, la première photo de la galerie équipe est utilisée."
+              >
+                <ImageUploader
+                  id="social_commitment_image"
+                  name="social_commitment_image"
+                  currentUrl={about.social_commitment_image}
+                  label="engagement social"
                 />
               </FormField>
               <FormField label="Détails des engagements sociaux" htmlFor="social_commitment_content">

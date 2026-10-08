@@ -47,7 +47,11 @@ export default async function EngagementSocialPage() {
 
   const social = parseListItems(about.social_commitment_content);
   const operational = parseListItems(about.operational_team_content);
+  const dedicatedPhoto = about.social_commitment_image
+    ? resolveMediaUrl(about.social_commitment_image, "")
+    : "";
   const teamPhoto = galleryPhotos[0]?.image ? resolveMediaUrl(galleryPhotos[0].image, "") : "";
+  const bannerPhoto = dedicatedPhoto || teamPhoto;
   const title = softenHeading(about.social_commitment_title || "Notre engagement social");
 
   return (
@@ -64,13 +68,13 @@ export default async function EngagementSocialPage() {
 
       <section className="bg-white py-16 sm:py-20">
         <Container>
-          {teamPhoto ? (
+          {bannerPhoto ? (
             <Reveal>
               <figure className="relative isolate overflow-hidden rounded-3xl bg-[#e8eeec]">
                 <div className="relative aspect-[16/9] sm:aspect-[21/9]">
                   <Image
-                    src={teamPhoto}
-                    alt="Équipes SANIYAPUR"
+                    src={bannerPhoto}
+                    alt="Engagement social — équipes SANIYAPUR"
                     fill
                     unoptimized
                     priority
@@ -83,7 +87,7 @@ export default async function EngagementSocialPage() {
           ) : null}
 
           {social.items.length > 0 ? (
-            <div className={teamPhoto ? "mt-10 grid gap-5 sm:grid-cols-2" : "grid gap-5 sm:grid-cols-2"}>
+            <div className={bannerPhoto ? "mt-10 grid gap-5 sm:grid-cols-2" : "grid gap-5 sm:grid-cols-2"}>
               {social.items.map((item, index) => (
                 <Reveal key={item} delayMs={Math.min(index * 40, 160)}>
                   <article className="h-full rounded-2xl border border-[#dce5df] bg-[#f8faf9] p-6 shadow-xs">

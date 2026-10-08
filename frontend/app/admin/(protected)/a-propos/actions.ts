@@ -41,7 +41,7 @@ const TEXT_FIELDS = [
   "dg_message",
 ];
 
-const IMAGE_FIELDS = ["presentation_image", "international_expertise_image", "dg_photo"];
+const IMAGE_FIELDS = ["presentation_image", "social_commitment_image", "international_expertise_image", "dg_photo"];
 
 export async function updateAboutSettings(
   _prevState: FormState,
@@ -64,6 +64,7 @@ export async function updateAboutSettings(
   }
   revalidatePath("/admin/a-propos");
   revalidatePath("/a-propos");
+  revalidatePath("/engagement-social");
   revalidatePath("/");
   return { success: true };
 }

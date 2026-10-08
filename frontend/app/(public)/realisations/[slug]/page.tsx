@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BeforeAfter } from "@/components/realisations/before-after";
-import { getRealisationCover, RealisationCard } from "@/components/realisations/realisation-card";
-import { RealisationGallery } from "@/components/realisations/realisation-gallery";
+import { RealisationCard } from "@/components/realisations/realisation-card";
+import { RealisationPhotoViewer } from "@/components/realisations/realisation-photo-viewer";
 import { ContactCtaSection } from "@/components/sections/contact-cta-section";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Container } from "@/components/ui/container";
 import { PageHero } from "@/components/ui/page-hero";
 import { Reveal } from "@/components/ui/reveal";
-import { resolveMediaUrl } from "@/lib/media";
 import { getRealisation, getRealisations, realisationsAreMocked } from "@/lib/realisations";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -29,8 +27,7 @@ export default async function RealisationDetailPage({ params }: Props) {
   const [realisation, all] = await Promise.all([getRealisation(slug), getRealisations()]);
   if (!realisation || !realisation.published) notFound();
 
-  const cover = getRealisationCover(realisation);
-  const coverSrc = cover?.image ? resolveMediaUrl(cover.image, "") : "";
+  const photos = realisation.images ?? [];
   const othersSameClient = realisation.client
     ? all.filter(
         (item) =>
@@ -86,24 +83,9 @@ export default async function RealisationDetailPage({ params }: Props) {
             </p>
           )}
 
-          {coverSrc ? (
+          {photos.length > 0 ? (
             <Reveal>
-              <figure className="relative isolate overflow-hidden rounded-3xl bg-[#e8eeec] shadow-xl">
-                <div className="relative h-[260px] sm:h-[380px] lg:h-[460px]">
-                  <Image
-                    src={coverSrc}
-                    alt={cover?.caption || realisation.title}
-                    fill
-                    unoptimized
-                    priority
-                    className="object-cover object-center"
-                    sizes="100vw"
-                  />
-                </div>
-                <span className="absolute left-4 top-4 z-[1] rounded-full bg-white/95 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[#a85c36] shadow-sm sm:left-6 sm:top-6">
-                  {realisation.sector}
-                </span>
-              </figure>
+              <RealisationPhotoViewer images={photos} title={realisation.title} sector={realisation.sector} />
             </Reveal>
           ) : null}
 
@@ -116,8 +98,7 @@ export default async function RealisationDetailPage({ params }: Props) {
               ) : null}
 
               <div className={`grid gap-12 ${realisation.description ? "mt-12" : ""}`}>
-                <BeforeAfter images={realisation.images} />
-                <RealisationGallery images={realisation.images} />
+                <BeforeAfter images={photos} />
               </div>
 
               <div className="mt-10 flex flex-wrap gap-3">

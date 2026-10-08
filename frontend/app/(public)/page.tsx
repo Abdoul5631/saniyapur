@@ -23,12 +23,14 @@ export default async function Home() {
     getClientLogos(),
   ]);
 
-  const statItems = [1, 2, 3, 4, 5].map((n) => ({
-    value: Number(settings[`stat_${n}_value` as keyof typeof settings] ?? 0),
-    suffix: String(settings[`stat_${n}_suffix` as keyof typeof settings] ?? ""),
-    label: String(settings[`stat_${n}_label` as keyof typeof settings] ?? ""),
-    description: String(settings[`stat_${n}_description` as keyof typeof settings] ?? ""),
-  }));
+  const statItems = [1, 2, 3, 4, 5]
+    .map((n) => ({
+      value: Number(settings[`stat_${n}_value` as keyof typeof settings] ?? 0),
+      suffix: String(settings[`stat_${n}_suffix` as keyof typeof settings] ?? ""),
+      label: String(settings[`stat_${n}_label` as keyof typeof settings] ?? ""),
+      description: String(settings[`stat_${n}_description` as keyof typeof settings] ?? ""),
+    }))
+    .filter((item) => item.label.trim().length > 0 && item.value > 0);
 
   return (
     <>
@@ -37,7 +39,9 @@ export default async function Home() {
       <AboutSection />
       <TeamGallerySection settings={gallerySettings} photos={galleryPhotos} preview />
       <CompetenciesSection />
-      <AnimatedStatsSection items={statItems} sinceYear={settings.stats_since_year || 2009} />
+      {statItems.length > 0 ? (
+        <AnimatedStatsSection items={statItems} sinceYear={settings.stats_since_year || 2009} />
+      ) : null}
       <WhySection />
       <SectorsSection />
       <RealisationsPreviewSection />
