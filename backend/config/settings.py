@@ -47,7 +47,8 @@ CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv("DJANGO_CSRF_TRUS
 
 # Durcissement production : actif uniquement quand DEBUG=False (jamais gênant en développement local).
 if not DEBUG:
-    SECURE_SSL_REDIRECT = os.getenv("DJANGO_SECURE_SSL_REDIRECT", "False").lower() == "true"
+    # Nginx gère la redirection HTTPS publique. L’API interne (frontend → backend:8000) doit rester en HTTP.
+    SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_SECONDS = 60 * 60 * 24 * 7  # 7 jours pour commencer ; augmenter une fois HTTPS confirmé stable.
