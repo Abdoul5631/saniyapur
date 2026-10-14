@@ -28,7 +28,7 @@ export function HeroInteractive({
   return (
     <section
       id="accueil-hero"
-      className="relative isolate flex min-h-[70vh] items-end overflow-hidden py-16 text-white sm:min-h-[78vh] sm:py-20 lg:min-h-[84vh] lg:items-center lg:py-24"
+      className="relative isolate flex min-h-[86svh] items-end overflow-hidden pt-24 pb-16 text-white sm:min-h-[78vh] sm:py-20 lg:min-h-[84vh] lg:items-center lg:py-24"
     >
       <HeroSlideshow
         images={images}
@@ -41,19 +41,19 @@ export function HeroInteractive({
             {tagline}
           </p>
           <h1
-            className="animate-fade-in-up mt-4 text-[1.85rem] font-semibold leading-[1.18] tracking-tight text-white sm:text-4xl lg:text-[2.7rem]"
+            className="animate-fade-in-up mt-4 text-[1.7rem] font-semibold leading-[1.18] tracking-tight text-white sm:text-4xl lg:text-[2.7rem]"
             style={{ animationDelay: "90ms" }}
           >
             {title}
           </h1>
           <p
-            className="animate-fade-in-up mt-5 max-w-lg text-base leading-relaxed text-white/85 sm:text-lg"
+            className="animate-fade-in-up mt-4 max-w-lg text-[0.95rem] leading-relaxed text-white/90 sm:mt-5 sm:text-lg"
             style={{ animationDelay: "180ms" }}
           >
             {text}
           </p>
           <div
-            className="animate-fade-in-up mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
+            className="animate-fade-in-up mt-6 flex flex-col items-stretch gap-3 sm:mt-8 sm:flex-row sm:items-center"
             style={{ animationDelay: "260ms" }}
           >
             <ButtonLink href={primaryUrl} className="px-7 py-3.5">
