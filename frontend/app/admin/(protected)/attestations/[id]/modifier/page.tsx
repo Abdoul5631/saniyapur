@@ -21,7 +21,7 @@ export default async function EditAttestationPage({
   }
 
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-6xl">
       <AdminHeader title={`Modifier : ${attestation.title}`} />
       <div className="rounded-2xl border border-[#dce5df] bg-white p-6 sm:p-8 shadow-xs">
         <AdminForm djangoPath={`/attestations/${attestation.id}/`} method="PATCH" redirectTo="/admin/attestations" submitLabel="Mettre à jour l'attestation">

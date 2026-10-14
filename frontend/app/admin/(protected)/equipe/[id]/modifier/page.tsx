@@ -20,7 +20,7 @@ export default async function EditTeamMemberPage({
     notFound();
   }
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-6xl">
       <AdminHeader
         title={`Modifier « ${member.name} »`}
         action={

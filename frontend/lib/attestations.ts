@@ -1,4 +1,4 @@
-import { apiFetch, apiFetchAll } from "@/lib/api";
+import { apiFetchAll } from "@/lib/api";
 import type { Attestation } from "@/types/admin";
 
 export const defaultAttestations: Attestation[] = [

@@ -5,3 +5,14 @@ Thumbs.db
 # Editors
 .vscode/
 .idea/
+
+# Fichiers de travail locaux (ne jamais publier)
+saniyapur_local.sql
+tmp_*
+extracted_*/
+extracted_*.txt
+catalogue_elements.json
+presentation_elements.json
+catalogue_clean_summary.txt
+team_matches.txt
+backend/fix_attestation_images.py

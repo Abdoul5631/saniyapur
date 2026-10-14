@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { AdminForm } from "@/components/admin/admin-form";
+import { ExtraPhotosManager } from "@/components/admin/extra-photos-manager";
 import { AdminHeader } from "@/components/admin/admin-header";
 import { DeleteButton } from "@/components/admin/delete-button";
 import { SectorFields } from "@/components/admin/sector-fields";
@@ -16,7 +17,7 @@ export default async function EditSectorPage({ params }: { params: Promise<{ slu
     notFound();
   }
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-6xl">
       <AdminHeader
         title={`Modifier « ${sector.name} »`}
         action={<DeleteButton action={deleteSector.bind(null, slug)} label="Supprimer le secteur" confirmTitle={`Supprimer « ${sector.name} » ?`} confirmDescription="Impossible si des réalisations sont encore rattachées à ce secteur." />}
@@ -26,6 +27,7 @@ export default async function EditSectorPage({ params }: { params: Promise<{ slu
           <SectorFields sector={sector} />
         </AdminForm>
       </div>
+      <ExtraPhotosManager endpoint="sector-images" parentField="sector" parentId={sector.id} photos={sector.gallery} />
     </div>
   );
 }

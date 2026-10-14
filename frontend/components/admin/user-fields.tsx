@@ -1,4 +1,4 @@
-﻿import { FormField, inputClassName } from "@/components/admin/form-field";
+import { FormField, inputClassName } from "@/components/admin/form-field";
 import { ADMIN_ROLES, type AdminUser } from "@/types/admin";
 
 const roleLabels: Record<string, string> = { admin: "Administrateur", editor: "Éditeur", commercial: "Commercial" };
@@ -32,7 +32,7 @@ export function UserFields({ user }: { user?: AdminUser }) {
 
       <fieldset>
         <legend className="text-sm font-medium text-[#16232a]">Rôle</legend>
-        <div className="mt-2 grid gap-2">
+        <div className="mt-2 grid gap-2 md:grid-cols-3">
           {ADMIN_ROLES.map((role) => (
             <label key={role} className="flex items-start gap-3 rounded-lg border border-[#dce5df] p-3 has-[:checked]:border-[#a85c36] has-[:checked]:bg-[#eaf2f2]">
               <input type="radio" name="role" value={role} defaultChecked={(user?.role ?? "editor") === role} className="mt-0.5 text-[#a85c36] focus:ring-[#a85c36]" />

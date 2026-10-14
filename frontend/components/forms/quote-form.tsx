@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { company } from "@/data/company";
 import { submitQuote } from "@/lib/public-submit";
@@ -80,12 +81,12 @@ export function QuoteForm({ services, sectors }: { services: Option[]; sectors: 
           >
             💬 Confirmer par WhatsApp
           </a>
-          <a
+          <Link
             href="/"
             className="inline-flex items-center gap-2 rounded-full border border-[#dce5df] px-5 py-2.5 text-sm font-semibold text-[#16232a] hover:bg-[#f8faf9] transition-colors"
           >
             ← Retour à l'accueil
-          </a>
+          </Link>
         </div>
       </div>
     );
@@ -328,9 +329,9 @@ export function QuoteForm({ services, sectors }: { services: Option[]; sectors: 
                   { label: "🔍 Secteur", value: formData.sector || "—" },
                   { label: "⚙️ Service", value: formData.service || "—" },
                 ].map(({ label, value }) => (
-                  <div key={label} className="flex items-start gap-3">
-                    <span className="text-[#8a9a92] min-w-[130px] font-medium">{label}</span>
-                    <span className="text-[#16232a] font-semibold truncate">{value}</span>
+                  <div key={label} className="flex flex-col gap-0.5 sm:flex-row sm:items-start sm:gap-3">
+                    <span className="text-[#8a9a92] font-medium sm:min-w-[130px]">{label}</span>
+                    <span className="min-w-0 break-words text-[#16232a] font-semibold">{value}</span>
                   </div>
                 ))}
               </div>

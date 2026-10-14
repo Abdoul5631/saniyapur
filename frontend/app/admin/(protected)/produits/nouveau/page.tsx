@@ -4,7 +4,7 @@ import { ProductFields } from "@/components/admin/product-fields";
 
 export default function NewProductPage() {
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-6xl">
       <AdminHeader title="Nouveau produit" />
       <div className="rounded-2xl border border-[#dce5df] bg-white p-6">
         <AdminForm djangoPath="/products/" method="POST" redirectTo="/admin/produits" submitLabel="Créer le produit">

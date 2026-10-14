@@ -1,3 +1,4 @@
+import { FormLayout, publishRowClassName } from "@/components/admin/form-layout";
 import { FormField, inputClassName } from "@/components/admin/form-field";
 import { ImageUploader } from "@/components/admin/image-uploader";
 import { PublishedToggle } from "@/components/admin/published-toggle";
@@ -5,7 +6,20 @@ import type { TeamMember } from "@/types/admin";
 
 export function TeamMemberFields({ member }: { member?: TeamMember }) {
   return (
-    <>
+    <FormLayout
+      aside={
+        <>
+      <FormField label="Photo" htmlFor="photo">
+        <ImageUploader id="photo" name="photo" currentUrl={member?.photo} label="membre" />
+      </FormField>
+
+      {/* ── Publication ── */}
+      <div className={publishRowClassName}>
+        <PublishedToggle defaultChecked={member?.published ?? true} />
+      </div>
+        </>
+      }
+    >
       {/* ── Identité ── */}
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField label="Nom complet" htmlFor="name" required>
@@ -29,14 +43,6 @@ export function TeamMemberFields({ member }: { member?: TeamMember }) {
         <textarea id="bio" name="bio" rows={4} defaultValue={member?.bio} className={inputClassName} />
       </FormField>
 
-      <FormField label="Photo" htmlFor="photo">
-        <ImageUploader id="photo" name="photo" currentUrl={member?.photo} label="membre" />
-      </FormField>
-
-      {/* ── Publication ── */}
-      <div className="border-t border-[#dce5df] pt-4">
-        <PublishedToggle defaultChecked={member?.published ?? true} />
-      </div>
-    </>
+    </FormLayout>
   );
 }

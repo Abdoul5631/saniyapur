@@ -108,7 +108,7 @@ export function WhySection() {
               Ce que vous gagnez avec SANIYAPUR
             </p>
             <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {benefits.map((benefit, index) => (
+              {benefits.map((benefit) => (
                 <li key={benefit} className="flex items-start gap-3">
                   <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-[#a85c36] text-[10px] text-white font-bold">
                     ✓

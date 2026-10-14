@@ -4,8 +4,8 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from services.views import ServiceViewSet
-from sectors.views import SectorViewSet
+from services.views import ServiceImageViewSet, ServiceViewSet
+from sectors.views import SectorImageViewSet, SectorViewSet
 from realisations.views import RealisationImageViewSet, RealisationViewSet
 from products.views import ProductImageViewSet, ProductViewSet
 from news.views import NewsViewSet
@@ -19,6 +19,8 @@ from attestations.views import AttestationViewSet
 router = DefaultRouter()
 router.register("services", ServiceViewSet, basename="service")
 router.register("sectors", SectorViewSet, basename="sector")
+router.register("service-images", ServiceImageViewSet, basename="service-image")
+router.register("sector-images", SectorImageViewSet, basename="sector-image")
 router.register("realisations", RealisationViewSet, basename="realisation")
 router.register("realisation-images", RealisationImageViewSet, basename="realisation-image")
 router.register("users", UserViewSet, basename="user")

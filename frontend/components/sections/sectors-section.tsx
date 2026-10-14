@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Container } from "@/components/ui/container";
+import { ServiceSlideshow } from "@/components/ui/service-slideshow";
 import { Reveal } from "@/components/ui/reveal";
 import { resolveMediaUrl } from "@/lib/media";
 import { getSectors } from "@/lib/sectors";
@@ -46,30 +46,36 @@ export async function SectorsSection() {
                 image: "/images/services/bionettoyage.png",
                 tag: "Secteur Pro",
               };
-              const imageSrc = sector.image ? resolveMediaUrl(sector.image, meta.image) : meta.image;
+              const images = [
+                sector.image ? resolveMediaUrl(sector.image, meta.image) : meta.image,
+                ...(sector.gallery ?? []).map((g) => resolveMediaUrl(g.image, "")),
+              ].filter(Boolean);
 
               return (
-                <Reveal key={sector.id} delayMs={index * 80}>
+                <Reveal key={sector.id} delayMs={(index % 3) * 120} duration={800}>
                   <Link
                     href={`/secteurs/${sector.slug}`}
-                    className="card-luxury group relative isolate flex min-h-[420px] flex-col justify-between overflow-hidden rounded-3xl bg-[#091f24] p-8 text-white shadow-xl transition-all duration-500 hover:shadow-2xl border border-[#dce5df] hover:border-[#a85c36]"
+                    className="card-luxury svc-card group relative isolate flex min-h-[380px] flex-col sm:min-h-[420px] justify-between overflow-hidden rounded-3xl bg-[#091f24] p-6 sm:p-8 text-white shadow-xl transition-all duration-500 hover:shadow-2xl border border-[#dce5df] hover:border-[#a85c36]"
                   >
-                    <div className="absolute inset-0 z-0 overflow-hidden">
-                      <Image
-                        src={imageSrc}
+                    <div
+                      className="svc-img-reveal absolute inset-0 z-0 overflow-hidden"
+                      style={{ "--svc-delay": `${(index % 3) * 120 + 150}ms` } as React.CSSProperties}
+                    >
+                      <ServiceSlideshow
+                        images={images}
                         alt={sector.name}
-                        fill
-                        unoptimized
+                        startDelayMs={index * 450}
+                        dotsClassName="top-6 right-6"
                         sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                        className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-110"
                       />
                     </div>
+                    <div className="svc-shine z-[1]" />
 
                     <div className="absolute inset-0 z-[1] bg-linear-to-t from-[#041215]/80 via-[#041215]/25 to-black/10" />
 
                     {/* Haut : Badge sectoriel */}
                     <div className="relative z-10">
-                      <span className="inline-block rounded-full bg-white/95 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#a85c36] shadow-md backdrop-blur-md transition-transform duration-300 group-hover:scale-105">
+                      <span className="svc-tag inline-block rounded-full bg-white/95 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#a85c36] shadow-md backdrop-blur-md transition-transform duration-300 group-hover:scale-105">
                         {meta.tag}
                       </span>
                     </div>
@@ -84,11 +90,12 @@ export async function SectorsSection() {
                       </p>
                       <div className="mt-6 flex items-center justify-between border-t border-white/20 pt-4 text-xs font-bold uppercase tracking-wider text-[#e8d9cc]">
                         <span>Explorer le secteur</span>
-                        <span className="grid size-7 place-items-center rounded-full bg-white/15 text-white transition-all duration-300 group-hover:translate-x-1 group-hover:bg-[#a85c36]">
+                        <span className="grid size-7 place-items-center rounded-full bg-white/15 text-white transition-all duration-300 group-hover:translate-x-1.5 group-hover:-rotate-45 group-hover:bg-[#a85c36]">
                           →
                         </span>
                       </div>
                     </div>
+                    <span className="svc-bar" />
                   </Link>
                 </Reveal>
               );

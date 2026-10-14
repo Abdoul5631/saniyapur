@@ -18,7 +18,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ sl
   }
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-6xl">
       <AdminHeader
         title={`Modifier « ${product.name} »`}
         action={<DeleteButton action={deleteProduct.bind(null, slug)} label="Supprimer le produit" confirmTitle={`Supprimer « ${product.name} » ?`} />}

@@ -18,18 +18,20 @@ export function ServiceFields({
   );
 
   return (
-    <>
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+      <div className="grid content-start gap-4">
       <NameSlugFields nameLabel="Nom du service" nameDefault={service?.name} slugDefault={service?.slug} />
 
       <FormField label="Description" htmlFor="description" required hint="Description complète du service (la description courte sera générée automatiquement).">
-        <textarea id="description" name="description" required rows={5} defaultValue={service?.description} className={inputClassName} />
+        <textarea id="description" name="description" required rows={4} defaultValue={service?.description} className={inputClassName} />
       </FormField>
 
+      <div className="grid gap-4 md:grid-cols-2">
       <FormField label="Prestations incluses" htmlFor="prestations" hint="Saisissez une prestation par ligne. Ces points seront affichés sur la page du service.">
         <textarea
           id="prestations"
           name="prestations"
-          rows={5}
+          rows={6}
           placeholder={"- Nettoyage approfondi des sols et surfaces\n- Désinfection des points de contact\n- Traitement bactéricide et virucide"}
           defaultValue={service?.prestations}
           className={inputClassName}
@@ -40,16 +42,34 @@ export function ServiceFields({
         <textarea
           id="avantages"
           name="avantages"
-          rows={4}
+          rows={6}
           placeholder={"- Protocoles conformes aux normes d'hygiène\n- Produits certifiés et biodégradables\n- Équipe qualifiée et dédiée"}
           defaultValue={service?.avantages}
           className={inputClassName}
         />
       </FormField>
+      </div>
+
+      </div>
+
+      <aside className="grid content-start gap-4 rounded-xl border border-[#eef2ef] bg-[#fbfcfb] p-4">
+      <div className="grid gap-4">
+        <FormField label="Image" htmlFor="image">
+          <ImageUploader id="image" name="image" currentUrl={service?.image} label="service" />
+        </FormField>
+        <div className="grid gap-4">
+          <FormField label="Icône" htmlFor="icon">
+            <ServiceIconPicker defaultValue={service?.icon} />
+          </FormField>
+          <FormField label="Ordre d'affichage" htmlFor="order" hint="Les services sont triés du plus petit au plus grand.">
+            <input id="order" name="order" type="number" min={0} defaultValue={service?.order ?? 0} className={inputClassName} />
+          </FormField>
+        </div>
+      </div>
 
       <FormField label="Secteurs concernés" htmlFor="sectors" hint="Cochez les secteurs d'activité concernés par ce service.">
         {sectors.length ? (
-          <div className="grid gap-2 sm:grid-cols-2 rounded-xl border border-[#dce5df] bg-[#f7f8f6] p-4">
+          <div className="grid gap-2 rounded-xl border border-[#dce5df] bg-[#f7f8f6] p-4">
             {sectors.map((sector) => (
               <label key={sector.id} className="flex items-center gap-3 text-sm text-[#16232a] cursor-pointer hover:text-[#a85c36]">
                 <input
@@ -74,22 +94,8 @@ export function ServiceFields({
         )}
       </FormField>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <FormField label="Image" htmlFor="image">
-          <ImageUploader id="image" name="image" currentUrl={service?.image} label="service" />
-        </FormField>
-        <div className="grid gap-4">
-          <FormField label="Icône" htmlFor="icon">
-            <ServiceIconPicker defaultValue={service?.icon} />
-          </FormField>
-          <FormField label="Ordre d'affichage" htmlFor="order" hint="Les services sont triés du plus petit au plus grand.">
-            <input id="order" name="order" type="number" min={0} defaultValue={service?.order ?? 0} className={inputClassName} />
-          </FormField>
-        </div>
-      </div>
-
       {/* ── Mise en avant & Publication ── */}
-      <div className="flex flex-wrap gap-6 items-center border-t border-[#dce5df] pt-4">
+      <div className="flex flex-wrap gap-x-6 gap-y-3 items-center border-t border-[#dce5df] pt-4">
         <label className="flex items-center gap-2 text-sm font-medium text-[#16232a] cursor-pointer select-none">
           <input
             type="checkbox"
@@ -102,6 +108,7 @@ export function ServiceFields({
         </label>
         <PublishedToggle defaultChecked={service?.published} />
       </div>
-    </>
+      </aside>
+    </div>
   );
 }

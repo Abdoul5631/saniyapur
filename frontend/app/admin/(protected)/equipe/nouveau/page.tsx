@@ -6,7 +6,7 @@ export const metadata = { title: "Nouveau membre — Administration" };
 
 export default function NewTeamMemberPage() {
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-6xl">
       <AdminHeader title="Ajouter un membre" />
       <div className="rounded-2xl border border-[#dce5df] bg-white p-6">
         <AdminForm djangoPath="/team/" method="POST" redirectTo="/admin/equipe" submitLabel="Ajouter le membre">

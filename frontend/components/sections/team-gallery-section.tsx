@@ -14,7 +14,7 @@ type Props = {
 export function TeamGallerySection({ settings, photos, preview = false, embedded = false }: Props) {
   if (!photos.length) return null;
 
-  const visible = preview ? photos.slice(0, 6) : photos;
+  const visible = photos;
   const title = settings.title || "Galerie de l’équipe";
   const description = settings.description?.trim();
 
@@ -31,10 +31,10 @@ export function TeamGallerySection({ settings, photos, preview = false, embedded
       </Reveal>
 
       <div className="mt-10">
-        <TeamPhotoGrid photos={visible} />
+        <TeamPhotoGrid photos={visible} marquee={preview} />
       </div>
 
-      {preview && photos.length > 6 && (
+      {preview && (
         <div className="mt-8 text-center">
           <Link
             href="/a-propos#galerie-equipe"

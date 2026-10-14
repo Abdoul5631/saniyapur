@@ -6,7 +6,7 @@ export const metadata = { title: "Ajouter une attestation — Administration" };
 
 export default function NewAttestationPage() {
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-6xl">
       <AdminHeader title="Ajouter une attestation ou référence" />
       <div className="rounded-2xl border border-[#dce5df] bg-white p-6 sm:p-8 shadow-xs">
         <AdminForm djangoPath="/attestations/" method="POST" redirectTo="/admin/attestations" submitLabel="Enregistrer l'attestation">

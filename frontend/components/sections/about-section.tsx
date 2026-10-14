@@ -54,10 +54,13 @@ export async function AboutSection() {
     ? about.presentation_content.split(/\n\s*\n/).filter(Boolean)
     : [];
 
+  const deviseMatch = (about.presentation_devise ?? "").match(/[«"“]\s*([^»"”\n]+?)\s*[»"”]/);
+  const devise = deviseMatch?.[1]?.trim() ?? "";
+
   return (
     <section className="relative py-20 sm:py-28 bg-white border-b border-[#e2eae4]/60">
       <Container>
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:items-center">
+        <div className="grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:items-start lg:gap-16">
           {/* Texte de présentation */}
           <Reveal>
             <div className="flex items-center gap-2">
@@ -66,15 +69,18 @@ export async function AboutSection() {
               </span>
             </div>
 
-            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#16232a] leading-[1.15]">
+            <h2 className="mt-5 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#16232a] leading-[1.2] text-balance">
               {about.presentation_title || "Une exigence certifiée pour des environnements sains et préservés."}
             </h2>
 
             {presentationParas.length > 0 ? (
-              <div className="mt-6 space-y-4 text-base sm:text-lg leading-relaxed text-[#526259]">
-                {presentationParas.slice(0, 2).map((p, idx) => (
-                  <p key={idx}>{p}</p>
-                ))}
+              <div className="mt-6 space-y-4 text-base leading-relaxed text-[#526259]">
+                <p className="border-l-4 border-[#a85c36] pl-4 text-lg font-medium leading-relaxed text-[#16232a]">
+                  {presentationParas[0]}
+                </p>
+                {presentationParas[1] ? (
+                  <p className="line-clamp-4">{presentationParas[1]}</p>
+                ) : null}
               </div>
             ) : (
               <p className="mt-6 text-lg leading-relaxed text-[#526259]">
@@ -94,32 +100,38 @@ export async function AboutSection() {
             </div>
           </Reveal>
 
-          {/* Les 3 piliers structurés et alignés avec design haut de gamme */}
-          <div className="grid gap-4">
+          {/* Les 3 piliers : ligne verticale numérotée */}
+          <div className="relative grid gap-4 lg:pt-10">
+            <span aria-hidden className="absolute bottom-10 left-[1.65rem] top-14 hidden w-px bg-linear-to-b from-[#a85c36]/50 via-[#dce5df] to-transparent sm:block lg:top-24" />
             {pillars.map((pillar, index) => (
-              <Reveal key={pillar.id} delayMs={index * 90}>
-                <div className="card-luxury rounded-2xl border border-[#dce5df] bg-[#f7f8f6]/80 p-6 sm:p-7 transition duration-300 hover:border-[#a85c36] hover:bg-white">
+              <Reveal key={pillar.id} delayMs={index * 120} direction="left">
+                <div className="card-luxury group relative rounded-2xl border border-[#dce5df] bg-[#f7f8f6]/80 p-5 sm:p-6 transition duration-300 hover:border-[#a85c36] hover:bg-white">
                   <div className="flex items-start gap-4 sm:gap-5">
-                    <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-white shadow-xs border border-[#e2eae4]">
+                    <span className="relative grid size-12 shrink-0 place-items-center rounded-xl border border-[#e2eae4] bg-white shadow-xs transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">
                       {pillar.icon}
+                      <span className="absolute -right-2 -top-2 grid size-5 place-items-center rounded-full bg-[#a85c36] text-[10px] font-bold text-white">
+                        {index + 1}
+                      </span>
                     </span>
                     <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <h3 className="text-lg font-bold text-[#16232a] tracking-tight">
-                          {pillar.title}
-                        </h3>
-                        <span className="rounded-full bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[#a85c36] border border-[#e2eae4]">
-                          {pillar.badge}
-                        </span>
-                      </div>
-                      <p className="mt-2 text-sm leading-relaxed text-[#526259]">
-                        {pillar.description}
-                      </p>
+                      <span className="inline-block rounded-full border border-[#e2eae4] bg-white px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#a85c36]">
+                        {pillar.badge}
+                      </span>
+                      <h3 className="mt-2 text-lg font-bold tracking-tight text-[#16232a]">{pillar.title}</h3>
+                      <p className="mt-1.5 text-sm leading-relaxed text-[#526259]">{pillar.description}</p>
                     </div>
                   </div>
                 </div>
               </Reveal>
             ))}
+            {devise ? (
+              <Reveal delayMs={400}>
+                <div className="rounded-2xl bg-[#16232a] px-6 py-5 text-center">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#e8b79a]">Notre devise</p>
+                  <p className="mt-1.5 text-xl font-extrabold tracking-wide text-white">{devise}</p>
+                </div>
+              </Reveal>
+            ) : null}
           </div>
         </div>
       </Container>

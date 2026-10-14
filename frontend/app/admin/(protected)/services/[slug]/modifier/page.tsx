@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { AdminForm } from "@/components/admin/admin-form";
+import { ExtraPhotosManager } from "@/components/admin/extra-photos-manager";
 import { AdminHeader } from "@/components/admin/admin-header";
 import { DeleteButton } from "@/components/admin/delete-button";
 import { ServiceFields } from "@/components/admin/service-fields";
@@ -20,7 +21,7 @@ export default async function EditServicePage({ params }: { params: Promise<{ sl
     notFound();
   }
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-6xl">
       <AdminHeader
         title={`Modifier « ${service.name} »`}
         action={<DeleteButton action={deleteService.bind(null, slug)} label="Supprimer le service" confirmTitle={`Supprimer « ${service.name} » ?`} />}
@@ -30,6 +31,7 @@ export default async function EditServicePage({ params }: { params: Promise<{ sl
           <ServiceFields service={service} sectors={sectors} />
         </AdminForm>
       </div>
+      <ExtraPhotosManager endpoint="service-images" parentField="service" parentId={service.id} photos={service.gallery} />
     </div>
   );
 }

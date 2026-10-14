@@ -1,3 +1,4 @@
+import { FormLayout, publishRowClassName } from "@/components/admin/form-layout";
 import { FormField, inputClassName } from "@/components/admin/form-field";
 import { ImageUploader } from "@/components/admin/image-uploader";
 import { NameSlugFields } from "@/components/admin/name-slug-fields";
@@ -16,18 +17,10 @@ const NEWS_CATEGORIES = [
 
 export function NewsFields({ article }: { article?: AdminNews }) {
   return (
-    <>
-      <NameSlugFields nameField="title" nameLabel="Titre de l'article" nameDefault={article?.title} slugDefault={article?.slug} />
-
-      <FormField label="Résumé" htmlFor="excerpt" hint="Court résumé affiché dans les listes (généré automatiquement si vide).">
-        <input id="excerpt" name="excerpt" maxLength={350} defaultValue={article?.excerpt} className={inputClassName} />
-      </FormField>
-
-      <FormField label="Contenu" htmlFor="content" required>
-        <RichTextEditor id="content" name="content" defaultValue={article?.content} />
-      </FormField>
-
-      <div className="grid gap-4 sm:grid-cols-2">
+    <FormLayout
+      aside={
+        <>
+      <div className="grid gap-4">
         <FormField label="Catégorie" htmlFor="category">
           <select id="category" name="category" defaultValue={article?.category ?? ""} className={inputClassName}>
             <option value="">Non catégorisé</option>
@@ -41,7 +34,7 @@ export function NewsFields({ article }: { article?: AdminNews }) {
         </FormField>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4">
         <FormField label="Image principale" htmlFor="image">
           <ImageUploader id="image" name="image" currentUrl={article?.image} label="actualité" />
         </FormField>
@@ -57,7 +50,7 @@ export function NewsFields({ article }: { article?: AdminNews }) {
       </div>
 
       {/* ── Mise en avant & Publication ── */}
-      <div className="flex flex-wrap gap-6 items-center border-t border-[#dce5df] pt-4">
+      <div className={publishRowClassName}>
         <label className="flex items-center gap-2 text-sm font-medium text-[#16232a] cursor-pointer select-none">
           <input
             type="checkbox"
@@ -70,6 +63,20 @@ export function NewsFields({ article }: { article?: AdminNews }) {
         </label>
         <PublishedToggle defaultChecked={article?.published} />
       </div>
-    </>
+
+        </>
+      }
+    >
+      <NameSlugFields nameField="title" nameLabel="Titre de l'article" nameDefault={article?.title} slugDefault={article?.slug} />
+
+      <FormField label="Résumé" htmlFor="excerpt" hint="Court résumé affiché dans les listes (généré automatiquement si vide).">
+        <input id="excerpt" name="excerpt" maxLength={350} defaultValue={article?.excerpt} className={inputClassName} />
+      </FormField>
+
+      <FormField label="Contenu" htmlFor="content" required>
+        <RichTextEditor id="content" name="content" defaultValue={article?.content} />
+      </FormField>
+
+    </FormLayout>
   );
 }

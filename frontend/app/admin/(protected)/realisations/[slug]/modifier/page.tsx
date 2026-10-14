@@ -42,7 +42,7 @@ export default async function EditRealisationPage({ params }: { params: Promise<
   const siblings = normaliseAdminList(siblingsData).filter((item) => item.slug !== realisation.slug);
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-6xl">
       <AdminHeader
         title={`Modifier « ${realisation.title} »`}
         action={

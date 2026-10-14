@@ -51,3 +51,17 @@ class Service(models.Model):
         if not self.short_description and self.description:
             self.short_description = self.description[:280]
         super().save(*args, **kwargs)
+
+
+class ServiceImage(models.Model):
+    """Photos supplémentaires d'un service, affichées en diaporama sur le site."""
+
+    service = models.ForeignKey(Service, related_name="gallery", on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="services/")
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order", "id"]
+
+    def __str__(self):
+        return f"{self.service.name} #{self.order}"

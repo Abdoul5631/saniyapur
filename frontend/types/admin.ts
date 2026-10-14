@@ -17,6 +17,8 @@ export type AdminService = {
   sectors?: number[];
   sector_details?: AdminSector[];
   image: string | null;
+  /** Photos supplémentaires affichées en diaporama. */
+  gallery?: { id: number; image: string; order: number }[];
   /** Clé d'icône parmi un jeu prédéfini (voir components/admin/service-icon.tsx). */
   icon: string;
   order: number;
@@ -33,6 +35,7 @@ export type AdminSector = {
   description: string;
   besoins_specifiques?: string;
   image: string | null;
+  gallery?: { id: number; image: string; order: number }[];
   order: number;
   featured: boolean;
   published: boolean;

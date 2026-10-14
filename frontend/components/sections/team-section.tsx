@@ -1,4 +1,3 @@
-import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { TeamCard } from "@/components/team/team-card";
 import type { TeamMember } from "@/types/admin";

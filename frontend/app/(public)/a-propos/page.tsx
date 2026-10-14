@@ -134,6 +134,12 @@ export default async function AboutPage() {
 
   const hasTeamBand =
     teamMembers.length > 0 || Boolean(about.operational_team_content) || galleryPhotos.length > 0;
+  // Devise : « Notre Devise : "PROPRETÉ SUR ORDONNANCE" J&B … » → slogan en grand + phrase d'engagement.
+  const deviseText = (about.presentation_devise || "").replace(/^\s*notre\s+devise\s*:?\s*/i, "").trim();
+  const deviseMatch = deviseText.match(/^[«"“]\s*([^»"”]+?)\s*[»"”]\s*([\s\S]*)$/);
+  const devise = deviseMatch
+    ? { motto: deviseMatch[1].trim(), rest: deviseMatch[2].trim() }
+    : { motto: "", rest: deviseText };
   const legalLines = (about.presentation_legal_info || "")
     .split("\n")
     .map((line) => line.trim())
@@ -174,19 +180,46 @@ export default async function AboutPage() {
 
           <Reveal className={about.presentation_image ? "mt-10" : "mt-6"}>
             {about.presentation_devise && (
-              <div className="rounded-2xl border border-[#a85c36]/25 bg-[#f1e4dc]/35 p-5 text-sm italic leading-relaxed text-[#8b4a2b] sm:p-6 sm:text-base">
-                <p className="mb-1 text-xs font-bold uppercase tracking-wider text-[#a85c36] not-italic">
-                  Notre devise
-                </p>
-                {highlightBrand(about.presentation_devise)}
+              <div className="relative overflow-hidden rounded-3xl bg-[#16232a] px-6 py-8 text-white shadow-xl sm:px-10 sm:py-10">
+                <span aria-hidden className="pointer-events-none absolute -top-6 left-4 select-none font-serif text-[9rem] leading-none text-[#a85c36]/30">
+                  “
+                </span>
+                <div aria-hidden className="pointer-events-none absolute -bottom-20 -right-20 size-64 rounded-full bg-[#a85c36]/20 blur-3xl" />
+                <div className="relative">
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#e8b79a]">Notre devise</p>
+                  {devise.motto ? (
+                    <p className="mt-3 text-2xl font-extrabold tracking-wide text-white sm:text-4xl">{devise.motto}</p>
+                  ) : null}
+                  {devise.rest ? (
+                    <p className="mt-4 max-w-4xl text-base leading-relaxed text-white/80 sm:text-lg">
+                      {highlightBrand(devise.rest, true)}
+                    </p>
+                  ) : null}
+                </div>
               </div>
             )}
 
-            <div className="mt-6 max-w-4xl space-y-4 text-base leading-relaxed text-[#526259] sm:text-lg">
-              {presentationParagraphs.map((para, i) => (
-                <p key={i}>{highlightBrand(para)}</p>
-              ))}
-            </div>
+            {presentationParagraphs.length > 0 && (
+              <div className="mt-10">
+                <p className="max-w-4xl border-l-4 border-[#a85c36] pl-5 text-lg font-medium leading-relaxed text-[#16232a] sm:text-xl">
+                  {highlightBrand(presentationParagraphs[0])}
+                </p>
+                {presentationParagraphs.length > 1 && (
+                  <div className="mt-8 grid gap-5 md:grid-cols-2">
+                    {presentationParagraphs.slice(1).map((para, i) => (
+                      <div
+                        key={i}
+                        className={`card-luxury rounded-2xl border border-[#dce5df] bg-[#f8faf9] p-6 text-base leading-relaxed text-[#526259] ${
+                          presentationParagraphs.length === 2 ? "md:col-span-2" : ""
+                        }`}
+                      >
+                        {highlightBrand(para)}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
 
             {legalLines.length > 0 && (
               <div className="mt-8 overflow-hidden rounded-2xl border border-[#dce5df] bg-[#f8faf9] p-6 sm:p-7">

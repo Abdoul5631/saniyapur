@@ -25,7 +25,7 @@ export default async function NewRealisationPage({
       : undefined;
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-6xl">
       <AdminHeader
         title={client ? `Nouvelle réalisation — ${client}` : "Nouvelle réalisation"}
         description={

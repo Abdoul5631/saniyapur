@@ -1,7 +1,7 @@
 from django.db import models
 from rest_framework.viewsets import ModelViewSet
-from .models import Service
-from .serializers import ServiceSerializer
+from .models import Service, ServiceImage
+from .serializers import ServiceImageSerializer, ServiceSerializer
 class ServiceViewSet(ModelViewSet):
     serializer_class = ServiceSerializer
     lookup_field = "slug"
@@ -13,3 +13,9 @@ class ServiceViewSet(ModelViewSet):
         published = self.request.query_params.get("published")
         if published is not None: queryset = queryset.filter(published=published.lower() == "true")
         return queryset
+
+
+class ServiceImageViewSet(ModelViewSet):
+    serializer_class = ServiceImageSerializer
+    queryset = ServiceImage.objects.all()
+    pagination_class = None

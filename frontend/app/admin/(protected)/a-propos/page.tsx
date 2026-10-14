@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AboutSection, AboutToolbar } from "@/components/admin/about-section";
 import { AdminForm } from "@/components/admin/admin-form";
 import { AdminHeader } from "@/components/admin/admin-header";
 import { FormField, inputClassName } from "@/components/admin/form-field";
@@ -34,16 +35,15 @@ export default async function AdminAboutPage() {
         }
       />
 
-      <div className="mt-6 rounded-2xl border border-[#dce5df] bg-white p-6 sm:p-8 shadow-xs">
+      <div className="mt-4 flex items-center justify-between gap-3">
+        <p className="text-xs text-[#8a9a92]">13 sections — cliquez sur une section pour la modifier.</p>
+        <AboutToolbar />
+      </div>
+
+      <div className="mt-4 rounded-2xl border border-[#dce5df] bg-white p-4 sm:p-6 shadow-xs">
         <AdminForm djangoPath="/about/" method="PATCH" submitLabel="Enregistrer toutes les modifications">
           {/* 1. Présentation de la société */}
-          <section className="space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-full bg-[#f1e4dc] text-xs font-bold text-[#a85c36]">
-                1
-              </span>
-              <h2 className="text-base font-bold text-[#16232a]">PRÉSENTATION DE LA SOCIÉTÉ</h2>
-            </div>
+          <AboutSection number={1} title="PRÉSENTATION DE LA SOCIÉTÉ" summary="Titre, devise, texte, infos légales" defaultOpen >
             <div className="grid gap-4">
               <FormField label="Titre de la présentation" htmlFor="presentation_title" required>
                 <input
@@ -91,24 +91,18 @@ export default async function AdminAboutPage() {
                 />
               </FormField>
             </div>
-          </section>
+          </AboutSection>
 
           {/* 2. Présentation de l'équipe */}
-          <section className="border-t border-[#eef2ef] pt-8 space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="flex size-7 items-center justify-center rounded-full bg-[#f1e4dc] text-xs font-bold text-[#a85c36]">
-                  2
-                </span>
-                <h2 className="text-base font-bold text-[#16232a]">PRÉSENTATION DE L'ÉQUIPE</h2>
-              </div>
+          <AboutSection number={2} title="PRÉSENTATION DE L'ÉQUIPE" summary="Introduction de l'équipe" extra={
               <Link
                 href="/admin/equipe"
-                className="inline-flex items-center gap-1.5 rounded-full bg-[#a85c36] px-4 py-1.5 text-xs font-semibold text-white hover:bg-[#8b4a2b]"
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-[#a85c36] px-4 py-1.5 text-xs font-semibold text-white hover:bg-[#8b4a2b]"
               >
                 Gérer l’équipe & la galerie ({teamMembers.length}) →
               </Link>
-            </div>
+            }
+            >
             <div className="grid gap-4">
               <FormField label="Titre de la section équipe" htmlFor="team_presentation_title">
                 <input
@@ -128,16 +122,10 @@ export default async function AdminAboutPage() {
                 />
               </FormField>
             </div>
-          </section>
+          </AboutSection>
 
           {/* 3. Personnel opérationnel */}
-          <section className="border-t border-[#eef2ef] pt-8 space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-full bg-[#f1e4dc] text-xs font-bold text-[#a85c36]">
-                3
-              </span>
-              <h2 className="text-base font-bold text-[#16232a]">LE PERSONNEL OPÉRATIONNEL</h2>
-            </div>
+          <AboutSection number={3} title="LE PERSONNEL OPÉRATIONNEL" summary="Garanties du personnel" >
             <div className="grid gap-4">
               <FormField label="Titre personnel opérationnel" htmlFor="operational_team_title">
                 <input
@@ -157,23 +145,15 @@ export default async function AdminAboutPage() {
                 />
               </FormField>
             </div>
-          </section>
+          </AboutSection>
 
           {/* 4. Notre engagement social */}
-          <section className="border-t border-[#eef2ef] pt-8 space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-full bg-[#f1e4dc] text-xs font-bold text-[#a85c36]">
-                4
-              </span>
-              <h2 className="text-base font-bold text-[#16232a]">NOTRE ENGAGEMENT SOCIAL</h2>
-              <Link
-                href="/engagement-social"
-                target="_blank"
-                className="ml-auto text-xs font-semibold text-[#a85c36] hover:underline"
-              >
+          <AboutSection number={4} title="NOTRE ENGAGEMENT SOCIAL" summary="Texte et photo de la page dédiée" extra={
+              <Link href="/engagement-social" target="_blank" className="shrink-0 text-xs font-semibold text-[#a85c36] hover:underline">
                 Voir la page publique ↗
               </Link>
-            </div>
+            }
+            >
             <div className="grid gap-4">
               <FormField label="Titre engagement social" htmlFor="social_commitment_title">
                 <input
@@ -205,16 +185,10 @@ export default async function AdminAboutPage() {
                 />
               </FormField>
             </div>
-          </section>
+          </AboutSection>
 
           {/* 5. Importance et Enjeux du Bionettoyage */}
-          <section className="border-t border-[#eef2ef] pt-8 space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-full bg-[#f1e4dc] text-xs font-bold text-[#a85c36]">
-                5
-              </span>
-              <h2 className="text-base font-bold text-[#16232a]">L'IMPORTANCE ET LES ENJEUX DU BIONETTOYAGE</h2>
-            </div>
+          <AboutSection number={5} title="L'IMPORTANCE ET LES ENJEUX DU BIONETTOYAGE" summary="Enjeux et principes clés" >
             <div className="grid gap-4">
               <FormField label="Titre section bionettoyage" htmlFor="bionettoyage_title">
                 <input
@@ -234,16 +208,10 @@ export default async function AdminAboutPage() {
                 />
               </FormField>
             </div>
-          </section>
+          </AboutSection>
 
           {/* 6. Domaines de compétences */}
-          <section className="border-t border-[#eef2ef] pt-8 space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-full bg-[#f1e4dc] text-xs font-bold text-[#a85c36]">
-                6
-              </span>
-              <h2 className="text-base font-bold text-[#16232a]">NOS DOMAINES DE COMPÉTENCES</h2>
-            </div>
+          <AboutSection number={6} title="NOS DOMAINES DE COMPÉTENCES" summary="Liste des domaines" >
             <div className="grid gap-4">
               <FormField label="Titre domaines" htmlFor="competencies_title">
                 <input
@@ -263,16 +231,10 @@ export default async function AdminAboutPage() {
                 />
               </FormField>
             </div>
-          </section>
+          </AboutSection>
 
           {/* 7. Notre mission */}
-          <section className="border-t border-[#eef2ef] pt-8 space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-full bg-[#f1e4dc] text-xs font-bold text-[#a85c36]">
-                7
-              </span>
-              <h2 className="text-base font-bold text-[#16232a]">NOTRE MISSION</h2>
-            </div>
+          <AboutSection number={7} title="NOTRE MISSION" summary="Mission" >
             <div className="grid gap-4">
               <FormField label="Titre de la mission" htmlFor="mission_title">
                 <input
@@ -292,16 +254,10 @@ export default async function AdminAboutPage() {
                 />
               </FormField>
             </div>
-          </section>
+          </AboutSection>
 
           {/* 8. Notre objectif & Objectifs spécifiques */}
-          <section className="border-t border-[#eef2ef] pt-8 space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-full bg-[#f1e4dc] text-xs font-bold text-[#a85c36]">
-                8
-              </span>
-              <h2 className="text-base font-bold text-[#16232a]">NOTRE OBJECTIF ET OBJECTIFS SPÉCIFIQUES</h2>
-            </div>
+          <AboutSection number={8} title="NOTRE OBJECTIF ET OBJECTIFS SPÉCIFIQUES" summary="Objectifs et avantages" >
             <div className="grid gap-4">
               <FormField label="Titre section objectif" htmlFor="objectives_title">
                 <input
@@ -339,16 +295,10 @@ export default async function AdminAboutPage() {
                 />
               </FormField>
             </div>
-          </section>
+          </AboutSection>
 
           {/* 9. Notre vision & Le paradoxe que nous combattons */}
-          <section className="border-t border-[#eef2ef] pt-8 space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-full bg-[#f1e4dc] text-xs font-bold text-[#a85c36]">
-                9
-              </span>
-              <h2 className="text-base font-bold text-[#16232a]">NOTRE VISION : LA SATISFACTION DES CLIENTS</h2>
-            </div>
+          <AboutSection number={9} title="NOTRE VISION : LA SATISFACTION DES CLIENTS" summary="Vision, paradoxe, impact" >
             <div className="grid gap-4">
               <FormField label="Titre de la vision" htmlFor="vision_title">
                 <input
@@ -395,16 +345,10 @@ export default async function AdminAboutPage() {
                 />
               </FormField>
             </div>
-          </section>
+          </AboutSection>
 
           {/* 10. Expertise internationale */}
-          <section className="border-t border-[#eef2ef] pt-8 space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-full bg-[#f1e4dc] text-xs font-bold text-[#a85c36]">
-                10
-              </span>
-              <h2 className="text-base font-bold text-[#16232a]">EXPERTISE INTERNATIONALE</h2>
-            </div>
+          <AboutSection number={10} title="EXPERTISE INTERNATIONALE" summary="Partenariat allemand" >
             <div className="grid gap-4">
               <FormField label="Titre expertise internationale" htmlFor="international_expertise_title">
                 <input
@@ -432,16 +376,10 @@ export default async function AdminAboutPage() {
                 />
               </FormField>
             </div>
-          </section>
+          </AboutSection>
 
           {/* 11. Nos références clients */}
-          <section className="border-t border-[#eef2ef] pt-8 space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-full bg-[#f1e4dc] text-xs font-bold text-[#a85c36]">
-                11
-              </span>
-              <h2 className="text-base font-bold text-[#16232a]">NOS RÉFÉRENCES CLIENTS</h2>
-            </div>
+          <AboutSection number={11} title="NOS RÉFÉRENCES CLIENTS" summary="Références clients" >
             <div className="grid gap-4">
               <FormField label="Titre références" htmlFor="references_title">
                 <input
@@ -461,16 +399,10 @@ export default async function AdminAboutPage() {
                 />
               </FormField>
             </div>
-          </section>
+          </AboutSection>
 
           {/* 12. Message du Directeur Général */}
-          <section className="border-t border-[#eef2ef] pt-8 space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-full bg-[#f1e4dc] text-xs font-bold text-[#a85c36]">
-                12
-              </span>
-              <h2 className="text-base font-bold text-[#16232a]">MESSAGE DU DIRECTEUR GÉNÉRAL</h2>
-            </div>
+          <AboutSection number={12} title="MESSAGE DU DIRECTEUR GÉNÉRAL" summary="Nom, photo et message du DG" >
             <div className="grid gap-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField label="Nom du Directeur Général" htmlFor="dg_name">
@@ -508,16 +440,10 @@ export default async function AdminAboutPage() {
                 />
               </FormField>
             </div>
-          </section>
+          </AboutSection>
 
           {/* 13. Nos engagements */}
-          <section className="border-t border-[#eef2ef] pt-8 space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-full bg-[#f1e4dc] text-xs font-bold text-[#a85c36]">
-                13
-              </span>
-              <h2 className="text-base font-bold text-[#16232a]">NOS ENGAGEMENTS</h2>
-            </div>
+          <AboutSection number={13} title="NOS ENGAGEMENTS" summary="Liste officielle" >
             <div className="grid gap-4">
               <FormField label="Titre engagements" htmlFor="engagements_title">
                 <input
@@ -537,7 +463,7 @@ export default async function AdminAboutPage() {
                 />
               </FormField>
             </div>
-          </section>
+          </AboutSection>
         </AdminForm>
       </div>
     </div>

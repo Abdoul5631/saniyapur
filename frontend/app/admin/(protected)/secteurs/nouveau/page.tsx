@@ -4,7 +4,7 @@ import { SectorFields } from "@/components/admin/sector-fields";
 
 export default function NewSectorPage() {
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-6xl">
       <AdminHeader title="Nouveau secteur" />
       <div className="rounded-2xl border border-[#dce5df] bg-white p-6">
         <AdminForm djangoPath="/sectors/" method="POST" redirectTo="/admin/secteurs" submitLabel="Créer le secteur">

@@ -1,7 +1,7 @@
 from django.db import models
 from rest_framework.viewsets import ModelViewSet
-from .models import Sector
-from .serializers import SectorSerializer
+from .models import Sector, SectorImage
+from .serializers import SectorImageSerializer, SectorSerializer
 class SectorViewSet(ModelViewSet):
     serializer_class = SectorSerializer
     lookup_field = "slug"
@@ -13,3 +13,9 @@ class SectorViewSet(ModelViewSet):
         published = self.request.query_params.get("published")
         if published is not None: queryset = queryset.filter(published=published.lower() == "true")
         return queryset
+
+
+class SectorImageViewSet(ModelViewSet):
+    serializer_class = SectorImageSerializer
+    queryset = SectorImage.objects.all()
+    pagination_class = None

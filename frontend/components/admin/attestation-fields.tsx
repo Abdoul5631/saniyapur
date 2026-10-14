@@ -1,3 +1,4 @@
+import { FormLayout, publishRowClassName } from "@/components/admin/form-layout";
 import { FormField, inputClassName } from "@/components/admin/form-field";
 import { ImageUploader } from "@/components/admin/image-uploader";
 import { PublishedToggle } from "@/components/admin/published-toggle";
@@ -12,7 +13,76 @@ const TYPE_OPTIONS = [
 
 export function AttestationFields({ attestation }: { attestation?: Attestation }) {
   return (
-    <>
+    <FormLayout
+      aside={
+        <>
+      <div className="grid gap-4">
+        <FormField label="Image d'aperçu du document" htmlFor="image" hint="Image numérisée ou visualisatrice de l'attestation.">
+          <ImageUploader
+            id="image"
+            name="image"
+            currentUrl={attestation?.image}
+            label="attestation"
+          />
+        </FormField>
+
+        <FormField label="Document PDF original (facultatif)" htmlFor="pdf_file" hint="Fichier PDF téléchargeable.">
+          <input
+            id="pdf_file"
+            name="pdf_file"
+            type="file"
+            accept=".pdf"
+            className={inputClassName}
+          />
+          {attestation?.pdf_file && (
+            <p className="mt-2 text-xs text-[#526259]">
+              Fichier actuel :{" "}
+              <a
+                href={attestation.pdf_file}
+                target="_blank"
+                rel="noreferrer"
+                className="font-semibold text-[#a85c36] underline"
+              >
+                Télécharger le PDF ↗
+              </a>
+            </p>
+          )}
+        </FormField>
+      </div>
+
+      <div className="grid gap-4">
+        <FormField label="Ordre d'affichage" htmlFor="order" hint="1 = premier dans la liste.">
+          <input
+            id="order"
+            name="order"
+            type="number"
+            min={0}
+            defaultValue={attestation?.order ?? 0}
+            className={inputClassName}
+          />
+        </FormField>
+        <FormField label="Mis en avant" htmlFor="featured" hint="Afficher dans les sections phares.">
+          <div className="flex items-center gap-2 pt-2">
+            <input
+              id="featured"
+              name="featured"
+              type="checkbox"
+              defaultChecked={attestation?.featured ?? false}
+              className="size-4 rounded border-[#dce5df] text-[#a85c36] focus:ring-[#a85c36]"
+            />
+            <label htmlFor="featured" className="text-xs font-semibold text-[#16232a]">
+              Mettre en avant cette attestation
+            </label>
+          </div>
+        </FormField>
+      </div>
+
+      <div className={publishRowClassName}>
+        <PublishedToggle defaultChecked={attestation?.published ?? true} />
+      </div>
+        </>
+      }
+    >
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField label="Titre *" htmlFor="title" required>
           <input
@@ -72,70 +142,6 @@ export function AttestationFields({ attestation }: { attestation?: Attestation }
         />
       </FormField>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <FormField label="Image d'aperçu du document" htmlFor="image" hint="Image numérisée ou visualisatrice de l'attestation.">
-          <ImageUploader
-            id="image"
-            name="image"
-            currentUrl={attestation?.image}
-            label="attestation"
-          />
-        </FormField>
-
-        <FormField label="Document PDF original (facultatif)" htmlFor="pdf_file" hint="Fichier PDF téléchargeable.">
-          <input
-            id="pdf_file"
-            name="pdf_file"
-            type="file"
-            accept=".pdf"
-            className={inputClassName}
-          />
-          {attestation?.pdf_file && (
-            <p className="mt-2 text-xs text-[#526259]">
-              Fichier actuel :{" "}
-              <a
-                href={attestation.pdf_file}
-                target="_blank"
-                rel="noreferrer"
-                className="font-semibold text-[#a85c36] underline"
-              >
-                Télécharger le PDF ↗
-              </a>
-            </p>
-          )}
-        </FormField>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <FormField label="Ordre d'affichage" htmlFor="order" hint="1 = premier dans la liste.">
-          <input
-            id="order"
-            name="order"
-            type="number"
-            min={0}
-            defaultValue={attestation?.order ?? 0}
-            className={inputClassName}
-          />
-        </FormField>
-        <FormField label="Mis en avant" htmlFor="featured" hint="Afficher dans les sections phares.">
-          <div className="flex items-center gap-2 pt-2">
-            <input
-              id="featured"
-              name="featured"
-              type="checkbox"
-              defaultChecked={attestation?.featured ?? false}
-              className="size-4 rounded border-[#dce5df] text-[#a85c36] focus:ring-[#a85c36]"
-            />
-            <label htmlFor="featured" className="text-xs font-semibold text-[#16232a]">
-              Mettre en avant cette attestation
-            </label>
-          </div>
-        </FormField>
-      </div>
-
-      <div className="border-t border-[#dce5df] pt-4">
-        <PublishedToggle defaultChecked={attestation?.published ?? true} />
-      </div>
-    </>
+    </FormLayout>
   );
 }

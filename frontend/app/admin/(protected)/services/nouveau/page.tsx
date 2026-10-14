@@ -7,7 +7,7 @@ import type { AdminSector } from "@/types/admin";
 export default async function NewServicePage() {
   const sectors = await adminFetchAll<AdminSector>("/sectors/");
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-6xl">
       <AdminHeader title="Nouveau service" />
       <div className="rounded-2xl border border-[#dce5df] bg-white p-6">
         <AdminForm djangoPath="/services/" method="POST" redirectTo="/admin/services" submitLabel="Créer le service">

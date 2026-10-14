@@ -1,4 +1,5 @@
-﻿import { AdminForm } from "@/components/admin/admin-form";
+import { AboutSection, AboutToolbar } from "@/components/admin/about-section";
+import { AdminForm } from "@/components/admin/admin-form";
 import { AdminHeader } from "@/components/admin/admin-header";
 import { ClientLogosManager } from "@/components/admin/client-logos-manager";
 import { FormField, inputClassName } from "@/components/admin/form-field";
@@ -15,14 +16,17 @@ export default async function SiteSettingsPage() {
   const clientLogos = normaliseAdminList(clientLogosData);
 
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-5xl">
       <AdminHeader title="Paramètres du site" description="Informations affichées sur le site public. La devise et le slogan officiels ne doivent être modifiés que sur demande explicite." />
 
-      <div className="rounded-2xl border border-[#dce5df] bg-white p-6">
+      <div className="mb-3 flex justify-end">
+        <AboutToolbar />
+      </div>
+
+      <div className="rounded-2xl border border-[#dce5df] bg-white p-4 sm:p-6">
         <AdminForm djangoPath="/settings/" method="PATCH" submitLabel="Enregistrer les paramètres">
-          <section>
-            <h2 className="text-sm font-bold uppercase tracking-[.12em] text-[#a85c36]">Informations entreprise</h2>
-            <div className="mt-4 grid gap-4">
+          <AboutSection number={1} title="Informations entreprise" summary="Nom, logo, devise, adresse" defaultOpen>
+            <div className="grid gap-4">
               <FormField label="Nom de l’entreprise" htmlFor="company_name" required>
                 <input id="company_name" name="company_name" required defaultValue={settings.company_name} className={inputClassName} />
               </FormField>
@@ -42,32 +46,29 @@ export default async function SiteSettingsPage() {
                 <input id="address" name="address" defaultValue={settings.address} className={inputClassName} />
               </FormField>
             </div>
-          </section>
+          </AboutSection>
 
-          <section className="border-t border-[#eef2ef] pt-6">
-            <h2 className="text-sm font-bold uppercase tracking-[.12em] text-[#a85c36]">Contact</h2>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <AboutSection number={2} title="Contact" summary="Téléphone, WhatsApp, e-mail, horaires">
+            <div className="grid gap-4 sm:grid-cols-2">
               <FormField label="Téléphone" htmlFor="phone"><input id="phone" name="phone" defaultValue={settings.phone} className={inputClassName} /></FormField>
               <FormField label="WhatsApp" htmlFor="whatsapp"><input id="whatsapp" name="whatsapp" defaultValue={settings.whatsapp} className={inputClassName} /></FormField>
               <FormField label="E-mail" htmlFor="email"><input id="email" name="email" type="email" defaultValue={settings.email} className={inputClassName} /></FormField>
               <FormField label="Horaires" htmlFor="opening_hours"><input id="opening_hours" name="opening_hours" defaultValue={settings.opening_hours} className={inputClassName} /></FormField>
             </div>
-          </section>
+          </AboutSection>
 
-          <section className="border-t border-[#eef2ef] pt-6">
-            <h2 className="text-sm font-bold uppercase tracking-[.12em] text-[#a85c36]">Réseaux sociaux</h2>
-            <p className="mt-1 text-xs text-[#8a9a92]">Laissez vide les réseaux non utilisés par l’entreprise.</p>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <AboutSection number={3} title="Réseaux sociaux" summary="Facebook, LinkedIn, Instagram">
+            <p className="mb-3 text-xs text-[#8a9a92]">Laissez vide les réseaux non utilisés par l’entreprise.</p>
+            <div className="grid gap-4 sm:grid-cols-2">
               <FormField label="Facebook" htmlFor="facebook_url"><input id="facebook_url" name="facebook_url" type="url" defaultValue={settings.facebook_url} className={inputClassName} /></FormField>
               <FormField label="LinkedIn" htmlFor="linkedin_url"><input id="linkedin_url" name="linkedin_url" type="url" defaultValue={settings.linkedin_url} className={inputClassName} /></FormField>
               <FormField label="Instagram" htmlFor="instagram_url"><input id="instagram_url" name="instagram_url" type="url" defaultValue={settings.instagram_url} className={inputClassName} /></FormField>
               <FormField label="Lien WhatsApp" htmlFor="whatsapp_url" hint="Ex. https://wa.me/226…"><input id="whatsapp_url" name="whatsapp_url" type="url" defaultValue={settings.whatsapp_url} className={inputClassName} /></FormField>
             </div>
-          </section>
+          </AboutSection>
 
-          <section className="border-t border-[#eef2ef] pt-6">
-            <h2 className="text-sm font-bold uppercase tracking-[.12em] text-[#a85c36]">Accueil — section Hero</h2>
-            <div className="mt-4 grid gap-4">
+          <AboutSection number={4} title="Accueil — section Hero" summary="Visuels, titre et boutons de l'accueil">
+            <div className="grid gap-4">
               <p className="text-xs text-[#8a9a92]">
                 Trois visuels plein écran, cadrés depuis le haut (visages visibles), rotation toutes les 5 secondes. Formats recommandés : paysage, 1920×1080.
               </p>
@@ -91,14 +92,13 @@ export default async function SiteSettingsPage() {
                 <FormField label="Bouton secondaire — lien" htmlFor="hero_secondary_button_url"><input id="hero_secondary_button_url" name="hero_secondary_button_url" defaultValue={settings.hero_secondary_button_url} className={inputClassName} /></FormField>
               </div>
             </div>
-          </section>
+          </AboutSection>
 
-          <section className="border-t border-[#eef2ef] pt-6">
-            <h2 className="text-sm font-bold uppercase tracking-[.12em] text-[#a85c36]">Accueil — SANIYAPUR en chiffres</h2>
-            <p className="mt-1 text-xs text-[#8a9a92]">
+          <AboutSection number={5} title="Accueil — SANIYAPUR en chiffres" summary="5 indicateurs de la page d'accueil">
+            <p className="mb-3 text-xs text-[#8a9a92]">
               Ces indicateurs s’affichent sur la page d’accueil. Le suffixe permet d’écrire « + », « % » ou « /7 ».
             </p>
-            <div className="mt-4 grid gap-4">
+            <div className="grid gap-4">
               <FormField label="Année de référence (citation du bas)" htmlFor="stats_since_year">
                 <input id="stats_since_year" name="stats_since_year" type="number" min={1900} defaultValue={settings.stats_since_year} className={inputClassName} />
               </FormField>
@@ -126,7 +126,7 @@ export default async function SiteSettingsPage() {
                 );
               })}
             </div>
-          </section>
+          </AboutSection>
         </AdminForm>
       </div>
 

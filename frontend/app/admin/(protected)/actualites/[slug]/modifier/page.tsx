@@ -15,7 +15,7 @@ export default async function EditNewsPage({ params }: { params: Promise<{ slug:
     notFound();
   }
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-6xl">
       <AdminHeader
         title={`Modifier « ${article.title} »`}
         action={<DeleteButton action={deleteNews.bind(null, slug)} label="Supprimer l’article" confirmTitle={`Supprimer « ${article.title} » ?`} />}

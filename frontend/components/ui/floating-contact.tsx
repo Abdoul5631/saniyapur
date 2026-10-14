@@ -20,7 +20,7 @@ export function FloatingContact() {
 
   return (
     <div
-      className={`fixed bottom-6 right-6 z-50 transition-all duration-500 ${
+      className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-50 sm:bottom-6 sm:right-6 transition-all duration-500 ${
         show ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-90 pointer-events-none"
       }`}
     >

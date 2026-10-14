@@ -30,6 +30,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
   scroll-behavior: smooth;
   overflow-x: hidden;
 }
@@ -339,9 +342,11 @@ html {
 .card-luxury {
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.card-luxury:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 35px -10px rgba(168, 92, 54, 0.12), 0 10px 18px -5px rgba(15, 46, 54, 0.06);
+@media (hover: hover) {
+  .card-luxury:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 35px -10px rgba(168, 92, 54, 0.12), 0 10px 18px -5px rgba(15, 46, 54, 0.06);
+  }
 }
 
 .card-interactive {
@@ -448,6 +453,89 @@ html {
   background-size: 28px 28px;
 }
 
+
+/* ── Service cards (domaines d'intervention) ── */
+.svc-card { position: relative; isolation: isolate; }
+.svc-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(from var(--svc-angle, 0deg), #a85c36, #f0b48f, #1d6fd1, #a85c36);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .svc-card:hover::before { opacity: 1; animation: svc-spin 3.5s linear infinite; }
+}
+@property --svc-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@keyframes svc-spin { to { --svc-angle: 360deg; } }
+
+.svc-shine {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.45) 50%, transparent 65%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .svc-card:hover .svc-shine { transform: translateX(120%); transition: transform 0.9s ease; }
+}
+
+.svc-tag { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s, color 0.3s; }
+@media (hover: hover) {
+  .svc-card:hover .svc-tag { transform: translateY(-2px) scale(1.05); background: #a85c36; color: #fff; }
+}
+.svc-num { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s; }
+@media (hover: hover) {
+  .svc-card:hover .svc-num { transform: rotate(-8deg) scale(1.15); background: #a85c36; }
+}
+
+.svc-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  width: 100%;
+  background: linear-gradient(90deg, #a85c36, #f0b48f);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 6;
+}
+@media (hover: hover) {
+  .svc-card:hover .svc-bar { transform: scaleX(1); }
+}
+
+.svc-cta-arrow {
+  display: inline-flex;
+  width: 1.75rem;
+  height: 1.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: #f1e4dc;
+  transition: background-color 0.3s, color 0.3s, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (hover: hover) {
+  .svc-card:hover .svc-cta-arrow { background: #a85c36; color: #fff; transform: translateX(6px) rotate(-45deg); }
+}
+
+.svc-img-reveal { clip-path: inset(0 0 100% 0); animation: svc-clip 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards; animation-delay: var(--svc-delay, 0ms); }
+@keyframes svc-clip { to { clip-path: inset(0 0 0 0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .svc-card:hover::before, .svc-img-reveal { animation: none; clip-path: none; }
+  .svc-card:hover .svc-shine { transition: none; }
+}
+
 /* ── Reduced Motion Accessibility ── */
 @media (prefers-reduced-motion: reduce) {
   .hero-zoom,
@@ -479,5 +567,29 @@ html {
   .animate-progress {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+
+/* ── Confort mobile ── */
+h1, h2, h3, h4, p, li, dd, figcaption { overflow-wrap: break-word; }
+a, button, summary, [role="button"], label, select { touch-action: manipulation; }
+img, video, svg { max-width: 100%; }
+
+@media (max-width: 767px) {
+  /* 16 px minimum : évite le zoom automatique d'iOS au focus d'un champ */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  select,
+  textarea {
+    font-size: 16px;
+  }
+  body { line-height: 1.55; }
+}
+
+/* Appareils tactiles : cibles de 44 px minimum pour les boutons de formulaire */
+@media (pointer: coarse) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]),
+  select {
+    min-height: 44px;
   }
 }

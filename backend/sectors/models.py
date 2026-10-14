@@ -33,3 +33,17 @@ class Sector(models.Model):
                 counter += 1
             self.slug = slug
         super().save(*args, **kwargs)
+
+
+class SectorImage(models.Model):
+    """Photos supplémentaires d'un secteur, affichées en diaporama sur le site."""
+
+    sector = models.ForeignKey(Sector, related_name="gallery", on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="sectors/")
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order", "id"]
+
+    def __str__(self):
+        return f"{self.sector.name} #{self.order}"
