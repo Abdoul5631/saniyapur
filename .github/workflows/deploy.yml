@@ -31,13 +31,21 @@ jobs:
 
             # Pull latest changes if git repository exists, or trigger deployment
             if [ -d .git ]; then
-              git pull origin main
+              git fetch origin main
+              git reset --hard origin/main
             fi
 
-            # Rebuild and restart containers
+            # Le depot versionne nginx.conf en HTTP ; en prod, remettre le SSL.
+            if [ -f nginx/nginx.ssl.conf ] && [ -f certbot/conf/live/jb-saniyapur.com/fullchain.pem ]; then
+              cp nginx/nginx.ssl.conf nginx/nginx.conf
+            fi
+
+            # Rebuild and restart containers (volumes DB/media conserves)
             docker compose down --remove-orphans || true
             docker compose build --pull
             docker compose up -d
+            docker compose exec backend python manage.py migrate --noinput || true
+            docker compose exec backend chmod -R a+rX /app/media || true
 
             # Clean unused images
             docker image prune -f
