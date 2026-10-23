@@ -4,6 +4,9 @@ import type { PaginatedResponse } from "@/types/realisation";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
+/** Durée de cache (s) des données publiques : aucune en développement, 60 s en production. */
+export const PUBLIC_REVALIDATE = process.env.NODE_ENV === "development" ? 0 : 60;
+
 function toRelativeApiPath(urlOrPath: string): string {
   if (!urlOrPath.startsWith("http")) return urlOrPath;
   const parsed = new URL(urlOrPath);

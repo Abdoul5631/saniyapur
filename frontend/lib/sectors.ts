@@ -1,4 +1,4 @@
-import { apiFetch, apiFetchAll } from "@/lib/api";
+import { apiFetch, apiFetchAll, PUBLIC_REVALIDATE } from "@/lib/api";
 import type { AdminSector } from "@/types/admin";
 
 const useApi = Boolean(process.env.NEXT_PUBLIC_API_URL);
@@ -16,7 +16,7 @@ export const officialSectorNames = ["Santé", "Industrie", "Hôtellerie", "Comme
 
 export async function getSectors(): Promise<AdminSector[]> {
   try {
-    const list = (await apiFetchAll<AdminSector>("/sectors/", { next: { revalidate: 60 } })).filter((sector) => sector.published);
+    const list = (await apiFetchAll<AdminSector>("/sectors/", { next: { revalidate: PUBLIC_REVALIDATE } })).filter((sector) => sector.published);
     if (list.length > 0) return list;
   } catch (err) {
     console.error("getSectors error:", err);
@@ -27,7 +27,7 @@ export async function getSectors(): Promise<AdminSector[]> {
 export async function getSector(slug: string): Promise<AdminSector | undefined> {
   if (!useApi) return mockSectors.find((sector) => sector.slug === slug && sector.published);
   try {
-    const sector = await apiFetch<AdminSector>(`/sectors/${slug}/`, { next: { revalidate: 60 } });
+    const sector = await apiFetch<AdminSector>(`/sectors/${slug}/`, { next: { revalidate: PUBLIC_REVALIDATE } });
     return sector.published ? sector : undefined;
   } catch {
     return undefined;

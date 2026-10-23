@@ -354,7 +354,7 @@ export function QuoteForm({ services, sectors }: { services: Option[]; sectors: 
               <div className="flex items-start gap-3 rounded-xl bg-amber-50 border border-amber-200 p-4">
                 <span className="text-xl">⚠️</span>
                 <p className="text-sm text-amber-800">
-                  Le formulaire sera transmis lorsque l'API backend sera connectée. Votre demande n'a pas été enregistrée. Contactez-nous directement par téléphone.
+                  Votre demande n'a pas pu être enregistrée. Contactez-nous directement par téléphone ou par WhatsApp.
                 </p>
               </div>
             )}

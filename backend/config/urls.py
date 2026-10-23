@@ -15,6 +15,7 @@ from users.views import MeView, UserViewSet
 from site_settings.views import SiteSettingsView, AboutSettingsView, ClientLogoViewSet
 from team.views import TeamGalleryPhotoViewSet, TeamGallerySettingsView, TeamMemberViewSet
 from attestations.views import AttestationViewSet
+from analytics.views import SummaryView, TrackView
 
 router = DefaultRouter()
 router.register("services", ServiceViewSet, basename="service")
@@ -41,6 +42,8 @@ urlpatterns = [
     path("api/settings/", SiteSettingsView.as_view(), name="site_settings"),
     path("api/about/", AboutSettingsView.as_view(), name="about_settings"),
     path("api/team-gallery/", TeamGallerySettingsView.as_view(), name="team_gallery_settings"),
+    path("api/analytics/track/", TrackView.as_view(), name="analytics_track"),
+    path("api/analytics/summary/", SummaryView.as_view(), name="analytics_summary"),
     path("api/", include(router.urls)),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

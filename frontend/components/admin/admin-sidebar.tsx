@@ -12,7 +12,7 @@ const roleLabels: Record<string, string> = {
 };
 
 const navGroups = [
-  { label: null, items: [["Tableau de bord", "/admin"]] },
+  { label: null, items: [["Tableau de bord", "/admin"], ["Statistiques", "/admin/statistiques"]] },
   {
     label: "Contenu",
     items: [

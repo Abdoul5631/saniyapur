@@ -309,3 +309,16 @@ export type DashboardStats = {
   quotesTotal: number;
   quotesNew: number;
 };
+
+export type VisitTotals = { views: number; visitors: number };
+export type VisitsSummary = {
+  days: number;
+  today: VisitTotals;
+  yesterday: VisitTotals;
+  last_7: VisitTotals;
+  last_30: VisitTotals;
+  range: VisitTotals;
+  daily: { date: string; views: number; visitors: number }[];
+  top_pages: { path: string; views: number; visitors: number }[];
+  sources: { source: string; visits: number }[];
+};

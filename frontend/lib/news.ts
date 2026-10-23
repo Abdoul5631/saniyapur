@@ -1,4 +1,4 @@
-import { apiFetch, apiFetchAll } from "@/lib/api";
+import { apiFetch, apiFetchAll, PUBLIC_REVALIDATE } from "@/lib/api";
 import type { AdminNews } from "@/types/admin";
 
 const useApi = Boolean(process.env.NEXT_PUBLIC_API_URL);
@@ -26,7 +26,7 @@ const mockNews: AdminNews[] = [
 export async function getNews(): Promise<AdminNews[]> {
   if (!useApi) return mockNews;
   try {
-    return await apiFetchAll<AdminNews>("/news/", { next: { revalidate: 60 } });
+    return await apiFetchAll<AdminNews>("/news/", { next: { revalidate: PUBLIC_REVALIDATE } });
   } catch (err) {
     console.error("getNews error:", err);
     return [];
@@ -36,7 +36,7 @@ export async function getNews(): Promise<AdminNews[]> {
 export async function getNewsArticle(slug: string): Promise<AdminNews | undefined> {
   if (!useApi) return mockNews.find((article) => article.slug === slug);
   try {
-    return await apiFetch<AdminNews>(`/news/${encodeURIComponent(slug)}/`, { next: { revalidate: 60 } });
+    return await apiFetch<AdminNews>(`/news/${encodeURIComponent(slug)}/`, { next: { revalidate: PUBLIC_REVALIDATE } });
   } catch {
     return (await getNews()).find((article) => article.slug === slug && article.published);
   }

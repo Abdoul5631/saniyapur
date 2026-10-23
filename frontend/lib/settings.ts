@@ -1,5 +1,5 @@
 import { company } from "@/data/company";
-import { apiFetch } from "@/lib/api";
+import { apiFetch, PUBLIC_REVALIDATE } from "@/lib/api";
 import type { SiteSettings } from "@/types/admin";
 
 const useApi = Boolean(process.env.NEXT_PUBLIC_API_URL);
@@ -56,7 +56,7 @@ export const fallbackSettings: SiteSettings = {
 export async function getSiteSettings(): Promise<SiteSettings> {
   if (!useApi) return fallbackSettings;
   try {
-    const data = await apiFetch<SiteSettings>("/settings/", { next: { revalidate: 60 } });
+    const data = await apiFetch<SiteSettings>("/settings/", { next: { revalidate: PUBLIC_REVALIDATE } });
     const merged = { ...fallbackSettings, ...data };
     const contactKeys = ["phone", "whatsapp", "email", "address"] as const;
     for (const key of contactKeys) {

@@ -26,7 +26,7 @@ export async function ProductsPreviewSection() {
 
           <Reveal delayMs={100} className="hidden md:block shrink-0">
             <ButtonLink href="/produits" variant="secondary" className="px-6 py-3.5 shadow-xs">
-              Voir les {products.length || "28"} produits →
+              Voir les {products.length} produits →
             </ButtonLink>
           </Reveal>
         </div>
@@ -56,7 +56,7 @@ export async function ProductsPreviewSection() {
               <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#f1e4dc] text-xl">🛒</span>
               <div>
                 <p className="text-sm font-bold text-[#16232a]">Besoin d'équipements spécifiques ?</p>
-                <p className="text-xs text-[#526259]">Consultez notre catalogue complet de 28 produits professionnels.</p>
+                <p className="text-xs text-[#526259]">Consultez notre catalogue complet de {products.length} produits professionnels.</p>
               </div>
             </div>
             <div className="flex items-center gap-3 shrink-0">

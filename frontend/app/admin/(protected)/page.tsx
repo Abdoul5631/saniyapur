@@ -6,7 +6,7 @@ import { StatCard } from "@/components/admin/stat-card";
 import { Reveal } from "@/components/ui/reveal";
 import { adminCount, adminFetch, normaliseAdminList } from "@/lib/admin/api";
 import { resolveMediaUrl } from "@/lib/media";
-import type { ContactMessage, QuoteRequest } from "@/types/admin";
+import type { ContactMessage, QuoteRequest, VisitsSummary } from "@/types/admin";
 import type { PaginatedResponse, Realisation } from "@/types/realisation";
 
 function Icon({ path }: { path: string }) {
@@ -34,7 +34,7 @@ function coverImage(realisation: Realisation): string {
 }
 
 export default async function AdminDashboardPage() {
-  const [productsCount, servicesCount, realisationsCount, newsCount, contactsRaw, quotesRaw, realisationsRaw] =
+  const [productsCount, servicesCount, realisationsCount, newsCount, contactsRaw, quotesRaw, realisationsRaw, visits] =
     await Promise.all([
       adminCount("/products/"),
       adminCount("/services/"),
@@ -43,6 +43,7 @@ export default async function AdminDashboardPage() {
       adminFetch<ContactMessage[] | PaginatedResponse<ContactMessage>>("/contacts/").catch(() => []),
       adminFetch<QuoteRequest[] | PaginatedResponse<QuoteRequest>>("/quotes/").catch(() => []),
       adminFetch<Realisation[] | PaginatedResponse<Realisation>>("/realisations/").catch(() => []),
+      adminFetch<VisitsSummary>("/analytics/summary/?days=7").catch(() => null),
     ]);
 
   const messages = normaliseAdminList(contactsRaw);
@@ -108,6 +109,29 @@ export default async function AdminDashboardPage() {
           </Reveal>
         ))}
       </div>
+
+      {visits && (
+        <section className="mt-6 rounded-2xl border border-[#dce5df] bg-white p-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-[#8a9a92]">Visites du site</h2>
+            <Link href="/admin/statistiques" className="text-sm font-semibold text-[#a85c36]">
+              Voir les statistiques →
+            </Link>
+          </div>
+          <dl className="mt-3 grid grid-cols-3 gap-4">
+            {[
+              ["Aujourd'hui", visits.today.visitors],
+              ["Hier", visits.yesterday.visitors],
+              ["7 derniers jours", visits.last_7.visitors],
+            ].map(([label, value]) => (
+              <div key={label}>
+                <dt className="text-xs font-medium text-[#526259]">{label}</dt>
+                <dd className="mt-1 text-3xl font-semibold tabular-nums text-[#16232a]">{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )}
 
       <section className="mt-6 rounded-2xl border border-[#dce5df] bg-white p-5">
         <div className="flex flex-wrap items-center gap-3">

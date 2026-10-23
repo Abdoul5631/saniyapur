@@ -1,4 +1,4 @@
-import { apiFetch, apiFetchAll } from "@/lib/api";
+import { apiFetch, apiFetchAll, PUBLIC_REVALIDATE } from "@/lib/api";
 import type { AdminService } from "@/types/admin";
 
 const useApi = Boolean(process.env.NEXT_PUBLIC_API_URL);
@@ -16,7 +16,7 @@ const mockServices: AdminService[] = [
 
 export async function getServices(): Promise<AdminService[]> {
   try {
-    const data = await apiFetchAll<AdminService>("/services/", { next: { revalidate: 60 } });
+    const data = await apiFetchAll<AdminService>("/services/", { next: { revalidate: PUBLIC_REVALIDATE } });
     const filtered = [...data].filter((service) => service.published).sort((a, b) => a.order - b.order);
     if (filtered.length > 0) return filtered;
   } catch (err) {
@@ -28,7 +28,7 @@ export async function getServices(): Promise<AdminService[]> {
 export async function getService(slug: string): Promise<AdminService | undefined> {
   if (!useApi) return mockServices.find((service) => service.slug === slug && service.published);
   try {
-    const service = await apiFetch<AdminService>(`/services/${slug}/`, { next: { revalidate: 60 } });
+    const service = await apiFetch<AdminService>(`/services/${slug}/`, { next: { revalidate: PUBLIC_REVALIDATE } });
     return service.published ? service : undefined;
   } catch {
     const fromList = (await getServices()).find((service) => service.slug === slug);

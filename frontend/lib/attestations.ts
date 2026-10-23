@@ -1,4 +1,4 @@
-import { apiFetchAll } from "@/lib/api";
+import { apiFetchAll, PUBLIC_REVALIDATE } from "@/lib/api";
 import type { Attestation } from "@/types/admin";
 
 export const defaultAttestations: Attestation[] = [
@@ -10,7 +10,7 @@ export const defaultAttestations: Attestation[] = [
     type: "attestation",
     type_display: "Attestation",
     date: "10 Août 2026",
-    description: "Attestation délivrée à SANIYAPUR SARL pour la participation réussie aux modules de formation sur le Secourisme (gestes qui sauvent) et la Sécurité Incendie (manipulation extincteurs). Réf: PSSI-141.",
+    description: "Attestation délivrée à SANIYAPUR SARL pour la participation réussie aux modules de formation sur le Secourisme (gestes qui sauvent) et la Sécurité Incendie (manipulation des extincteurs). Réf. : PSSI-141.",
     image: "/media/attestations/images/attestation-sensibilisation-qhse-saniyapur.jpg",
     pdf_file: null,
     order: 1,
@@ -27,7 +27,7 @@ export const defaultAttestations: Attestation[] = [
     type: "attestation",
     type_display: "Attestation",
     date: "20 Août 2026",
-    description: "Attestation certifiant que M. KPETE Amesron Promise a terminé avec succès le programme de formation de Superviseur HSE : santé sécurité au travail, risques chimiques (SIMDUT 2015) et rôles du superviseur au quotidien. Réf: SHSE N° 144.",
+    description: "Attestation certifiant que M. KPETE Amesron Promise a terminé avec succès le programme de formation de Superviseur HSE : santé et sécurité au travail, risques chimiques (SIMDUT 2015) et rôles du superviseur au quotidien. Réf. : SHSE n° 144.",
     image: "/media/attestations/images/attestation-superviseur-kpete-amesron.jpg",
     pdf_file: null,
     order: 2,
@@ -44,7 +44,7 @@ export const defaultAttestations: Attestation[] = [
     type: "attestation",
     type_display: "Attestation",
     date: "20 Août 2026",
-    description: "Attestation certifiant que M. AMOUZOU Komlan Edem (Directeur Technique & Hygiène) a terminé avec succès la formation de Superviseur HSE : prévention des risques professionnels et chimiques (SIMDUT 2015). Réf: SHSE.",
+    description: "Attestation certifiant que M. AMOUZOU Komlan Edem (Directeur Technique & Hygiène) a terminé avec succès la formation de Superviseur HSE : prévention des risques professionnels et chimiques (SIMDUT 2015). Réf. : SHSE.",
     image: "/media/attestations/images/attestation-superviseur-amouzou-komlan.jpg",
     pdf_file: null,
     order: 3,
@@ -61,7 +61,7 @@ export const defaultAttestations: Attestation[] = [
     type: "attestation",
     type_display: "Attestation",
     date: "20 Août 2026",
-    description: "Attestation certifiant que Mme SANOU Fatoumata a validé avec succès le cursus de Superviseur HSE sur la santé et sécurité au travail et les protocoles de prévention des risques. Réf: SHSE N° 151.",
+    description: "Attestation certifiant que Mme SANOU Fatoumata a validé avec succès le cursus de Superviseur HSE sur la santé et la sécurité au travail et les protocoles de prévention des risques. Réf. : SHSE n° 151.",
     image: "/media/attestations/images/attestation-superviseur-sanou-fatoumata.jpg",
     pdf_file: null,
     order: 4,
@@ -78,7 +78,7 @@ export const defaultAttestations: Attestation[] = [
     type: "attestation",
     type_display: "Attestation",
     date: "20 Août 2026",
-    description: "Attestation certifiant que M. SANOU Abdoulaye a terminé avec succès la formation de Superviseur HSE : maîtrise des risques professionnels et gestion opérationnelle de la sécurité. Réf: SHSE N° 145.",
+    description: "Attestation certifiant que M. SANOU Abdoulaye a terminé avec succès la formation de Superviseur HSE : maîtrise des risques professionnels et gestion opérationnelle de la sécurité. Réf. : SHSE n° 145.",
     image: "/media/attestations/images/attestation-superviseur-sanou-abdoulaye.jpg",
     pdf_file: null,
     order: 5,
@@ -180,7 +180,7 @@ export const defaultAttestations: Attestation[] = [
     type: "certificate",
     type_display: "Certificat ISO",
     date: "2021 - 2024 / 2026",
-    description: "Certification officielle attestant que la société Gebäudereinigung SYLT PURE (Inh. Jules TEKPO) applique un système de gestion de la qualité conforme aux normes internationales ISO 9001:2015 dans le domaine du nettoyage et bionettoyage. N° d’enregistrement : QA-0190010067.",
+    description: "Certification officielle attestant que la société Gebäudereinigung SYLT PURE (Inh. Jules TEKPO) applique un système de gestion de la qualité conforme aux normes internationales ISO 9001:2015 dans le domaine du nettoyage et bionettoyage. n° d’enregistrement : QA-0190010067.",
     image: "/media/attestations/images/certificat-iso-9001-sylt-pure-tekpo.jpg",
     pdf_file: null,
     order: 11,
@@ -197,7 +197,7 @@ export async function getAttestations(): Promise<Attestation[]> {
   if (!useApi) return defaultAttestations;
   try {
     const list = await apiFetchAll<Attestation>("/attestations/", {
-      next: { revalidate: 60 },
+      next: { revalidate: PUBLIC_REVALIDATE },
     });
     return list.filter((item) => item.published);
   } catch {

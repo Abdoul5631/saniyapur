@@ -45,6 +45,7 @@ export async function createRealisation(_prevState: FormState, formData: FormDat
     return { error: error instanceof Error ? error.message : "Erreur inconnue." };
   }
   revalidatePath("/admin/realisations");
+  revalidatePath("/", "layout");
   redirect(`/admin/realisations/${slug}/modifier`);
 }
 
@@ -66,12 +67,14 @@ export async function updateRealisation(slug: string, _prevState: FormState, for
     return { error: error instanceof Error ? error.message : "Erreur inconnue." };
   }
   revalidatePath("/admin/realisations");
+  revalidatePath("/", "layout");
   redirect("/admin/realisations");
 }
 
 export async function deleteRealisation(slug: string): Promise<void> {
   await adminDelete(`/realisations/${slug}/`);
   revalidatePath("/admin/realisations");
+  revalidatePath("/", "layout");
 }
 
 export async function addRealisationImage(realisationId: number, _prevState: FormState, formData: FormData): Promise<FormState> {
@@ -89,15 +92,18 @@ export async function addRealisationImage(realisationId: number, _prevState: For
     return { error: error instanceof Error ? error.message : "Erreur inconnue." };
   }
   revalidatePath("/admin/realisations");
+  revalidatePath("/", "layout");
   return null;
 }
 
 export async function deleteRealisationImage(imageId: number): Promise<void> {
   await adminDelete(`/realisation-images/${imageId}/`);
   revalidatePath("/admin/realisations");
+  revalidatePath("/", "layout");
 }
 
 export async function setRealisationImageAsMain(imageId: number): Promise<void> {
   await adminMutateJson<RealisationImage>(`/realisation-images/${imageId}/`, { type: "main" }, "PATCH");
   revalidatePath("/admin/realisations");
+  revalidatePath("/", "layout");
 }

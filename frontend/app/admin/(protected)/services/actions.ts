@@ -28,6 +28,7 @@ export async function createService(_prevState: FormState, formData: FormData): 
     return { error: error instanceof Error ? error.message : "Erreur inconnue." };
   }
   revalidatePath("/admin/services");
+  revalidatePath("/", "layout");
   redirect("/admin/services");
 }
 
@@ -38,17 +39,20 @@ export async function updateService(slug: string, _prevState: FormState, formDat
     return { error: error instanceof Error ? error.message : "Erreur inconnue." };
   }
   revalidatePath("/admin/services");
+  revalidatePath("/", "layout");
   redirect("/admin/services");
 }
 
 export async function deleteService(slug: string): Promise<void> {
   await adminDelete(`/services/${slug}/`);
   revalidatePath("/admin/services");
+  revalidatePath("/", "layout");
 }
 
 export async function toggleServicePublished(slug: string, published: boolean): Promise<void> {
   await adminPatchJson<AdminService>(`/services/${slug}/`, { published });
   revalidatePath("/admin/services");
+  revalidatePath("/", "layout");
 }
 
 export async function moveServiceOrder(slug: string, direction: "up" | "down"): Promise<void> {
@@ -62,4 +66,5 @@ export async function moveServiceOrder(slug: string, direction: "up" | "down"): 
   await adminPatchJson<AdminService>(`/services/${current.slug}/`, { order: target.order });
   await adminPatchJson<AdminService>(`/services/${target.slug}/`, { order: current.order });
   revalidatePath("/admin/services");
+  revalidatePath("/", "layout");
 }

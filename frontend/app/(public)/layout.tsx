@@ -1,5 +1,6 @@
 import { CorporateFooter } from "@/components/layout/corporate-footer";
 import { CorporateHeader } from "@/components/layout/corporate-header";
+import { PageViewTracker } from "@/components/analytics/page-view-tracker";
 import { FloatingContact } from "@/components/ui/floating-contact";
 
 export const dynamic = "force-dynamic";
@@ -12,6 +13,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
       <main className="flex-1">{children}</main>
       <CorporateFooter />
       <FloatingContact />
+      <PageViewTracker />
     </>
   );
 }

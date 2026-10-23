@@ -26,6 +26,7 @@ export async function createSector(_prevState: FormState, formData: FormData): P
     return { error: error instanceof Error ? error.message : "Erreur inconnue." };
   }
   revalidatePath("/admin/secteurs");
+  revalidatePath("/", "layout");
   redirect("/admin/secteurs");
 }
 
@@ -36,10 +37,12 @@ export async function updateSector(slug: string, _prevState: FormState, formData
     return { error: error instanceof Error ? error.message : "Erreur inconnue." };
   }
   revalidatePath("/admin/secteurs");
+  revalidatePath("/", "layout");
   redirect("/admin/secteurs");
 }
 
 export async function deleteSector(slug: string): Promise<void> {
   await adminDelete(`/sectors/${slug}/`);
   revalidatePath("/admin/secteurs");
+  revalidatePath("/", "layout");
 }
