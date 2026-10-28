@@ -1,0 +1,54 @@
+MISE EN LIGNE DES CONTENUS - J&B SANIYAPUR
+=========================================
+
+Ce dossier contient :
+  - apply_content.py       : met a jour les produits, attestations, textes et equipe sur le serveur
+  - nouvelles_images.zip   : les 4 documents officiels (images) qui ne sont pas encore en ligne
+
+Le script ne touche JAMAIS aux devis, messages, utilisateurs ni aux statistiques.
+Il fonctionne d'abord en SIMULATION (il affiche ce qu'il ferait, sans rien modifier).
+
+ORDRE A SUIVRE
+--------------
+0. Mettre d'abord le CODE en ligne (git reset + docker compose up -d --build + migrate),
+   comme indique precedemment.
+
+1. Depuis votre PC (PowerShell), envoyer les fichiers sur le serveur :
+     scp deploy_content/apply_content.py deploy_content/nouvelles_images.zip root@185.202.239.199:/root/
+
+2. Sur le serveur, aller dans le dossier du projet (celui qui contient docker-compose.yml) :
+     cd /chemin/du/projet
+
+3. SAUVEGARDE de la base (obligatoire avant toute modification) :
+     docker compose exec -T db sh -c 'pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' > /root/sauvegarde_avant_contenus.sql
+
+4. Installer les nouvelles images :
+     apt-get install -y unzip
+     unzip -o /root/nouvelles_images.zip -d /root/nouvelles_images
+     docker cp /root/nouvelles_images/. saniyapur_backend:/app/media/
+     docker compose exec -u root backend chmod -R a+rX /app/media
+
+5. Copier le script dans le conteneur :
+     docker cp /root/apply_content.py saniyapur_backend:/tmp/apply_content.py
+
+6. SIMULATION (ne modifie rien, affiche la liste des changements) :
+     docker compose exec backend python manage.py shell -c "exec(open('/tmp/apply_content.py',encoding='utf-8').read())"
+
+   Lisez la liste. Attendu environ : 1 produit cree (nettoyeur a vapeur), 2 produits supprimes
+   (surfanios, dr-schell), 4 attestations creees, et des textes modifies.
+
+7. APPLICATION (apres verification de la liste) :
+     docker compose exec -e APPLY=1 backend python manage.py shell -c "exec(open('/tmp/apply_content.py',encoding='utf-8').read())"
+
+8. Verifier sur https://jb-saniyapur.com (Ctrl+F5) : /produits, /attestations, /a-propos.
+
+EN CAS DE PROBLEME : restaurer la sauvegarde
+     docker compose exec -T db sh -c 'psql -U "$POSTGRES_USER" "$POSTGRES_DB"' < /root/sauvegarde_avant_contenus.sql
+
+NOTES
+-----
+- Rapprochement par nom/titre/slug (jamais par numero) : si un element n'existe pas en ligne, le script
+  l'indique ("INTROUVABLE") et l'ignore.
+- La fiche equipe "SANOU Abibata" n'est pas envoyee : en ligne, cette place est occupee par un autre membre.
+- Les autres membres d'equipe sont mis a jour : accords au feminin (Superviseure...), corrections de noms.
+- Le script peut etre relance sans risque : il n'applique que ce qui differe.

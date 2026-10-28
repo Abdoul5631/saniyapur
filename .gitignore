@@ -17,5 +17,3 @@ catalogue_clean_summary.txt
 team_matches.txt
 backend/fix_attestation_images.py
 
-# Paquet de mise a jour des contenus (non versionne)
-deploy_content/
