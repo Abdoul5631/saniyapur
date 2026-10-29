@@ -59,6 +59,9 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticatedOrReadOnly"],
     "DEFAULT_PAGINATION_CLASS": "config.pagination.FlexiblePagination",
     "PAGE_SIZE": 24,
+    # Un seul proxy (nginx ou le serveur Next) ajoute l'IP réelle du visiteur en fin d'en-tête X-Forwarded-For.
+    "NUM_PROXIES": 1,
+    "DEFAULT_THROTTLE_RATES": {"login": "10/min"},
 }
 # Session unique et longue : un seul compte admin utilise ce panneau, pas de flux de rafraîchissement côté frontend.
 SIMPLE_JWT = {"ACCESS_TOKEN_LIFETIME": timedelta(hours=8), "REFRESH_TOKEN_LIFETIME": timedelta(days=7), "ROTATE_REFRESH_TOKENS": False}

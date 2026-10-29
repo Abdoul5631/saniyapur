@@ -3,7 +3,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView
+from users.auth_views import ThrottledTokenObtainPairView
 from services.views import ServiceImageViewSet, ServiceViewSet
 from sectors.views import SectorImageViewSet, SectorViewSet
 from realisations.views import RealisationImageViewSet, RealisationViewSet
@@ -36,7 +37,7 @@ router.register("attestations", AttestationViewSet, basename="attestation")
 router.register("client-logos", ClientLogoViewSet, basename="client-logo")
 urlpatterns = [
     path("django-admin/", admin.site.urls),
-    path("api/auth/login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/auth/login/", ThrottledTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/auth/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/auth/me/", MeView.as_view(), name="token_me"),
     path("api/settings/", SiteSettingsView.as_view(), name="site_settings"),
