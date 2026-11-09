@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element -- logo modifiable dans l'admin : taille naturelle, sans cadre fixe */
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -157,13 +157,9 @@ export function CorporateHeader({ logoUrl = "/images/logo.png" }: { logoUrl?: st
               className="inline-block transition-transform duration-300 hover:scale-[1.02]"
               onClick={() => setOpen(false)}
             >
-              <Image
+              <img
                 src={logoUrl}
-                unoptimized={logoUrl.startsWith("/media/")}
                 alt="J&B SANIYAPUR SARL"
-                width={560}
-                height={320}
-                priority
                 className="h-40 w-auto sm:h-52 md:h-60 lg:h-64 max-w-[92vw] mx-auto object-contain"
               />
             </Link>
@@ -210,12 +206,9 @@ export function CorporateHeader({ logoUrl = "/images/logo.png" }: { logoUrl?: st
             {/* Mini logo quand scrollé */}
             <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2">
               {scrolled ? (
-                <Image
+                <img
                   src={logoUrl}
-                unoptimized={logoUrl.startsWith("/media/")}
                   alt="SANIYAPUR"
-                  width={100}
-                  height={40}
                   className="h-8 w-auto object-contain"
                 />
               ) : (
@@ -279,12 +272,9 @@ export function CorporateHeader({ logoUrl = "/images/logo.png" }: { logoUrl?: st
           {/* Header du drawer */}
           <div className="flex items-center justify-between border-b border-[#f0f4f1] px-5 py-4">
             <Link href="/" onClick={() => setOpen(false)}>
-              <Image
+              <img
                 src={logoUrl}
-                unoptimized={logoUrl.startsWith("/media/")}
                 alt="SANIYAPUR"
-                width={120}
-                height={50}
                 className="h-9 w-auto object-contain"
               />
             </Link>
