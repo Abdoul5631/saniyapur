@@ -30,13 +30,14 @@ export async function updateSiteSettings(_prevState: FormState, formData: FormDa
     return { error: error instanceof Error ? error.message : "Erreur inconnue." };
   }
   revalidatePath("/admin/parametres");
-  revalidatePath("/");
+  // Le logo et les coordonnées sont dans l'en-tête et le pied de page de toutes les pages publiques.
+  revalidatePath("/", "layout");
   return { success: true };
 }
 
 function revalidateClientLogos() {
   revalidatePath("/admin/parametres");
-  revalidatePath("/");
+  revalidatePath("/", "layout");
 }
 
 export async function addClientLogos(
