@@ -39,7 +39,7 @@ function NavLink({
   );
 }
 
-export function CorporateHeader() {
+export function CorporateHeader({ logoUrl = "/images/logo.png" }: { logoUrl?: string }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [menuPath, setMenuPath] = useState(pathname);
@@ -158,7 +158,7 @@ export function CorporateHeader() {
               onClick={() => setOpen(false)}
             >
               <Image
-                src="/images/logo.png"
+                src={logoUrl}
                 alt="J&B SANIYAPUR SARL"
                 width={560}
                 height={320}
@@ -213,7 +213,7 @@ export function CorporateHeader() {
             <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2">
               {scrolled ? (
                 <Image
-                  src="/images/logo.png"
+                  src={logoUrl}
                   alt="SANIYAPUR"
                   width={100}
                   height={40}
@@ -281,7 +281,7 @@ export function CorporateHeader() {
           <div className="flex items-center justify-between border-b border-[#f0f4f1] px-5 py-4">
             <Link href="/" onClick={() => setOpen(false)}>
               <Image
-                src="/images/logo.png"
+                src={logoUrl}
                 alt="SANIYAPUR"
                 width={120}
                 height={50}
