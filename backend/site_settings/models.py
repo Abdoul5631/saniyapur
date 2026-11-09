@@ -1,4 +1,10 @@
+import logging
+
 from django.db import models
+
+from .image_utils import trim_margins
+
+logger = logging.getLogger(__name__)
 
 
 class SiteSettings(models.Model):
@@ -87,7 +93,14 @@ class SiteSettings(models.Model):
 
     def save(self, *args, **kwargs):
         self.pk = 1
+        # Un fichier fraîchement envoyé n'est pas encore enregistré sur le disque (_committed False).
+        new_logo = bool(self.logo) and not getattr(self.logo, "_committed", True)
         super().save(*args, **kwargs)
+        if new_logo:
+            try:
+                trim_margins(self.logo.path)
+            except Exception:
+                logger.warning("Recadrage automatique du logo impossible.", exc_info=True)
 
     @classmethod
     def load(cls):

@@ -44,6 +44,7 @@ export function CorporateHeader({ logoUrl = "/images/logo.png" }: { logoUrl?: st
   const [open, setOpen] = useState(false);
   const [menuPath, setMenuPath] = useState(pathname);
   const [scrolled, setScrolled] = useState(false);
+  const [logoRatio, setLogoRatio] = useState(1);
 
   if (menuPath !== pathname) {
     setMenuPath(pathname);
@@ -160,7 +161,19 @@ export function CorporateHeader({ logoUrl = "/images/logo.png" }: { logoUrl?: st
               <img
                 src={logoUrl}
                 alt="J&B SANIYAPUR SARL"
-                className="h-40 w-auto sm:h-52 md:h-60 lg:h-64 max-w-[92vw] mx-auto object-contain"
+                ref={(element) => {
+                  // L'image peut être déjà chargée avant l'hydratation : onLoad ne se déclenche alors pas.
+                  if (element?.complete && element.naturalWidth && element.naturalHeight) {
+                    setLogoRatio(element.naturalWidth / element.naturalHeight);
+                  }
+                }}
+                onLoad={(event) => {
+                  const { naturalWidth, naturalHeight } = event.currentTarget;
+                  if (naturalWidth && naturalHeight) setLogoRatio(naturalWidth / naturalHeight);
+                }}
+                style={{ "--logo-ratio": logoRatio } as React.CSSProperties}
+                // Hauteur plafonnée selon l'écran ET largeur plafonnée : un logo large ou carré garde ses proportions, sans marges.
+                className="mx-auto h-[min(var(--logo-h),calc(var(--logo-w)_/_var(--logo-ratio)))] w-auto [--logo-h:10rem] [--logo-w:min(92vw,44rem)] sm:[--logo-h:13rem] md:[--logo-h:15rem] lg:[--logo-h:16rem]"
               />
             </Link>
           </div>
