@@ -159,6 +159,7 @@ export function CorporateHeader({ logoUrl = "/images/logo.png" }: { logoUrl?: st
             >
               <Image
                 src={logoUrl}
+                unoptimized={logoUrl.startsWith("/media/")}
                 alt="J&B SANIYAPUR SARL"
                 width={560}
                 height={320}
@@ -214,6 +215,7 @@ export function CorporateHeader({ logoUrl = "/images/logo.png" }: { logoUrl?: st
               {scrolled ? (
                 <Image
                   src={logoUrl}
+                unoptimized={logoUrl.startsWith("/media/")}
                   alt="SANIYAPUR"
                   width={100}
                   height={40}
@@ -282,6 +284,7 @@ export function CorporateHeader({ logoUrl = "/images/logo.png" }: { logoUrl?: st
             <Link href="/" onClick={() => setOpen(false)}>
               <Image
                 src={logoUrl}
+                unoptimized={logoUrl.startsWith("/media/")}
                 alt="SANIYAPUR"
                 width={120}
                 height={50}
