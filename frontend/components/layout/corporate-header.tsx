@@ -149,7 +149,7 @@ export function CorporateHeader({ logoUrl = "/images/logo.png" }: { logoUrl?: st
       </div>
 
       {/* ── 1. Haut de page : Logo centré & Slogan ── */}
-      <div className="py-7 sm:py-10 md:py-12 border-b border-[#f0f4f1] transition-all duration-300">
+      <div className="py-4 sm:py-6 border-b border-[#f0f4f1] transition-all duration-300">
         <Container>
           <div className="flex flex-col items-center justify-center text-center">
             <Link
@@ -164,12 +164,9 @@ export function CorporateHeader({ logoUrl = "/images/logo.png" }: { logoUrl?: st
                 width={560}
                 height={320}
                 priority
-                className="h-24 w-auto sm:h-32 md:h-40 lg:h-44 max-w-[92vw] mx-auto object-contain drop-shadow-xs"
+                className="h-40 w-auto sm:h-52 md:h-60 lg:h-64 max-w-[92vw] mx-auto object-contain"
               />
             </Link>
-            <p className="mt-3.5 font-serif italic text-base sm:text-lg md:text-xl text-[#a85c36] tracking-wide select-none font-medium">
-              « Propreté sur ordonnance »
-            </p>
           </div>
         </Container>
       </div>
